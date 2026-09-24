@@ -11,3 +11,7 @@
 - `vendor/skills/codex-research/` 来自 LIU-31415/codex-research，提交 `a943bf3678bd92904f3520322a66ae1faca65b1a`；运行文件原样保留，MIT许可见目录中的 LICENSE。未分发其维护脚本与测试目录。
 - `vendor/skills/nature-reader/`、`vendor/skills/nature-shared/` 来自 Yuan1z0825/nature-skills，提交 `9c9953a06cd33a88cbd258386a295ca4b6a1ef1e`；保留的原文件未修改，排除含上游个人本机路径的evals目录，仅增加许可副本。Apache-2.0全文见 `vendor/LICENSE-Nature-Skills` 及各目录的 UPSTREAM_LICENSE。保留原作者标注；本工作台不代表上游作者或期刊认可。
 - 测试报告仅分发自主编写的情境和概述，不分发论文全文、图像或下载失败的网页。
+
+## 女娲（v1.5）
+
+`vendor/skills/huashu-nuwa/` 的运行文件来自 alchaincyf/nuwa-skill，固定提交 `fe0374687037c4cc51a65c1e0c145afe2981dc69`，MIT许可见目录内 LICENSE，Copyright (c) 2026 Huashu (花叔)。所分发的上游文件未修改；工作台适配说明另存于主引导references。生成顾问按原模板保留女娲与创建者归属。本包未分发原仓库人物示例或任何新生成专家语料。

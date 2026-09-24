@@ -41,5 +41,18 @@ def same_install(path, info):
     if any(p.is_symlink() for p in path.rglob('*')):
         return False
     got = tree_files(path)
+    # Nuwa writes a local version-check date; never exempt its instructions or research.
+    for relative in info.get('runtime_files', []):
+        if relative != '.last-update-check':
+            return False
+        if relative in got:
+            import datetime
+            try:
+                value = got[relative].read_text(encoding='utf-8').strip()
+                if datetime.date.fromisoformat(value).isoformat() != value:
+                    return False
+            except (ValueError, UnicodeError):
+                return False
+            del got[relative]
     return set(got) == set(info['files']) and all(
         digest(got[name]) == expected for name, expected in info['files'].items())

@@ -58,3 +58,11 @@ research-grants 中的特定资助机构模板仅作论证参考，学校要求�
 ## 后续可选扩展（未打包）
 
 `nature-academic-search`、`nature-writing`、`researchwrite` 与实验执行模块仍未接入。若需要，应分别审查许可、依赖与实际行为，固定版本后引入；不会因本次安装自动可用。
+
+## v1.5 女娲固定来源与适配
+
+[alchaincyf/nuwa-skill](https://github.com/alchaincyf/nuwa-skill/tree/fe0374687037c4cc51a65c1e0c145afe2981dc69)，提交 `fe0374687037c4cc51a65c1e0c145afe2981dc69`，实际技能名 `huashu-nuwa`。MIT，Copyright (c) 2026 Huashu (花叔)，见该技能内 LICENSE。
+
+原样保留SKILL.md、references/、scripts/、LICENSE及评分卡引用的COMMUNITY.md/CONTRIBUTING.md；不分发人物示例、宣传资产或本机缓存。固定版本不自动升级。路径/并发/落盘和科研用途适配集中在主引导 [expert-distillation.md](skills/danta-proposal-guide/references/expert-distillation.md)，没有删改上游蒸馏阶段、确认检查点或质量标准。
+
+独立验证不可用时应交付标明缺口的中间产物，不能声称完整蒸馏通过。原始脚本的关键词比例不等于实际来源比例；保真评分不等于科研有效性。来源、模型局限和知识截止时间随顾问保存。

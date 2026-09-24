@@ -23,6 +23,7 @@ description: 以思维引导帮助生物医学博士从困惑和观察形成自�
 - 发展困惑、解释与问题：读 [thinking-dialogue.md](references/thinking-dialogue.md)。
 - 三个检查节点、方案状态及主张—证据映射：读 [decision-and-evidence.md](references/decision-and-evidence.md)，这里是这些规则的唯一详细定义。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
+- 用户要蒸馏专家、建立/更新人物顾问或主题框架：先读 [expert-distillation.md](references/expert-distillation.md)，再按原始 huashu-nuwa 流程执行。
 - 需要专业工具：读 [skill-routing.md](references/skill-routing.md)，再读实际可用技能。缺失能力如实报告，能做的部分继续。
 
 ## 证据纪律

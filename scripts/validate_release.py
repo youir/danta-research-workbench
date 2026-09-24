@@ -32,6 +32,36 @@ def main():
             changed.write_text('Existing custom skill', encoding='utf-8')
             call(script, ['--dest', dest], ok=False)
             assert changed.read_text() == 'Existing custom skill'
+        # Nuwa's own date cache must not break repeat installs; other changes still conflict.
+        nuwa_dest = tmp / 'nuwa-only'
+        call(primary, ['--dest', nuwa_dest, '--only', 'huashu-nuwa'])
+        nuwa = nuwa_dest / 'huashu-nuwa'
+        assert (nuwa / 'references/skill-template.md').exists()
+        marker = nuwa / '.last-update-check'
+        marker.write_text('2026-09-24\n')
+        call(primary, ['--dest', nuwa_dest, '--only', 'huashu-nuwa'])
+        assert marker.read_text() == '2026-09-24\n'
+        marker.write_text('not-a-date')
+        call(primary, ['--dest', nuwa_dest, '--only', 'huashu-nuwa'], ok=False)
+        marker.write_text('2026-09-24\n')
+        extra = nuwa / 'unexpected.txt'; extra.write_text('custom content')
+        call(primary, ['--dest', nuwa_dest, '--only', 'huashu-nuwa'], ok=False)
+        extra.unlink()
+        (nuwa / 'SKILL.md').write_text('User-edited skill')
+        call(primary, ['--dest', nuwa_dest, '--only', 'huashu-nuwa'], ok=False)
+        assert (nuwa / 'SKILL.md').read_text() == 'User-edited skill'
+        # Smoke-test upstream deterministic helpers with synthetic, non-personal inputs.
+        upstream = ROOT / 'vendor/skills/huashu-nuwa/scripts'
+        subtitles = tmp / 'sample.srt'
+        subtitles.write_text('1\n00:00:00,000 --> 00:00:01,000\nHello.\n\n2\n00:00:01,000 --> 00:00:02,000\nHello.\n')
+        transcript = tmp / 'transcript.txt'
+        call(upstream / 'srt_to_transcript.py', [subtitles, transcript])
+        assert transcript.read_text().strip() == 'Hello.'
+        empty = tmp / 'empty.md'; empty.write_text('Synthetic empty fixture')
+        call(upstream / 'quality_check.py', [empty], ok=False)
+        fictional = tmp / 'fictional'; (fictional / 'references/research').mkdir(parents=True)
+        output = call(upstream / 'merge_research.py', [fictional])
+        assert '缺失' in output
         # Selecting the reader installs the shared package; dependency conflict is atomic.
         reader_dest = tmp / 'reader-only'
         call(primary, ['--dest', reader_dest, '--only', 'nature-reader'])
