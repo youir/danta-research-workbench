@@ -4,7 +4,7 @@
 
 ## 最省事：下载可直接打开的知识库ZIP
 
-下载本版 `danta-research-vault-v1.7.0.zip`，解压后在 Obsidian 和 Codex 打开同一个 `00_科研知识库_Research-Vault` 文件夹，再打开 `00_index.md`。此ZIP由已验证的初始化器从空白模板生成，不含真实研究数据；不需要再次执行初始化。
+下载本版 `danta-research-vault-v1.7.1.zip`，解压后在 Obsidian 和 Codex 打开同一个 `00_科研知识库_Research-Vault` 文件夹，再打开 `00_index.md`。此ZIP由已验证的初始化器从空白模板生成，不含真实研究数据；不需要再次执行初始化。
 
 ## 从完整发行包创建独立知识库
 

@@ -25,6 +25,8 @@ aliases: []
 - [03_路径映射_Path-Map.json](03_路径映射_Path-Map.json)
 - [04_归档与维护_Archive-Maintenance.md](04_归档与维护_Archive-Maintenance.md)
 
+- [完整体系架构 / Architecture](05_体系架构_Architecture.png)
+
 ## 本区维护
 
 新增记录后补充入口及一句话用途；没有记录就保持空白，不填虚构科研结果。

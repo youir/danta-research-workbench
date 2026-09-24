@@ -28,7 +28,7 @@
 
 只有适合独立完成的问题才拆分；最多三个专家同时运行。专家默认只读，主引导统一写研究记录。多人一致不构成新增证据。
 
-![蛋挞博士研究工作台完整架构：含科研 OGSM](docs/assets/architecture.png)
+![蛋挞博士研究工作台完整架构：含 OGSM、Obsidian 科研库与长期记忆](docs/assets/architecture.png)
 
 [查看原图](docs/assets/architecture.png) · [架构说明与可编辑图源](08_完整体系架构.md)
 
@@ -87,7 +87,7 @@ python3 scripts/validate_release.py
 
 新增 [科研 OGSM 使用指南](07_科研OGSM使用指南.md)：选题前轻量比较，方向确定后将证据目标、研究策略、追踪与调整条件整理成一页纸。主引导按需加载，无新增安装依赖；科学判断和选题仍由蛋挞与导师决定。
 
-[查看完整体系架构（含 OGSM）](08_完整体系架构.md)。
+[查看完整体系架构（含 OGSM、Obsidian 与长期记忆）](08_完整体系架构.md)。
 
 ## v1.7 科研知识库
 

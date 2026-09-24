@@ -16,6 +16,10 @@ aliases: []
 
 **思维优先，决策在人。** 这是空白科研知识库模板，尚无真实研究资料。日常只需先打开当前状态与Idea画布，其他内容按任务取用。
 
+## 完整体系架构 / Architecture
+
+![完整体系架构 v1.7](00_系统_System/05_体系架构_Architecture.png)
+
 ## 从这里继续 / Start here
 
 - [第一次使用与 Obsidian 接入](00_系统_System/01_使用指南_User-Guide.md)

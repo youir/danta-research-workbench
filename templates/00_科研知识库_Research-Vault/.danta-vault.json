@@ -1,7 +1,7 @@
 {
   "kind": "danta-research-vault",
   "version": 1,
-  "template_version": "1.7.0",
+  "template_version": "1.7.1",
   "path_map": "00_系统_System/03_路径映射_Path-Map.json",
   "active_project": "05_课题项目_Projects/00_主课题_Main-Project"
 }

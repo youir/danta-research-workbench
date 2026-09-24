@@ -16,7 +16,7 @@ aliases: []
 
 ## 第一次使用
 
-如果下载的是 `danta-research-vault-v1.7.0.zip`，直接解压并打开其中 `00_科研知识库_Research-Vault` 文件夹即可；已附主引导和角色配置，无需再运行初始化器。以下命令仅针对完整工作台发行包。
+如果下载的是 `danta-research-vault-v1.7.1.zip`，直接解压并打开其中 `00_科研知识库_Research-Vault` 文件夹即可；已附主引导和角色配置，无需再运行初始化器。以下命令仅针对完整工作台发行包。
 
 从发行包运行 `python3 scripts/create_research_vault.py --dest <一个尚不存在的新目录>`。脚本只复制公开模板、主引导和项目角色，不读取其他 vault，不安装第三方插件，不覆盖同名目录。终端中含空格的路径需加引号。新库路径是 Obsidian 与 Codex 共同打开的同一个目录。
 
