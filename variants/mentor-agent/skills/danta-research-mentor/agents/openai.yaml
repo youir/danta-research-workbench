@@ -1,0 +1,4 @@
+interface:
+  display_name: "蛋挞课题助手"
+  short_description: "先掌握资料与资源，再协助博士选题、方案论证、开题答辩及课题持续推进"
+  default_prompt: "使用 $danta-research-mentor，先盘点我的研究资料、导师要求和实验资源，再协助推进课题。"

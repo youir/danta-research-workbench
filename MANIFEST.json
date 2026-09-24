@@ -1,0 +1,167 @@
+{
+  "format_version": 1,
+  "upstream_repo": "https://github.com/K-Dense-AI/scientific-agent-skills",
+  "upstream_commit": "49c6e97775eaa18ba791bebe23162a70ae601c18",
+  "skills": {
+    "danta-proposal-guide": {
+      "source": "skills/danta-proposal-guide",
+      "files": {
+        "SKILL.md": "f0cd5338a933bdbb0ec9c4ecc4f34ce43eeb2d8be84230d7dbe5ec88f75754d6",
+        "agents/openai.yaml": "de4e5ddbd8c04dc3d2d3cf3429e442468d78e05d78d345fa7008367de91d16d3",
+        "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
+        "references/intake.md": "92099f61e2ab078e8692bae54b667304da3f378e656e393184aad53e5db9e5ba",
+        "references/multi-agent.md": "bd639bc64d4d1c68efe6d39a8d0e85769cd3052a722609d9474e72df4be012c4",
+        "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
+        "references/skill-routing.md": "ada73ff4f45150605f51fa012e59106af59686ebad981fb0247e8942868a2903",
+        "references/thinking-dialogue.md": "3af9bb2f7093d9e43615836fffcddfe04c08717aa32dbee7a7ea84a0aea2079b"
+      }
+    },
+    "scientific-brainstorming": {
+      "source": "vendor/skills/scientific-brainstorming",
+      "files": {
+        "SKILL.md": "49ae9b430f3495a36de5fbfe4f053c0acc67440ad8b2bcb31749283e2286c48f",
+        "UPSTREAM_LICENSE.md": "09b02a3c9df3053c55531d503357a9c7cde275970e6c3ceaa1ddf5f0e90b40c1",
+        "references/brainstorming_methods.md": "a2dc4e248b43b257af8b3359c26ec973527e212064f5f4a0c1f5161fa7f27013",
+        "references/facilitation_workflows.md": "bfb2acc43472f4649b10f2c3db02180fa9c86636f375f82d8bc36b28075a5ccc",
+        "references/idea_evaluation.md": "415089ce7fb4234c2836c0a1652ca7407d5822c3b645564530ffb76bd594d110",
+        "references/responsible_ai.md": "7465647aaf261ce84124683bbebaafa2f57db0491c34b7ef1a650b05431b9cb1",
+        "references/sources.md": "ab93a7b744c0fb2a026f6485eac5f54fbd3479e7349a6a1502287f1704a48d88",
+        "scripts/_common.py": "a78ef369fe2613871e8026420b9c78a368f61aeab670947482517fd49711060d",
+        "scripts/evaluate_matrix.py": "9056a5356c72d638277cc24f8e02f043c6bdb35d2b50e13fca3ac6ef860a1014",
+        "scripts/session_scaffold.py": "0af7b297a8f92f1c7456b7e14c717a017315b4a71b603ca5402434dee98db5ba",
+        "scripts/validate_register.py": "9a28c5abc16c48babdf6e5f3ded1672eb272d2569283c53a3e1f09beed43197a"
+      }
+    },
+    "literature-review": {
+      "source": "vendor/skills/literature-review",
+      "files": {
+        "SKILL.md": "950a6d0863ef657523813b985fe86599ac6bb99b695eee5953612d7e20c78011",
+        "UPSTREAM_LICENSE.md": "09b02a3c9df3053c55531d503357a9c7cde275970e6c3ceaa1ddf5f0e90b40c1",
+        "assets/review_template.md": "e9db0f8e00f894fc55c474ca0355a86fd72eb9bb5456e1253e740d3c06e74208",
+        "references/citation_styles.md": "a62f97c9f1c50da0627033187da5632f9fec00679fc5e8c0e97b217210c0c79b",
+        "references/core_workflow.md": "3e21d3a014a156e709550a5a79fccaa222a5db23e6309dce869619d8cba6c007",
+        "references/database_strategies.md": "199c3b8e08c4df550ef71bf30667cfd70ca76f32e8c7121d35082b622494b660",
+        "references/example_workflow.md": "56d9c06599269cc24648762a0390b4762ea1c1a2386c3c8b28daa62360ea0b6c",
+        "references/search_and_citation.md": "b2c5628b14cd531931d25264d428c75a252ce0961d6e74e927fd72e13bc20bed",
+        "scripts/generate_pdf.py": "dd561948e30101cda0955762a38f463b4ac588b13082b5717b938c3c1d772da3",
+        "scripts/generate_schematic.py": "5cec9c14d164c9ea9ccf6425f2010c40f1b077dd0c9e30395564cdc793c334b2",
+        "scripts/generate_schematic_ai.py": "af055204033d446cd8e4501de0a0d0aaa952bad7c365e559f2e3a80698704ce9",
+        "scripts/search_databases.py": "4b572895633b765a0f0214ec455149dd6282c657f5659793213687003f3fa630",
+        "scripts/verify_citations.py": "ab492d2670865cd3a632024121c7449bb7138dc1ca565fbd0c0e697635104d55"
+      }
+    },
+    "scientific-critical-thinking": {
+      "source": "vendor/skills/scientific-critical-thinking",
+      "files": {
+        "SKILL.md": "b77ba9ed1872d85d804125a339e2038984052e7aaf3616813ab79f5ad91c0558",
+        "UPSTREAM_LICENSE.md": "09b02a3c9df3053c55531d503357a9c7cde275970e6c3ceaa1ddf5f0e90b40c1",
+        "references/common_biases.md": "99f608c86075f1a1ab115a1cf4ecd54fe482266cb5e47761172894f21829f6cf",
+        "references/core_capabilities.md": "ed5e62032737893ef7eda9f60f6b3355f9081daa91bbfddb9340194bc8253351",
+        "references/evidence_hierarchy.md": "e58b6fbbd080938719c1c1ed08acb3b4c056e12e8ed9ef2ff250b8e9ebf9b74c",
+        "references/experimental_design.md": "99023cfb10e455349f5e57fff75d34f80f3bba8842c48f5385ad7d0586f01b11",
+        "references/logical_fallacies.md": "7911abe82bc05c8f513591e9b00572f21e5a631783cc00cd9dbf644b5eae28ce",
+        "references/scientific_method.md": "09e709bdc7919a2b21825175aff5e0f9c26117a02ec654bfdb347fc8fa7ad0b7",
+        "references/statistical_pitfalls.md": "c525ed590c36eef9dfca95c9c8bc2ab3e228e9247aa476a2c2ddcf07ffc62172"
+      }
+    },
+    "hypothesis-generation": {
+      "source": "vendor/skills/hypothesis-generation",
+      "files": {
+        "SKILL.md": "8153fdc33e0a4cd012109931c6a822c0e0afe206769e1af3e7a3d07ea37e1137",
+        "UPSTREAM_LICENSE.md": "09b02a3c9df3053c55531d503357a9c7cde275970e6c3ceaa1ddf5f0e90b40c1",
+        "assets/evidence_ledger_template.csv": "1ec5cc4ada96e05041c67865bcdfd3bb0a4f7cc92f24ca1ce7a826028a41d3de",
+        "assets/falsification_controls_template.json": "beea4e2be3b5abdad1014934a7c2fe1f9f00f07b3270119cfeb8134a94603e26",
+        "assets/hypothesis_record_template.json": "73f080a6696c415f228b38100bb7b0f6bc89ad2c7997bf50d62b585b0bc8fe0c",
+        "assets/operationalization_template.json": "36ecdbd91c022554e60db646b548f5694d8409277a5b15fdf309d86f8c1e3070",
+        "assets/prediction_rival_matrix_template.csv": "ccf6cb53c048a9f4d60788a8ec73c5d683ec549dab7df95b30282f6c0963653a",
+        "assets/preregistration_scaffold_template.md": "570314aa6669b935a5c1fd91a0e55ef7035d219a23cc6703ddece0f6fbdd6f5d",
+        "assets/search_boundary_template.json": "b885d4e252c0df7010d8fca3dab7e3fef49e9f386b7a1b15240531ce374bf6ec",
+        "assets/source_ledger.csv": "185f563d213a2254d3f9280bb12f7d1ff332c5e7e77f15b4839ca5f9a9d7740c",
+        "references/causal_inference_and_claims.md": "37fba9d9d72414fcb342faa231944b4dbc5ce3255f552482ea8298cf0909b0a4",
+        "references/concepts_and_workflow.md": "a86a8f464fb555212e79bf13e307f3c129e9c853069856eb3c93c3c8a60bb7fc",
+        "references/ethics_safety_and_ai.md": "f89c8c85cab8a84b0ac0c0e402942e596bbd66f293ebb7597217e1514cdffbe9",
+        "references/experimental_design_patterns.md": "83c0c75c7b1edadc92e4ae23607624277c19955fc6a71ee0313b6efc51e4e939",
+        "references/hypothesis_quality_criteria.md": "12698b549f77a6ee64807b959093f39628fe3d47aa9a00a9b235681bf0b09269",
+        "references/literature_search_strategies.md": "2a34fa0645f854093aea2d867059bae563c795f1935ba4b9c6d494bdc389fdcb",
+        "references/preregistration_and_open_science.md": "fd4f7ffe03d419bfd8b1b104637f508b9dad5ae868afc5c9307bb868f3920b16",
+        "references/security_validation.md": "39dffd9c0878e8da5fe2511678b4f69fab95143c17a4915f56033cb111c35572",
+        "references/source_ledger.md": "ff41a6f5e1d365eafdf6be130cf40733653587b6ec51be19ce0294df44d93919",
+        "references/tool_reference.md": "db305bec51a46a67c5d21baa47e2854110f0a3901f525ec7c9a7fe120b9d9c8b",
+        "scripts/_common.py": "a1e1390b9bac9440d5038ebe22705420c8831d669c90c9dcbc6647c2cd494e90",
+        "scripts/audit_evidence_ledger.py": "18fc0a947fec34ea573eb824f540ce6ccb351aed5e08fc80ae476c2150aef2bb",
+        "scripts/check_falsification_controls.py": "e56f67b92d15c93cbe9eb1b9fb89253239b6ac81328fb56fc96d9e2c3ec3ba32",
+        "scripts/check_operationalization.py": "efc093f4b58b23e095238e60badef04d34dfb012b7958e1326a1f7d58ed5edd6",
+        "scripts/generate_preregistration_scaffold.py": "f953e3af468cb69ebbba3ff9f3dbba3846a52e557698c03f78972e0b41fb5ba8",
+        "scripts/lint_causal_claims.py": "561186e71f7c0b573f7ba45ef0009460c1398048929ed55fad53a65cda56dafe",
+        "scripts/validate_hypothesis_schema.py": "63bc1b7752d20042c2845ecb2457448ec8e2d9bc8fe1337003b222f8f4620608",
+        "scripts/validate_prediction_matrix.py": "3888802496f4e6ece5955b4fe28d6b2e6d810c5107ce6ca45ebbd70acceed317"
+      }
+    },
+    "statistical-analysis": {
+      "source": "vendor/skills/statistical-analysis",
+      "files": {
+        "SKILL.md": "1b1d63fd667ef454a8e0cadf32457a511883d3308dcc79c47c48bc565d9a23f7",
+        "UPSTREAM_LICENSE.md": "09b02a3c9df3053c55531d503357a9c7cde275970e6c3ceaa1ddf5f0e90b40c1",
+        "references/assumptions_and_diagnostics.md": "b8fdccb2d2f160c78bd11415e30c50a0dea755f046e936b8c85b23333d1b47f8",
+        "references/bayesian_statistics.md": "c6b994b512c38009f26aed3913884aa85fef2bdcefd8a9858b124deed3a05f70",
+        "references/effect_sizes_and_power.md": "6de003ff25fe3613322f5cfbd4d042327b17a381c034bc2dbbe068212ecce732",
+        "references/reporting_standards.md": "6854623fb5e8080e7d02b6c713ee44cb4a4cf03757d97840764118af54137a88",
+        "references/test_selection_guide.md": "64f5d93f87d83431b767a24d6b32c0ed82f2cbd32b1bd07476b49b5ac6a858a5",
+        "scripts/assumption_checks.py": "3fabf359ab0128bbfc498dadb53a4782431cde473c0a6681ea7298a605757018"
+      }
+    },
+    "research-grants": {
+      "source": "vendor/skills/research-grants",
+      "files": {
+        "SKILL.md": "9208b8b5092e89ef64daced11131c4eb1a50a7711cf6172b6b602419facd56fa",
+        "UPSTREAM_LICENSE.md": "09b02a3c9df3053c55531d503357a9c7cde275970e6c3ceaa1ddf5f0e90b40c1",
+        "assets/budget_justification_template.md": "4c24a20c20c86845d3abfa7f63c94fecaaa8c80c7018c043461dedad4167773b",
+        "assets/nih_specific_aims_template.md": "c8029605a4a47966576437fd74ea1774dbb82475dcf4502fdbc77d01bfff4376",
+        "assets/nsf_project_summary_template.md": "67ed5c02fa46ed7da187ee2896096b5ff04d2de16ef04d0d3847d8def97f7cec",
+        "references/README.md": "47b64d53e568ccf418893c24aba76f9072aac5fda8dc25fd16711187d13dae2e",
+        "references/broader_impacts.md": "86fc86796e85d49f2e1adadf93730a61a1c990c8529fd4d8e048dfddaf4c8a02",
+        "references/core_components.md": "568f61cfa5c23cbde6ac0706c9c9ecf4ddb2511bbf8b8e41d0ec63aa0cf7c557",
+        "references/darpa_guidelines.md": "e64616d15080d2bf508cd4706eea2dbf6dbd42a9b3f61454e39ea6f25328555d",
+        "references/doe_guidelines.md": "802490bb6ca47ca993c68fa3f396754e34f916c88164a5706bb4f56862a2cee0",
+        "references/nih_guidelines.md": "6822555c46d1f4e9e2a4e8bf446d7e00277988303a2bfcf5ca4fbe572b26d6eb",
+        "references/nsf_guidelines.md": "072ac444c3d737978498eb10b7308089ae0797b4ac0e28b7c2751aae8e56abb5",
+        "references/nstc_guidelines.md": "d09a560041d212c3675aa8de6c8ea49654116bc7db4104be0b77a54bcae35510",
+        "references/proposal_types_and_resubmission.md": "2d8de4bb490cce0ecb9fa1464abcdc8f111eeb9aab3edcde3b7a2b1c956661fa",
+        "references/review_criteria.md": "dd09ecf8f7500d3b928c991a40bfe7192d6cf9b33a1ca86e40d89690c01fc3ba",
+        "references/specific_aims_guide.md": "aa378c771eaa3272144ef3e8f9822f1c1c557a4d8571202256602703db64b4d3",
+        "references/writing_principles.md": "86a8ffbd97f99fd82f9f6baa83395ffffc666043273a0bf35e0f87d3e2a408c3"
+      }
+    },
+    "peer-review": {
+      "source": "vendor/skills/peer-review",
+      "files": {
+        "SKILL.md": "3422beafc240aa7d2703e71fe16e3400269a5ea17045d8b390a30efe58c3de67",
+        "UPSTREAM_LICENSE.md": "09b02a3c9df3053c55531d503357a9c7cde275970e6c3ceaa1ddf5f0e90b40c1",
+        "assets/citation_references_template.csv": "e00b259742a0716661d8adba1e81fc7ca722cea32c3cfe5a5e29509844ed742b",
+        "assets/claim_evidence_matrix_template.csv": "06e1215c998a978bdbbe30008040536902abe138e0f790b243ecaee1f21b7da7",
+        "assets/reporting_checklist_template.csv": "02709793bc1702fadc760e7089398eb28351b22885a08cbea6c85f135e931ee1",
+        "assets/reporting_guidelines.json": "a3684d48498168775ed3f3a8315b01a53f925e38d952d70baf0ec0f2ced105fa",
+        "assets/review_intake_template.json": "14d7e00cdc710b8235c80faa71f4c5712c1db1a0a2d734fd4fa9807bbc960438",
+        "assets/review_scaffold_template.md": "4e320c9a6238ac7ea2494a4c486e93d1eaf2c5239aab80fcd8eea70a6e359102",
+        "assets/source_ledger.csv": "a73e02a696c470eab2765aa563492866b1baeeb2071fd9cc0777fcf7ea39a7cb",
+        "assets/statistical_reproducibility_template.json": "071bfc0b1e1edb9d09c539b5c6e291e43e8d719cbe50cfdeac1044fe8f0b69a3",
+        "assets/study_profile_template.json": "bc0c19b9ad478c78c4b5111bcd913faca8046e0833815b1bd579a046f737df40",
+        "references/common_issues.md": "6a0979d6d64e07f769db8ee9ab82ad3190aebaca4294838f338f5c4b51b596f6",
+        "references/ethical_review_practice.md": "7a1b1cf1e02f85b9bf6f0e90d729d7fc4a2819922e1037b5e9543a7670236a24",
+        "references/reporting_standards.md": "96ae056f803407671ff7f73d3a29719472698563b85db58e42f21f0c9eeb13f3",
+        "references/security_validation.md": "43b0b64acd16544e25aae9b3ed37a78118decd5352975b2e5935704772910a27",
+        "references/statistical_reproducibility.md": "1075d96ade7fbcc21c216a22084d74bf497b93a08b7d5f06925594abc62fb5e7",
+        "references/tool_reference.md": "ea9490c4e0675702b9e118fe73ff524b84bb55aea5b9883e673969200b110e81",
+        "scripts/_common.py": "78e751bd8024d4df69a6a7ab82497424d58da06d751f4cb97ba4fc75eb9044db",
+        "scripts/audit_citations.py": "9521d624dce092b93f36e3c4c7dd9cab151b24d2e623d0b299adbef239100e47",
+        "scripts/audit_statistics_reproducibility.py": "8daf60d78a2758665b5c676d1d68e52c57c5c1988249fdbbaba62d31a49c495b",
+        "scripts/generate_review_scaffold.py": "3c2d6dc36e8e5fdd0313422d30da8c31a7ca808618818db376e348fe8d38fd2c",
+        "scripts/lint_review.py": "623878c26ede3d74f2ddf0e0a15acbade40d10009c66ab334550b814b2361e75",
+        "scripts/select_reporting_guidelines.py": "9ccbbdeca6df01f2f4e1c86b98db0e9ab0a43685c6726e1abfdb9bbaa2b92ae3",
+        "scripts/validate_claim_evidence.py": "93490b289f288ed686a8eb300bf40693e7caf148b5022b180077f0db22acbe2b",
+        "scripts/validate_review_intake.py": "bbea9af9a86c937956818c1e6b84be0754a9851a5c5e27f6073f2cadd8367b2a"
+      }
+    }
+  },
+  "package_version": "1.2-multi-agent-20260924"
+}

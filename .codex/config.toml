@@ -1,0 +1,4 @@
+# Project-scoped settings; no model, credentials or global permissions override.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3

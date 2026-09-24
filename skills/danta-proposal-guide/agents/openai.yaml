@@ -1,0 +1,4 @@
+interface:
+  display_name: "蛋挞的开题思维引导"
+  short_description: "先理解研究处境，用追问和证据帮助形成自己的科学问题，保留人的判断与决策"
+  default_prompt: "使用 $danta-proposal-guide，先了解我的资料与环境，再从我的困惑出发，帮助我形成自己的研究思路。"
