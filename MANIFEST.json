@@ -6,11 +6,12 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "2a1665d2876cf3faaa2c74d700c3434256e06753d9af863c2140d652232b344c",
+        "SKILL.md": "34165dd224159e7de68c59921bbdef6fe403c1d9a07aebdb48423afc8049b415",
         "agents/openai.yaml": "de4e5ddbd8c04dc3d2d3cf3429e442468d78e05d78d345fa7008367de91d16d3",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
-        "references/expert-distillation.md": "79e25a0d067f973f4d9fe43a19873292c639d39c93f3feccc98b72fbddddc90b",
+        "references/expert-distillation.md": "5b5b80aebc307bb985fa5d35d8fb32a631e054eaa7aefea955b561c9f5a44b8f",
         "references/intake.md": "46078d7d03c5abe85cbb10adfcf837edd4038af40764c313d38882f473ec3940",
+        "references/knowledge-vault.md": "2e1c0595777efa241bed24b532ba911d3754c8c8153d4d1cb922aea7979f0e04",
         "references/multi-agent.md": "0253e2051b9b2630d3f8164fa8b350a7cb53018712e91dadd46d3bcbe30cc7d8",
         "references/ogsm.md": "63b46980beb443aaa303205ae6e00d7738dfb0cb8e229274f1e5474746cb472c",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",

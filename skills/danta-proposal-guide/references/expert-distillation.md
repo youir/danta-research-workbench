@@ -18,7 +18,7 @@
 
 ## Codex路径与派工（显式适配）
 
-上游`.claude/skills/`为宿主示例。在Codex，仅检查用户指定工作区内的顾问目录和当前客户端已配置技能目录；不扫描父目录、私信或云盘。新顾问默认放在私有工作副本的 `.local/advisors/<person>-perspective/`；主题用 `<topic>-framework/`。不把真实材料写进公开仓库或vendor。提供给用户的原材料只复制，不移动。
+上游`.claude/skills/`为宿主示例。在Codex，仅检查用户指定工作区内的顾问目录和当前客户端已配置技能目录；不扫描父目录、私信或云盘。Obsidian vault 模式先按 knowledge-vault.md 的 roles.advisor_profiles 保存顾问，保持原版内部命名。其他模式下，新顾问默认放在私有工作副本的 `.local/advisors/<person>-perspective/`；主题用 `<topic>-framework/`。不把真实材料写进公开仓库或vendor。提供给用户的原材料只复制，不移动。
 
 每个顾问目录含SKILL.md、scripts/、references/research/、references/sources/{books,transcripts,articles}/；保留原01—06调研文件命名。阶段状态、确认记录、测试结果、日期及来源索引也保存在顾问目录内部，更新时保留历史，不重写整套。
 

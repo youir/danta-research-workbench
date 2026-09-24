@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "active_project": "05_课题项目_Projects/00_主课题_Main-Project",
+  "legacy_root": "我的开题",
+  "paths": {
+    "我的开题/00_状态与下一步.md": "05_课题项目_Projects/00_主课题_Main-Project/00_当前状态_Current-State.md",
+    "我的开题/01_原始资料/资料放这里.md": "02_原始资料_Sources/01_原始资料说明_Source-Guide.md",
+    "我的开题/02_盘点/开题准备度报告.md": "05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context/01_准备度_Readiness.md",
+    "我的开题/02_盘点/研究画像.md": "05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context/02_研究画像_Research-Profile.md",
+    "我的开题/02_盘点/资料清单.csv": "02_原始资料_Sources/00_来源登记_Source-Register/01_资料清单_Source-Register.csv",
+    "我的开题/02_盘点/资源与约束.md": "05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context/03_资源约束_Resources.md",
+    "我的开题/03_文献与证据/检索记录.csv": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/01_检索记录_Search-Log.csv",
+    "我的开题/03_文献与证据/证据矩阵.csv": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/02_证据矩阵_Evidence-Matrix.csv",
+    "我的开题/03_文献与证据/证据台账.md": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/03_证据导航_Evidence-Map.md",
+    "我的开题/04_候选课题/候选题比较.csv": "05_课题项目_Projects/00_主课题_Main-Project/02_候选课题_Candidates/01_候选比较_Candidate-Comparison.csv",
+    "我的开题/04_候选课题/课题卡_复制后填写.md": "05_课题项目_Projects/00_主课题_Main-Project/02_候选课题_Candidates/02_课题卡_Candidate-Card.md",
+    "我的开题/04_候选课题/OGSM轻量比较.md": "05_课题项目_Projects/00_主课题_Main-Project/02_候选课题_Candidates/03_OGSM轻量比较_OGSM-Comparison.md",
+    "我的开题/05_研究方案/方案模板.md": "05_课题项目_Projects/00_主课题_Main-Project/03_研究方案_Design/01_研究方案_Research-Design.md",
+    "我的开题/05_研究方案/科研OGSM一页纸.md": "05_课题项目_Projects/00_主课题_Main-Project/03_研究方案_Design/02_科研OGSM_Research-OGSM.md",
+    "我的开题/06_开题与答辩/开题提纲与质询.md": "05_课题项目_Projects/00_主课题_Main-Project/04_开题答辩_Proposal-Defense/01_开题提纲_Proposal-Outline.md",
+    "我的开题/07_决策记录/决策日志.md": "05_课题项目_Projects/00_主课题_Main-Project/05_决策记录_Decisions/01_决策日志_Decision-Log.md",
+    "我的开题/08_思考过程/Idea画布.md": "05_课题项目_Projects/00_主课题_Main-Project/01_思考过程_Thinking/01_想法画布_Idea-Canvas.md",
+    "我的开题/08_思考过程/思路手记.md": "05_课题项目_Projects/00_主课题_Main-Project/01_思考过程_Thinking/02_思路手记_Thinking-Notes.md",
+    "我的开题/09_协作记录.md": "05_课题项目_Projects/00_主课题_Main-Project/06_协作记录_Collaboration/01_协作记录_Collaboration-Log.md"
+  },
+  "roles": {
+    "current_state": "05_课题项目_Projects/00_主课题_Main-Project/00_当前状态_Current-State.md",
+    "idea_canvas": "05_课题项目_Projects/00_主课题_Main-Project/01_思考过程_Thinking/01_想法画布_Idea-Canvas.md",
+    "evidence_matrix": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/02_证据矩阵_Evidence-Matrix.csv",
+    "search_log": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/01_检索记录_Search-Log.csv",
+    "decision_log": "05_课题项目_Projects/00_主课题_Main-Project/05_决策记录_Decisions/01_决策日志_Decision-Log.md",
+    "ogsm": "05_课题项目_Projects/00_主课题_Main-Project/03_研究方案_Design/02_科研OGSM_Research-OGSM.md",
+    "source_intake": "02_原始资料_Sources",
+    "environment_reports": "05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context",
+    "advisor_profiles": "09_专家顾问_Advisors/01_顾问包_Profiles",
+    "memory_index": "11_长期记忆_Memory/00_index.md"
+  }
+}

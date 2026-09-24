@@ -1,0 +1,8 @@
+{
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "01_收件箱_Inbox",
+  "attachmentFolderPath": "13_附件资源_Attachments/02_补充材料_Supplements"
+}

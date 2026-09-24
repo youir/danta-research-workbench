@@ -15,3 +15,5 @@
 使用者选择多 agent 协作时，按主技能 references/multi-agent.md 执行；保持单一对话入口，只委派边界明确的任务。子 agent 默认只读，主引导负责合并；用户明确启动女娲蒸馏时，按 `skills/danta-proposal-guide/references/expert-distillation.md` 的限定派工规则允许逐维独立落盘；工具未实际可用时必须标明降级。
 
 公开仓库中的研究目录是模板。首次真实使用先按 README 用 scripts/start_project.py 建立 .local/ 工作副本，再在副本里开始研究；已位于工作副本或用户指定的独立研究目录时不重复复制。开发/验证系统本身时可直接操作仓库。不要自动提交或上传研究档案。
+
+创建或维护 Obsidian 科研知识库时读 `09_科研知识库与Obsidian.md`。新库用 create_research_vault.py 初始化，进入新库后遵循其AGENTS及Path-Map，不再创建旧版研究副本。只发布空白模板，禁止把真实库、个人记忆或hwm内容一并提交。

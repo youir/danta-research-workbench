@@ -107,6 +107,7 @@ def main():
         (copy / 'skills/danta-proposal-guide/SKILL.md').write_text('Tampered')
         call(copy / 'scripts/install_skills.py', ['--dest', tmp / 'blocked'], ok=False)
         assert not (tmp / 'blocked').exists()
+    print(call(ROOT / 'tests/test_research_vault.py', []).strip())
     print('PASS: installers, staging integrity, conflict protection, bounded/idempotent copy, empty target, source symlink, integrity rejection')
     checked = 0
     for file in ROOT.rglob('*.md'):

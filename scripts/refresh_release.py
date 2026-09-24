@@ -26,6 +26,9 @@ def main():
     base = ROOT / 'variants/mentor-agent';path = base / 'skill-manifest.json';data = json.loads(path.read_text())
     data['files'] = hashes(base / 'skills/danta-research-mentor')
     path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    vault = ROOT / 'templates/00_科研知识库_Research-Vault'
+    if vault.exists():
+        (ROOT / 'vault-template.json').write_text(json.dumps({'version': 1, 'source': vault.relative_to(ROOT).as_posix(), 'files': hashes(vault)}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print('Refreshed skill hashes and',len(files),'explicit project files. Review the diff before release.')
 
 if __name__ == '__main__':main()

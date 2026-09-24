@@ -1,0 +1,21 @@
+---
+title: "协作记录"
+tags: ["research", "project-record"]
+created: ""
+updated: ""
+type: "permanent"
+record: "project-record"
+status: "template"
+summary: "协作记录"
+project: ""
+sources: []
+aliases: []
+---
+
+# 协作记录
+
+
+仅在实际派工时填写；单 agent 分角色分析请如实标注，不伪造 agent ID。
+
+| 日期/任务ID | 角色与运行方式 | 具体问题 | 实际调用或返回依据 | 完成状态 | 来源索引 | 采纳/暂缓及原因 |
+|---|---|---|---|---|---|---|
