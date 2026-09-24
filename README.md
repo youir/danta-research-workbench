@@ -7,7 +7,7 @@
 ## 快速开始
 
 1. 下载完整仓库或克隆，保留隐藏目录 `.codex/`。
-2. 建议先运行 `python3 scripts/start_project.py`，在不受 Git 跟踪的 `.local/research-workbench/` 创建自己的工作副本；也可用 `--dest` 指定仓库外的新目录。
+2. 首次先运行 `python3 scripts/start_project.py`，在不受 Git 跟踪的 `.local/research-workbench/` 创建自己的工作副本；也可用 `--dest` 指定仓库外的新目录。
 3. 在 Codex 打开新副本，阅读 [00_从这里开始.md](00_从这里开始.md)，复制其中的启动语。
 4. 如要多 agent 协作，再复制 [05_多Agent使用指南.md](05_多Agent使用指南.md) 的启动语。客户端没有相应工具时明确退回单 agent 分角色分析。
 
@@ -68,3 +68,7 @@ python3 scripts/validate_release.py
 测试包括完整性、安装/重复安装/冲突保护、隔离工作副本与本地链接。它不证明学术判断正确，也不替代使用者设备上的子 agent 运行验证。
 
 第三方来源、许可证与扩展依赖见 [Skills来源与边界](03_Skills来源与边界.md) 和 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+## v1.3 实测改进
+
+三位独立评审分别测试用户体验、证据逻辑和安装流程，再交叉讨论。修复副本重复创建、复制范围过宽、启动顺序冲突；增加带任务ID/用户约束的交接和过时输出检查。详见 `tests/reports/v1.3-review.md`。已是副本时重复启动会恢复现有位置，不再嵌套复制；系统只复制 `project-files.json` 列出的发行文件。

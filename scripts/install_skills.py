@@ -51,6 +51,8 @@ def main():
         try:
             shutil.copytree(ROOT / info['source'], stage / name,
                             ignore=shutil.ignore_patterns('__pycache__', '.DS_Store'))
+            if not same_install(stage / name, info):
+                raise ValueError('Staged files failed verification: ' + name)
             # Exclusive directory creation prevents replacing a concurrent install.
             target.mkdir()
             try:

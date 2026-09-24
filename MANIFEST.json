@@ -9,11 +9,11 @@
         "SKILL.md": "f0cd5338a933bdbb0ec9c4ecc4f34ce43eeb2d8be84230d7dbe5ec88f75754d6",
         "agents/openai.yaml": "de4e5ddbd8c04dc3d2d3cf3429e442468d78e05d78d345fa7008367de91d16d3",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
-        "references/intake.md": "92099f61e2ab078e8692bae54b667304da3f378e656e393184aad53e5db9e5ba",
-        "references/multi-agent.md": "bd639bc64d4d1c68efe6d39a8d0e85769cd3052a722609d9474e72df4be012c4",
+        "references/intake.md": "46078d7d03c5abe85cbb10adfcf837edd4038af40764c313d38882f473ec3940",
+        "references/multi-agent.md": "a267be82c6bbfeecfc36f3ce79e088e499d721598df32cfdc93949ba3142b096",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
         "references/skill-routing.md": "ada73ff4f45150605f51fa012e59106af59686ebad981fb0247e8942868a2903",
-        "references/thinking-dialogue.md": "3af9bb2f7093d9e43615836fffcddfe04c08717aa32dbee7a7ea84a0aea2079b"
+        "references/thinking-dialogue.md": "06e83f80b02ec3ef6a2004b06e7d52ee87cb8365e6db35000a7d3746e9f4d570"
       }
     },
     "scientific-brainstorming": {
@@ -163,5 +163,5 @@
       }
     }
   },
-  "package_version": "1.2-multi-agent-20260924"
+  "package_version": "1.3-reviewed-20260924"
 }

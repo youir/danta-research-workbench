@@ -1,15 +1,15 @@
 {
   "name": "danta-research-mentor",
-  "version": "1.1-public-multi-agent",
+  "version": "1.2-reviewed",
   "files": {
     "SKILL.md": "70e75cfc1ed0600a76f3f08c13fa9e8d257f1aa01d9960c59a8ab7b0cc168ba9",
     "agents/openai.yaml": "db77662b674d114c078cf5112b5f66184e8be2ab1816830874b5ed96901cf4ec",
     "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
-    "references/intake.md": "d472db4b98200cf567a36367ec2da4ed1e6a48b8de4a995d5a63e9085b1e1744",
-    "references/multi-agent.md": "bd639bc64d4d1c68efe6d39a8d0e85769cd3052a722609d9474e72df4be012c4",
+    "references/intake.md": "e9dc64ca378cc1211510db6c218ad64a7e3c80755dc54c99b4f390c055095dc4",
+    "references/multi-agent.md": "a267be82c6bbfeecfc36f3ce79e088e499d721598df32cfdc93949ba3142b096",
     "references/research-lenses.md": "5088bfa0e55abc87a6d9f399a1626d65569d19074b14977f48109440c37d1660",
     "references/skill-routing.md": "6a0d8070c5c247092a8f2f7c281d297fc924ceed078eac510dae1f4e9c353088",
-    "references/thinking-dialogue.md": "70a28e3345e95ba1393e4deb159a0fb8384c7329fe8ec2978e18551effd74e43",
+    "references/thinking-dialogue.md": "bd5595a02d5a08570d6c1b26b3477dec8ed0b969589327c542774c4088dfca78",
     "references/workflow.md": "c752325d92878b95e4f841763f929791bb3ed13b5e9eb48ad3ceead54d71a2fb"
   }
 }

@@ -36,12 +36,36 @@ def main():
         call(ROOT / 'scripts/start_project.py', ['--dest', copy])
         assert (copy / '.codex/agents/danta_evidence.toml').exists()
         assert not (copy / '.git').exists() and not (copy / '.local').exists()
-        call(ROOT / 'scripts/start_project.py', ['--dest', copy], ok=False)
+        # Idempotent from the distribution and from inside a marked workspace.
+        call(ROOT / 'scripts/start_project.py', ['--dest', copy])
+        call(copy / 'scripts/start_project.py', [])
+        assert not (copy / '.local').exists()
+        call(copy / 'scripts/start_project.py', ['--dest', tmp / 'nested'], ok=False)
+        call(ROOT / 'scripts/start_project.py', ['--dest', ''], ok=False)
+        # Marked workspaces are preserved; arbitrary existing targets are refused.
+        other = tmp / 'occupied';other.mkdir()
+        call(ROOT / 'scripts/start_project.py', ['--dest', other], ok=False)
+        # Unexpected files and symlinks cannot escape the explicit copy boundary.
+        source = tmp / 'distribution'
+        shutil.copytree(ROOT, source, ignore=shutil.ignore_patterns('.git','.local','__pycache__'))
+        (source / '.env').write_text('FAKE_TEST_VALUE=not-a-secret')
+        (source / 'unexpected-notes.txt').write_text('FICTIONAL private note')
+        clean = tmp / 'clean'
+        call(source / 'scripts/start_project.py', ['--dest', clean])
+        assert not (clean / '.env').exists() and not (clean / 'unexpected-notes.txt').exists()
+        linked = source / '00_从这里开始.md';linked.unlink()
+        try:
+            linked.symlink_to(source / 'README.md')
+        except OSError:
+            print('NOT RUN: symlink-source rejection (platform does not permit creating symlinks)')
+        else:
+            call(source / 'scripts/start_project.py', ['--dest', tmp / 'bad-source'], ok=False)
+            assert not (tmp / 'bad-source').exists()
         call(copy / 'scripts/install_skills.py', ['--verify'])
         (copy / 'skills/danta-proposal-guide/SKILL.md').write_text('Tampered')
         call(copy / 'scripts/install_skills.py', ['--dest', tmp / 'blocked'], ok=False)
         assert not (tmp / 'blocked').exists()
-    print('PASS: both installers, no-write dry run, repeat, conflict protection, isolated copy, integrity rejection')
+    print('PASS: installers, staging integrity, conflict protection, bounded/idempotent copy, empty target, source symlink, integrity rejection')
     checked = 0
     for file in ROOT.rglob('*.md'):
         if any(part in file.parts for part in ('.git', '.local', 'vendor', '__pycache__')):
