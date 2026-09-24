@@ -23,16 +23,38 @@ def main():
     if errors:
         print('完整性检查失败；未进行安装。\n' + '\n'.join(errors), file=sys.stderr)
         return 1
-    print('安装源完整性检查通过。固定上游提交：' + data['upstream_commit'])
+    print('安装源完整性检查通过；各模块固定来源见 MANIFEST.json。')
     if args.verify:
         return 0
     selected = args.only or list(data['skills'])
     unknown = set(selected) - set(data['skills'])
     if unknown:
         ap.error('Unknown skills: ' + ', '.join(sorted(unknown)))
+    # Resolve sibling skill dependencies before changing the destination.
+    ordered, visiting = [], set()
+    def add(name):
+        if name in ordered:
+            return
+        if name in visiting:
+            raise ValueError('Cyclic skill dependency: ' + name)
+        if name not in data['skills']:
+            raise ValueError('Missing bundled dependency: ' + name)
+        visiting.add(name)
+        for dependency in data['skills'][name].get('dependencies', []):
+            add(dependency)
+        visiting.remove(name)
+        ordered.append(name)
+    for name in selected:
+        add(name)
+    selected = ordered
     dest = args.dest.expanduser().resolve()
     print('安装目标：' + str(dest))
-    conflicts = []
+    conflicts = [name for name in selected
+                 if ((dest / name).exists() or (dest / name).is_symlink())
+                 and not same_install(dest / name, data['skills'][name])]
+    if conflicts:
+        print('冲突，保留现有；本次未安装任何技能：' + ', '.join(conflicts))
+        return 2
     for name in selected:
         info = data['skills'][name]
         target = dest / name

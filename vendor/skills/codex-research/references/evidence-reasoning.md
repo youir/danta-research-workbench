@@ -1,0 +1,300 @@
+# Evidence and Reasoning
+
+## Core contract
+
+Let Codex reason adaptively. Constrain the observable justification of consequential claims.
+
+Do not ask Codex to reveal a private chain of thought or to follow a fixed sequence of mental steps. Require a concise, auditable account of:
+
+- what evidence was observed;
+- why it bears on the claim;
+- what assumptions connect evidence to claim;
+- how far the inference extends;
+- where the claim may fail;
+- what contradictory or alternative evidence remains.
+
+## Consequential claims
+
+Use the claim contract to identify the information needed when a statement:
+
+- changes the research direction or another consequential decision;
+- reports a decision-relevant quantitative value;
+- synthesizes multiple studies;
+- asserts a mechanism or causal relation;
+- compares effectiveness, performance, safety, risk, or superiority;
+- asserts universality, absence, consensus, or sufficient evidence;
+- extrapolates beyond studied conditions;
+- claims a research gap;
+- proposes a research hypothesis or recommendation;
+- resolves or suppresses a material conflict.
+
+Ordinary definitions, bibliographic facts, and low-stakes background can remain lighter, with appropriate sources.
+
+Scale the record to the judgment it supports. The contract is a set of questions to answer where material, not a required schema for every sentence. A brief source report may need only attribution, the relevant result, and its conditions; a disputed comparison or proposed research direction needs the assumptions and alternatives that could change it. Shared source details can be recorded once.
+
+## Preserve evidence boundaries
+
+Use one access-state vocabulary to describe the material actually obtained, not a scientific-quality ranking or mandatory acquisition sequence:
+
+- `SEARCH_HIT`: discovery lead or snippet only;
+- `METADATA_ONLY`: paper identity and bibliographic facts were obtained;
+- `ABSTRACT_READ`: an explicit abstract was opened and read;
+- `FULLTEXT_FILE_AVAILABLE`: an accessible asset passed the paper-identity gate;
+- `FULLTEXT_TEXT_READ`: verified article body text was parsed or read;
+- `FULLTEXT_LOCATED`: a claim-relevant passage, table, figure, equation, or section was located in the verified full text.
+
+A discovered or downloaded PDF, HTML page, XML file, repository copy, or supplement remains a candidate asset until the available title, authors, stable identifier, document type, and publication-version relationship establish a reliable match to the target paper. A missing DOI is not a failed identity check when title, authors, year, and provenance establish the match; record missing or conflicting metadata. Until identity is established, retain the paper's existing access state and record the asset separately; do not promote it to any `FULLTEXT_*` state.
+
+Attach access scope and locators to the evidence used for each claim. A paper-level state is only a summary: `FULLTEXT_TEXT_READ` may cover selected sections, and `FULLTEXT_LOCATED` means a particular claim has a located passage, not that the whole paper or its supplements were read or verified. A verified excerpt can support what it contains but cannot establish that a parameter is absent from unread sections. Track the main article, supplements, and different versions separately when their access differs. In supplied synthetic or excerpt-only tasks, describe the supplied record and locator without inventing real full-text access.
+
+Apply the same idea to data and code: when a conclusion depends on a dataset or implementation, record its source relationship, version, and what was actually read or run. Obtaining or reading code is not evidence that the reported result reproduces.
+
+Record `HUMAN_VERIFIED` as an orthogonal verification flag when the user or researcher explicitly checks a relevant source detail. It does not replace or automatically upgrade the access state.
+
+Full-text access does not imply validation of methods, figures, statistics, retraction status, or scientific truth.
+
+## Publication status
+
+Before relying on a paper for a consequential conclusion, inspect its current publisher or responsible repository record and any linked correction, retraction, withdrawal, or expression-of-concern notice. Record the status, source link, check date, and effect on the specific claim separately from the access state. For a preprint or other non-journal work, use the responsible repository's version and withdrawal information rather than requiring a nonexistent publisher page. Before formal delivery, resolve missing checks when feasible and refresh them when a new notice or elapsed research interval could change the judgment; do not repeat an unchanged check within a short session. For tasks explicitly restricted to supplied materials or no external retrieval, use available status records and mark current external status unchecked; do not violate the task boundary to obtain it.
+
+Use corrected findings where a correction affects the claim. Do not use a retracted or withdrawn finding as affirmative support; retain it only when needed to explain the research history or the notice itself. An expression of concern requires stating the affected uncertainty and seeking independent support. If status cannot be checked, record it as unknown rather than assuming the paper is unaffected.
+
+## Fact checking
+
+For a consequential factual claim, separate the checkable components before verifying it: object, relation, value, unit, condition, date, and version or status. Verify each material component against the source responsible for that fact when available, such as the article body for a reported result, the publisher for publication status, a standards body for a standard, or an official registry for a current identifier or regulatory state.
+
+Trace numerical or methodological claims found in reviews or secondary summaries back to the original study when they affect the conclusion. Compare the original wording, table, figure, or record with the proposed claim; do not treat agreement between derivative sources as independent confirmation.
+
+For time-dependent facts, record the effective or checked date. When sources disagree, determine whether the cause is a correction, version change, different definition, population, condition, denominator, unit, or transcription error. Preserve the conflict when it cannot be resolved. If a material component cannot be checked, narrow the claim or mark it unresolved rather than filling the gap from plausibility.
+
+Treat disagreement within one paper—such as between the abstract, main text, table, figure, caption, or supplement—as an unresolved source conflict until the object, condition, time point, statistic, normalization, unit, rounding, and publication version are reconciled. Record each conflicting value with its locator. Values estimated from a plot must be labeled as estimates. Check the rendered source when extraction or OCR could explain the discrepancy; distinguish an extraction error from an error in the paper. Do not silently choose, average, or correct conflicting values, or hide the conflict in a rounded value or range; if the discrepancy remains material, report it and avoid relying on the precise value for a consequential claim.
+
+### Experimental transfer
+
+When turning a paper into an experimental plan, distinguish what the source reports, consequential missing parameters, calculations or scale conversions derived from reported values, proposed adjustments, and diagnostic hypotheses. For important source-reported conditions and results, provide the paper title, a stable clickable identifier, and the experimental section, page, figure, or table locator when available. If an identifier, locator, or parameter is unavailable, say so directly; never invent one. Say a parameter is not reported only after checking the relevant methods and available supplements; otherwise say it was not found in the material accessed.
+
+Do not present a scale transfer, acceptance threshold, troubleshooting step, or suspected failure cause as a source finding. State the observation that motivates it, the assumption it depends on, and what result would support or reject it. Where several failure causes remain plausible, preserve them as alternatives rather than selecting one without discriminating evidence.
+
+## Claim types
+
+### Source report
+
+Faithfully describes what one source reports without strengthening its scope or causal language.
+
+Preferred language:
+
+> The study reports...
+> The abstract states...
+> Under the tested conditions...
+
+### Synthesis
+
+Combines comparable evidence to identify a pattern. State the scope, evidence types, comparability, independence, and important heterogeneity.
+
+### Interpretation
+
+Explains why a pattern may occur. Separate compatibility with a mechanism from evidence that discriminates that mechanism from alternatives.
+
+### Extrapolation
+
+Transfers evidence to a different population, material, scale, setting, operating condition, metric, or time. Name the changed dimension and the assumption required.
+
+### Hypothesis
+
+A plausible, testable proposition not adequately established by current evidence. State what would support, distinguish, or falsify it.
+
+Never present an interpretation, extrapolation, or hypothesis as a direct finding.
+
+## Minimal evidence and claim contracts
+
+An important evidence record should preserve, when available:
+
+```text
+Evidence ID
+Paper ID or stable identifier
+Publication version and underlying study relationship
+Evidence access level
+Verbatim excerpt or faithful data observation
+Locator: section, page, paragraph, table, figure, equation, or data row
+Target object, population, system, or material
+Conditions, comparator, measurement, and time boundary
+Result, direction, and units when relevant
+Relation: SUPPORTS | CONTRADICTS | LIMITS | CONTEXT
+Source URL and access date
+Paper identity status
+```
+
+For each consequential claim, maintain enough information to answer:
+
+```text
+Claim ID and claim text
+Type: report | synthesis | interpretation | extrapolation | hypothesis
+Scope and boundary conditions
+Supporting Evidence IDs and precise locator when available
+Contradicting, limiting, or contextual Evidence IDs
+Warrant: why the evidence supports the claim
+Assumptions and inference distance
+Evidence independence
+Uncertainty and confidence rationale
+What evidence would change the judgment
+```
+
+This may remain in working state and be summarized naturally for the user. Expand it when the user requests an audit or when the claim carries high research consequence.
+
+Identifiers, separate evidence/claim records, and inference-distance labels are optional organization aids. Reuse them for a long or complex synthesis; do not create empty fields, duplicate shared source details, or print an entire ledger for a short answer.
+
+## Warrant and inference distance
+
+The warrant is the bridge between evidence and claim. If it cannot be stated clearly, weaken or withhold the claim.
+
+Use qualitative inference distance:
+
+- `NONE`: faithful source report;
+- `SHORT`: direct comparison or tightly scoped synthesis;
+- `MODERATE`: interpretation requiring explicit assumptions;
+- `LONG`: extrapolation, causal attribution from indirect evidence, or a new hypothesis.
+
+A long inference is not automatically invalid. It carries a higher burden to expose assumptions and alternatives.
+
+Use that room for synthesis: compare explanatory power, derive implications from stated premises, propose testable hypotheses, and make conditional recommendations where the task calls for them. An original hypothesis need not already have direct empirical confirmation; its premises must be grounded and its predicted observations distinguished from findings. Missing evidence for one inference need not prevent a supported conclusion elsewhere, and uncertainty does not make all alternatives equally plausible.
+
+## Match evidence to the research question
+
+Adapt appraisal to the claim rather than applying one cross-disciplinary hierarchy.
+
+Examples:
+
+- theoretical claims require valid assumptions, definitions, and derivation or proof;
+- experimental performance claims require suitable controls, measurements, uncertainty, and operating conditions;
+- simulation claims require model assumptions, calibration, verification, validation, and sensitivity where relevant;
+- algorithmic comparisons require comparable datasets, baselines, metrics, leakage controls, and reproducibility details;
+- observational claims require attention to selection, confounding, measurement, and temporal order;
+- prototype and systems claims require realistic workloads, interfaces, failure modes, and transfer to deployment conditions;
+- qualitative or case-based claims require transparent sampling, interpretation, context, and rival accounts.
+
+Use domain-specific appraisal standards when available, but do not pretend to have completed a formal checklist unless it was actually applied.
+
+## Independence and corroboration
+
+Use the dependency chain `Publication → Study → Dataset/Sample/Implementation → Evidence`. Count support by underlying studies, datasets, samples, implementations, experiments, or independent causal pathways, not by publication count.
+
+Check when feasible:
+
+- shared datasets, samples, cohorts, specimens, or code;
+- preprint, conference, journal, correction, and repository versions;
+- overlapping authors, laboratories, institutions, or funders;
+- repeated use of the same model, benchmark, measurement method, or source data;
+- reviews that echo the same primary evidence;
+- citations that ultimately trace to one original result.
+
+Shared authors, institutions, methods, or benchmarks are clues to examine, not proof that observations are duplicated. Distinguish shared underlying data from independent measurements exposed to similar methodological biases. If independence remains unknown, record it as unknown (`INDEPENDENCE_UNKNOWN` in structured notes). Explain it to the user when it affects the conclusion. Multiple publications with unknown dependence do not establish independent replication.
+
+## Evidence quality dimensions
+
+Assess only the dimensions relevant to the claim. Common dimensions include:
+
+- identity and provenance;
+- directness to the research question;
+- methodological adequacy;
+- completeness of accessible reporting;
+- independence;
+- consistency and heterogeneity;
+- precision and measurement uncertainty;
+- applicability and transferability;
+- risk of bias or selective reporting;
+- model and mechanism dependence;
+- vulnerability to plausible alternatives.
+
+Do not collapse these into an unsupported universal score. Confidence labels require reasons.
+
+## Conflict handling
+
+Before aggregating disagreement, classify it:
+
+- direction;
+- magnitude;
+- scope or boundary conditions;
+- population, system, material, or setting;
+- measurement or outcome definition;
+- design or comparator;
+- model, analysis, or adjustment;
+- publication version or reporting layer.
+
+Then decide whether the evidence should be combined, stratified, explained as heterogeneity, retained as competing conclusions, or left unresolved.
+
+Do not use majority vote. Do not remove a material contradiction to make prose smoother. After ruling out a vote count, a qualitative weighting across directly comparable evidence is allowed when justified by directness, method quality, independence, and comparability; state the reason, and do not invent numerical weights or statistical pooling.
+
+## Causal and mechanism claims
+
+Association, prediction, temporal change, simulation fit, author speculation, and mechanistic plausibility do not by themselves establish causation.
+
+For a causal claim, identify as applicable:
+
+- intervention or exposure;
+- comparator or counterfactual;
+- target system or population;
+- temporal order and horizon;
+- outcome;
+- design and identifying assumptions;
+- confounding, selection, measurement, and alternative paths.
+
+Match wording to the actual design. Prefer “associated with,” “consistent with,” or “the authors propose” when causal support is incomplete.
+
+For mechanism claims, ask what observations discriminate the proposed mechanism from alternatives. A mechanism compatible with results remains an interpretation until discriminating evidence exists.
+
+## Uncertainty
+
+Treat uncertainty as part of the conclusion. Identify material sources such as:
+
+- bias or design limitations;
+- imprecision or measurement uncertainty;
+- inconsistency;
+- indirectness;
+- selective reporting and publication bias;
+- missing full text or inaccessible details;
+- model dependence;
+- unknown evidence independence;
+- extrapolation.
+
+Avoid invented numerical probabilities. Use calibrated qualitative language tied to explicit reasons.
+
+## Research gaps
+
+A search gap, reporting gap, methodological weakness, inconsistent result, and genuinely unstudied question are different.
+
+A defensible research-gap claim should state:
+
+- what was searched and accessed;
+- what evidence exists nearby;
+- what exact relation, condition, comparison, or validation remains unresolved;
+- whether the gap reflects absence, insufficient quality, conflicting evidence, or inaccessible information;
+- what study could reduce it.
+
+## Publication audit
+
+For claims that determine the research direction, recommendation, key quantitative comparison, mechanism, or research-gap judgment, verify the wording against the actual source evidence at its recorded access level. Use the relevant passage, table, figure, equation, or available excerpt rather than relying only on a prior summary or state entry. For synthesis or inference, check the supporting observations and warrant without treating the inferred claim as a source finding. Reuse checks already completed for unchanged claims and sources; revisit those not yet verified or affected by new wording, evidence, or publication status. If verification remains unavailable, narrow or withhold the affected claim and retain the specific limitation.
+
+Before presenting a formal synthesis, verify:
+
+- every consequential scientific claim has a traceable source or is labeled as inference;
+- citations support the adjacent claim, including numbers, direction, objects, and conditions;
+- metadata, abstract, and full-text evidence are not mixed;
+- causal language matches the design;
+- versions and shared evidence are not double-counted;
+- contradictions and unresolved gaps remain visible;
+- venue prestige and citation count did not substitute for appraisal;
+- source or access failures were not written as evidence of absence;
+- the organization and wording did not strengthen the epistemic status established during analysis.
+
+A clear unresolved answer is preferable to a fluent overclaim.
+
+## Method inspirations
+
+These principles draw on, without mechanically reproducing:
+
+- OpenAI reasoning prompting guidance: https://developers.openai.com/api/docs/guides/reasoning-best-practices
+- Toulmin argument structure: https://owl.purdue.edu/owl/general_writing/academic_writing/historical_perspectives_on_argumentation/toulmin_argument.html
+- Cochrane/GRADE evidence certainty: https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-14
+- Cochrane interpretation and conclusions: https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-15
+- National Academies causal inference overview: https://www.ncbi.nlm.nih.gov/books/NBK588337/
+- National Academies reproducibility and replicability: https://www.nationalacademies.org/read/25303/chapter/3

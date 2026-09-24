@@ -1,0 +1,2 @@
+# Preserve pinned third-party bytes across platforms for SHA256 verification.
+vendor/** -text whitespace=cr-at-eol

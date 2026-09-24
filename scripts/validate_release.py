@@ -21,7 +21,7 @@ def main():
     secondary = ROOT / 'variants/mentor-agent/install_agent.py'
     with tempfile.TemporaryDirectory(prefix='danta-release-') as tmp:
         tmp = Path(tmp)
-        for script, name, count in [(primary, 'danta-proposal-guide', 8), (secondary, 'danta-research-mentor', 1)]:
+        for script, name, count in [(primary, 'danta-proposal-guide', len(json.loads((ROOT / 'MANIFEST.json').read_text())['skills'])), (secondary, 'danta-research-mentor', 1)]:
             dest = tmp / name
             call(script, ['--dest', dest, '--dry-run'])
             assert not dest.exists()
@@ -32,6 +32,18 @@ def main():
             changed.write_text('Existing custom skill', encoding='utf-8')
             call(script, ['--dest', dest], ok=False)
             assert changed.read_text() == 'Existing custom skill'
+        # Selecting the reader installs the shared package; dependency conflict is atomic.
+        reader_dest = tmp / 'reader-only'
+        call(primary, ['--dest', reader_dest, '--only', 'nature-reader'])
+        assert {p.name for p in reader_dest.iterdir()} == {'nature-reader', 'nature-shared'}
+        assert (reader_dest / 'nature-shared/core/terminology-ledger.md').is_file()
+        call(primary, ['--dest', reader_dest, '--only', 'nature-reader'])
+        conflict_dest = tmp / 'dependency-conflict'
+        shared = conflict_dest / 'nature-shared'; shared.mkdir(parents=True)
+        (shared / 'SKILL.md').write_text('Existing customized support package')
+        call(primary, ['--dest', conflict_dest, '--only', 'nature-reader'], ok=False)
+        assert not (conflict_dest / 'nature-reader').exists()
+        assert (shared / 'SKILL.md').read_text() == 'Existing customized support package'
         copy = tmp / 'work'
         call(ROOT / 'scripts/start_project.py', ['--dest', copy])
         assert (copy / '.codex/agents/danta_evidence.toml').exists()

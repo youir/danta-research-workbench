@@ -12,7 +12,7 @@
         "references/intake.md": "46078d7d03c5abe85cbb10adfcf837edd4038af40764c313d38882f473ec3940",
         "references/multi-agent.md": "a267be82c6bbfeecfc36f3ce79e088e499d721598df32cfdc93949ba3142b096",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
-        "references/skill-routing.md": "ada73ff4f45150605f51fa012e59106af59686ebad981fb0247e8942868a2903",
+        "references/skill-routing.md": "98ea18bb983ad5d6cd6f083085aa7b3af0280d2d6cfc408741f774e01cbd26eb",
         "references/thinking-dialogue.md": "06e83f80b02ec3ef6a2004b06e7d52ee87cb8365e6db35000a7d3746e9f4d570"
       }
     },
@@ -30,7 +30,9 @@
         "scripts/evaluate_matrix.py": "9056a5356c72d638277cc24f8e02f043c6bdb35d2b50e13fca3ac6ef860a1014",
         "scripts/session_scaffold.py": "0af7b297a8f92f1c7456b7e14c717a017315b4a71b603ca5402434dee98db5ba",
         "scripts/validate_register.py": "9a28c5abc16c48babdf6e5f3ded1672eb272d2569283c53a3e1f09beed43197a"
-      }
+      },
+      "upstream_repo": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "upstream_commit": "49c6e97775eaa18ba791bebe23162a70ae601c18"
     },
     "literature-review": {
       "source": "vendor/skills/literature-review",
@@ -48,7 +50,9 @@
         "scripts/generate_schematic_ai.py": "af055204033d446cd8e4501de0a0d0aaa952bad7c365e559f2e3a80698704ce9",
         "scripts/search_databases.py": "4b572895633b765a0f0214ec455149dd6282c657f5659793213687003f3fa630",
         "scripts/verify_citations.py": "ab492d2670865cd3a632024121c7449bb7138dc1ca565fbd0c0e697635104d55"
-      }
+      },
+      "upstream_repo": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "upstream_commit": "49c6e97775eaa18ba791bebe23162a70ae601c18"
     },
     "scientific-critical-thinking": {
       "source": "vendor/skills/scientific-critical-thinking",
@@ -62,7 +66,9 @@
         "references/logical_fallacies.md": "7911abe82bc05c8f513591e9b00572f21e5a631783cc00cd9dbf644b5eae28ce",
         "references/scientific_method.md": "09e709bdc7919a2b21825175aff5e0f9c26117a02ec654bfdb347fc8fa7ad0b7",
         "references/statistical_pitfalls.md": "c525ed590c36eef9dfca95c9c8bc2ab3e228e9247aa476a2c2ddcf07ffc62172"
-      }
+      },
+      "upstream_repo": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "upstream_commit": "49c6e97775eaa18ba791bebe23162a70ae601c18"
     },
     "hypothesis-generation": {
       "source": "vendor/skills/hypothesis-generation",
@@ -95,7 +101,9 @@
         "scripts/lint_causal_claims.py": "561186e71f7c0b573f7ba45ef0009460c1398048929ed55fad53a65cda56dafe",
         "scripts/validate_hypothesis_schema.py": "63bc1b7752d20042c2845ecb2457448ec8e2d9bc8fe1337003b222f8f4620608",
         "scripts/validate_prediction_matrix.py": "3888802496f4e6ece5955b4fe28d6b2e6d810c5107ce6ca45ebbd70acceed317"
-      }
+      },
+      "upstream_repo": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "upstream_commit": "49c6e97775eaa18ba791bebe23162a70ae601c18"
     },
     "statistical-analysis": {
       "source": "vendor/skills/statistical-analysis",
@@ -108,7 +116,9 @@
         "references/reporting_standards.md": "6854623fb5e8080e7d02b6c713ee44cb4a4cf03757d97840764118af54137a88",
         "references/test_selection_guide.md": "64f5d93f87d83431b767a24d6b32c0ed82f2cbd32b1bd07476b49b5ac6a858a5",
         "scripts/assumption_checks.py": "3fabf359ab0128bbfc498dadb53a4782431cde473c0a6681ea7298a605757018"
-      }
+      },
+      "upstream_repo": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "upstream_commit": "49c6e97775eaa18ba791bebe23162a70ae601c18"
     },
     "research-grants": {
       "source": "vendor/skills/research-grants",
@@ -130,7 +140,9 @@
         "references/review_criteria.md": "dd09ecf8f7500d3b928c991a40bfe7192d6cf9b33a1ca86e40d89690c01fc3ba",
         "references/specific_aims_guide.md": "aa378c771eaa3272144ef3e8f9822f1c1c557a4d8571202256602703db64b4d3",
         "references/writing_principles.md": "86a8ffbd97f99fd82f9f6baa83395ffffc666043273a0bf35e0f87d3e2a408c3"
-      }
+      },
+      "upstream_repo": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "upstream_commit": "49c6e97775eaa18ba791bebe23162a70ae601c18"
     },
     "peer-review": {
       "source": "vendor/skills/peer-review",
@@ -160,6 +172,84 @@
         "scripts/select_reporting_guidelines.py": "9ccbbdeca6df01f2f4e1c86b98db0e9ab0a43685c6726e1abfdb9bbaa2b92ae3",
         "scripts/validate_claim_evidence.py": "93490b289f288ed686a8eb300bf40693e7caf148b5022b180077f0db22acbe2b",
         "scripts/validate_review_intake.py": "bbea9af9a86c937956818c1e6b84be0754a9851a5c5e27f6073f2cadd8367b2a"
+      },
+      "upstream_repo": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "upstream_commit": "49c6e97775eaa18ba791bebe23162a70ae601c18"
+    },
+    "codex-research": {
+      "source": "vendor/skills/codex-research",
+      "upstream_repo": "https://github.com/LIU-31415/codex-research",
+      "upstream_commit": "a943bf3678bd92904f3520322a66ae1faca65b1a",
+      "dependencies": [],
+      "files": {
+        "LICENSE": "e2136d69e69a249d483658efa852c0b479bd193f87e77f700fa4bc49ffef5c00",
+        "SKILL.md": "df6f6243f4d11c86ac40ffe09c5d85b4cbe4b23deba0b26d20a6a4f7dcd79fa9",
+        "VERSION": "1725bfa6524c5265e7c171cf06568417d39b947fff49c242f03859479c82334b",
+        "references/evidence-reasoning.md": "c6de880dd298f75cc37e9b4d9ccde1f94fc693945389ddb693e5bab2094602ef",
+        "references/interactive-workflow.md": "0c50ef766b20770ddb09d168ef002d3e8a9a39bd402b2d30677b2689a9945f79",
+        "references/research-state-and-delivery.md": "155caf8388d1c215178ee39baeb2256067d70a8900e251fbb32f28e4768986db",
+        "references/search-strategy.md": "da1f72c9f54e6fc052f7a4ebc98e775bb74e09fa3352840b045703fd4e020676",
+        "references/source-safety.md": "d8765a6f0e9a9146e6ef085ff5ff23e73c7eaf8450f917caac7d43dedbd4bbc5"
+      }
+    },
+    "nature-reader": {
+      "source": "vendor/skills/nature-reader",
+      "upstream_repo": "https://github.com/Yuan1z0825/nature-skills",
+      "upstream_commit": "9c9953a06cd33a88cbd258386a295ca4b6a1ef1e",
+      "dependencies": [
+        "nature-shared"
+      ],
+      "files": {
+        "README.md": "2e0d2cb22a51c3ba6fe92d0da80dbf89d756c85448cadd9d3215b3e20f36750b",
+        "README_EN.md": "5f34fa9cfd7b3f45647b4451349a42ef4537b89a0fa9c37d487dbfec0dc10d9a",
+        "SKILL.md": "999a5c1b116558133d0389ce6c1bbc3dc9cf5242d1be2870358789769d97a84e",
+        "UPSTREAM_LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "agents/openai.yaml": "3f51bc49dea2775124ca3db18fa9d0128862b7e4b019003e07b0d55517ac7225",
+        "manifest.yaml": "f287b0f61dd096467ee4f670fc9c752b972b9b5d56a5c21397d816c200256051",
+        "references/article-anatomy.md": "f3899789c574577e37c27478673d98e21f8329f37f2e5162ac9e09a0d10a6f14",
+        "references/equation-handling.md": "57cdad3fdb5a1820636edd09b7e4aae3fc0ac8898709da8ed201299a958efa6a",
+        "references/figure-extraction.md": "eba50785ea176c63ba16d2ddfe614c91525b984c5097ce42b6e49a1beef8ebdc",
+        "references/grounding-rules.md": "3e05b8f9c1a76042c993b55474ea1b19757d6aada5fb58722cbed2108119055f",
+        "references/output-spec.md": "81d590eef5d65fc84aeff9be7e7034b5ff92588d2504fbc08d7543547133aaa0",
+        "scripts/validate_reader_math.py": "252c6d0998801d24a459e40e48a4125c4a07b8ee639bb28fab8e0f3c5a2b66f1",
+        "static/core/output-contract.md": "05d1ffda81d01c3241a7ff6ff3574243c3c967da942f3cd0f0fa12c32891be26",
+        "static/core/principles.md": "b4c0f9ee57b8d83ecee683e4b37637a331562b0b18cf77f249bf8c8975e1bd97",
+        "static/core/workflow.md": "8920654b3e23b6e8a6a729292ec92aab8340ef009421c6073656e4aaf21bb411",
+        "static/fragments/source/doi-arxiv.md": "c8b8d006f04f34b703021d9b76b3e62d17212b839fbe37a11a8e34baf86854d9",
+        "static/fragments/source/html.md": "136a004201a8ad77e7af5ac8233d8a90cd39f33d7349fe215b4a7946e26b995e",
+        "static/fragments/source/pasted-text.md": "bee3ad0473e686b2bc76fe8c532dc967795019f067fefcd84cf7eed82475bb2f",
+        "static/fragments/source/pdf-text.md": "2f61a2253524683fbe899859c944dc86b20be7f1cf95712d1299a769265caef7",
+        "static/fragments/source/scanned-pdf.md": "e0e7a8343c13952befcc674047dff3488eb2e9640c5740299e6b4a4d0a764d47"
+      }
+    },
+    "nature-shared": {
+      "source": "vendor/skills/nature-shared",
+      "upstream_repo": "https://github.com/Yuan1z0825/nature-skills",
+      "upstream_commit": "9c9953a06cd33a88cbd258386a295ca4b6a1ef1e",
+      "dependencies": [],
+      "files": {
+        "README.md": "2e42d487b9aa4985933dfb230ac57c88e8dfeba97644bb30d2c222de9a65e61e",
+        "README_EN.md": "1d2fd257264aa512f52dfc131d9adfd67c7dcf2b6f1e3c059c693360b027b245",
+        "SKILL.md": "3d914e73f023cab4f247d82f906a948307de8a867fd6c33df999badf67c5d5f2",
+        "UPSTREAM_LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "agents/openai.yaml": "4bbf2e58b350269cf231f73ca12af1d097b9d64637023b037e238083151fbd67",
+        "core/consistency-sweep.md": "35a540c10a2c14415b7181588f612e16943cbc4e49f1428010d67c480051f0f9",
+        "core/discussion-argument-language.md": "a3b0ddcadc47efc029e923ae8133ba0bd99e6a6eb27fdbc791d0e1096d98c169",
+        "core/ethics.md": "065db5761d72c295eb1ed5c231deb0b0bcbb0f1065d530f994c044398bd75056",
+        "core/main-text-discipline.md": "d43190c4d617096c1088bb5452cec5b0ae13f5d4947c2b21c28315181f051b8e",
+        "core/nature-abstract.md": "92c0f1e78df5a9b4dc7ad276ed625e371d211124a47a9eed0a4de82c9c1526cb",
+        "core/nature-introduction.md": "813fb8acb9b5c76e9c8f1d8c1616fefa82a1ec949d4aba98935b0485fb4cd4f7",
+        "core/nature-results-discussion.md": "16f1ce1ed6d2aad7853eabf304cdbd661530931747bce4cf3f10b3dfb655adc1",
+        "core/paper-type-taxonomy.md": "84878907fd0416f628c8e3969e583569b9930f0129e6553167112435d93a3ad1",
+        "core/reader-workflow.md": "acf54e59da3cd29d9179748895c7b5ed0da2d948704e97bee83771698ecbe10d",
+        "core/research-compliance.md": "0ac172d2af0c2089acd7280712a89b23a5f232d4e436e9ae78dd501ff30cd855",
+        "core/terminology-ledger.md": "c8ff387fc55439dbec9835d624fb1c1e544cca06ae8d007f8e4f726f68080784",
+        "journal-formats/nat-comms.md": "5a9eef685502e35d2289478d0b3815d5dbfbb6b2ed7d758accedfc7fd930e975",
+        "journal-formats/nature-machine-intelligence.md": "d62a418fbd67841e745f553b98a267b5a01c9445457a07a0121095ce76fad0af",
+        "journal-formats/nature.md": "2c4d007f69b64a2e083f9511748c3726b349a4dce4bfccbdac3bf97d1c1afc10",
+        "manifest.yaml": "c3c4d2f5fcee7889505a3e10c3d5d5d973dd249dfb424581acc4cce52fc89054",
+        "scripts/check_consistency.py": "670ccc43aad4639fe3525d8dce7443d85f462f99958b560a539cc5b6b0b072a6",
+        "tests/test_check_consistency.py": "c70abcc137513cf947e44e0c35f99dd4438fbe4477faf89a6aa671ffa8fac1de"
       }
     }
   },

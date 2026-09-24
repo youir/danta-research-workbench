@@ -42,6 +42,19 @@ research-grants 中的特定资助机构模板仅作论证参考，学校要求�
 
 更新时应先查看新版本及依赖变化，再在独立目录试用，记录新提交。不要直接覆盖已用于研究的旧版本；研究记录需要保留可追溯性。
 
-## 后续可选扩展（暂不接入）
+## v1.4 新增的固定来源
 
-社区另有两类开题后阶段的技能，属实验执行与论文产出范畴，超出本工作台"开题"边界，暂不引入：`build-research-evidence`（方法设计→代码实现→实验执行→结果诊断→投稿证据审查的多技能协作流程）与 `nature-academic-search`、`nature-writing` 等论文阶段技能。若未来评估，须先核验其仓库、许可与 references 内容，再按本文档的固定提交方式引入；评估记录写入本文件。
+|模块|仓库与固定提交|许可与打包范围|
+|---|---|---|
+|codex-research|[LIU-31415/codex-research](https://github.com/LIU-31415/codex-research/tree/a943bf3678bd92904f3520322a66ae1faca65b1a)|MIT；仅SKILL.md、references、LICENSE和VERSION（0.2.4）|
+|nature-reader、nature-shared|[Yuan1z0825/nature-skills](https://github.com/Yuan1z0825/nature-skills/tree/9c9953a06cd33a88cbd258386a295ca4b6a1ef1e)|Apache-2.0；运行子目录（排除带上游本机路径的evals），另附UPSTREAM_LICENSE；保留的原文件未修改|
+
+各模块来源与提交另记在 MANIFEST.json 的对应条目；顶层 upstream 字段保留旧版 K-Dense 信息供兼容使用，并不代表所有第三方模块都来自该仓库。
+
+`codex-research` 的学术检索连接器可选且未打包；`nature-reader` 的完整读本可能需要PDF提取、OCR或图像处理工具，均非安装技能时自动就绪。`nature-shared` 内对其他未附带 Nature 技能的说明仅是上游参考，不代表已安装。主引导按范围选择模块，不将期刊名当作质量认证。
+
+上游 nature-reader 的 SKILL.md 标记2.1.1、manifest.yaml标记2.1.0；保留原文，以固定提交和文件摘要标识本版。首轮测试仅覆盖摘要/图注转述问答，详见 [报告](tests/reports/v1.4-skills-review.md)。
+
+## 后续可选扩展（未打包）
+
+`nature-academic-search`、`nature-writing`、`researchwrite` 与实验执行模块仍未接入。若需要，应分别审查许可、依赖与实际行为，固定版本后引入；不会因本次安装自动可用。
