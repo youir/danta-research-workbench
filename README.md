@@ -24,17 +24,9 @@
 
 只有适合独立完成的问题才拆分；最多三个专家同时运行。专家默认只读，主引导统一写研究记录。多人一致不构成新增证据。
 
-```mermaid
-flowchart TD
-    H[研究者与导师：保留决定权] <--> L[主引导：唯一日常对话入口]
-    L --> E[文献 agent]
-    L --> M[方法 agent]
-    L --> C[质疑 agent]
-    E --> L
-    M --> L
-    C --> L
-    L --> W[思路画布、证据与决策记录]
-```
+![蛋挞博士研究工作台完整架构：含科研 OGSM](docs/assets/architecture.png)
+
+[查看原图](docs/assets/architecture.png) · [架构说明与可编辑图源](08_完整体系架构.md)
 
 项目角色配置依据 [OpenAI 官方子 agent 文档](https://learn.chatgpt.com/docs/agent-configuration/subagents)，核对日期 2026-09-24。配置存在不代表客户端已经加载，也不等于真实多 agent 已执行；首次按指南做最小调用验证。
 

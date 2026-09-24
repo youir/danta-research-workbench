@@ -20,6 +20,7 @@
     "MANIFEST.json",
     "README.md",
     "THIRD_PARTY_NOTICES.md",
+    "docs/assets/architecture.png",
     "project-files.json",
     "scripts/check_environment.py",
     "scripts/install_skills.py",
