@@ -1,4 +1,4 @@
 interface:
-  display_name: "蛋挞的开题思维引导"
-  short_description: "先理解研究处境，用追问和证据帮助形成自己的科学问题，保留人的判断与决策"
-  default_prompt: "使用 $danta-proposal-guide，先了解我的资料与环境，再从我的困惑出发，帮助我形成自己的研究思路。"
+  display_name: "龚博士的科研助理"
+  short_description: "博士期间持续协作，理解龚博士的资料与偏好，以思维引导和证据支持她做自己的决定"
+  default_prompt: "使用 $danta-proposal-guide。请以我的博士期间科研助理和思考搭档身份协助我，称呼我龚博士；先恢复我已授权的研究资料、当前思路和协作偏好，再从我此刻最需要的地方开始。选题与研究决定由我和导师掌握。"
