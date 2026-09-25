@@ -21,7 +21,14 @@
     "我的开题/07_决策记录/决策日志.md": "05_课题项目_Projects/00_主课题_Main-Project/05_决策记录_Decisions/01_决策日志_Decision-Log.md",
     "我的开题/08_思考过程/Idea画布.md": "05_课题项目_Projects/00_主课题_Main-Project/01_思考过程_Thinking/01_想法画布_Idea-Canvas.md",
     "我的开题/08_思考过程/思路手记.md": "05_课题项目_Projects/00_主课题_Main-Project/01_思考过程_Thinking/02_思路手记_Thinking-Notes.md",
-    "我的开题/09_协作记录.md": "05_课题项目_Projects/00_主课题_Main-Project/06_协作记录_Collaboration/01_协作记录_Collaboration-Log.md"
+    "我的开题/09_协作记录.md": "05_课题项目_Projects/00_主课题_Main-Project/06_协作记录_Collaboration/01_协作记录_Collaboration-Log.md",
+    "我的开题/10_组会与复盘/00_组会索引.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/00_index.md",
+    "我的开题/10_组会与复盘/01_会前讨论单.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/01_会前讨论_Pre-Meeting.md",
+    "我的开题/10_组会与复盘/02_汇报提纲与口头摘要.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/02_汇报提纲_Presentation-Outline.md",
+    "我的开题/10_组会与复盘/03_文献增量复盘.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/03_文献增量_Literature-Update.md",
+    "我的开题/10_组会与复盘/04_会后纪要与行动.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/04_会后行动_Post-Meeting.md",
+    "我的开题/10_组会与复盘/05_会前核查.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/05_会前核查_Readiness-Check.md",
+    "我的开题/03_文献与证据/文献获取与版本.csv": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/04_文献获取版本_Access-Versions.csv"
   },
   "roles": {
     "current_state": "05_课题项目_Projects/00_主课题_Main-Project/00_当前状态_Current-State.md",
@@ -33,6 +40,8 @@
     "source_intake": "02_原始资料_Sources",
     "environment_reports": "05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context",
     "advisor_profiles": "09_专家顾问_Advisors/01_顾问包_Profiles",
-    "memory_index": "11_长期记忆_Memory/00_index.md"
+    "memory_index": "11_长期记忆_Memory/00_index.md",
+    "lab_meetings": "10_日志复盘_Journal/03_组会_Lab-Meetings",
+    "literature_access": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/04_文献获取版本_Access-Versions.csv"
   }
 }

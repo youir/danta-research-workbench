@@ -4,7 +4,7 @@
 
 ## 最省事：下载可直接打开的知识库ZIP
 
-下载本版 `danta-research-vault-v1.7.1.zip`，解压后在 Obsidian 和 Codex 打开同一个 `00_科研知识库_Research-Vault` 文件夹，再打开 `00_index.md`。此ZIP由已验证的初始化器从空白模板生成，不含真实研究数据；不需要再次执行初始化。
+下载本版 `danta-research-vault-v1.8.0.zip`，解压后在 Obsidian 和 Codex 打开同一个 `00_科研知识库_Research-Vault` 文件夹，再打开 `00_index.md`。此ZIP由已验证的初始化器从空白模板生成，不含真实研究数据；不需要再次执行初始化。
 
 ## 从完整发行包创建独立知识库
 
@@ -41,13 +41,13 @@ python3 scripts/create_research_vault.py
 | 09 | 专家顾问 Advisors | 女娲产物与阶段索引 |
 | 10 | 日志复盘 Journal | 日常、会议与阶段复盘 |
 | 11 | 长期记忆 Memory | 稳定背景、未闭环、会话交接 |
-| 12 | 笔记模板 Templates | 12类可插入笔记模板 |
+| 12 | 笔记模板 Templates | 13类可插入笔记模板 |
 | 13 | 附件资源 Attachments | PDF、图片与补充材料 |
 | 14 | 历史归档 Archive | 替代关系、版本与归档登记 |
 
 ## 已经在旧工作台研究
 
-旧布局继续可用，不强制搬迁。新库中的 Path-Map 对应19个旧文件；迁移按 [归档与维护指南](templates/00_科研知识库_Research-Vault/00_系统_System/04_归档与维护_Archive-Maintenance.md) 逐项复制和核验。不能用空白目录覆盖真实研究，也不应同时维护两套证据、OGSM和状态。选择新库后，它是唯一活动研究位置。
+旧布局继续可用，不强制搬迁。新库中的 Path-Map 对应26个旧文件；迁移按 [归档与维护指南](templates/00_科研知识库_Research-Vault/00_系统_System/04_归档与维护_Archive-Maintenance.md) 逐项复制和核验。不能用空白目录覆盖真实研究，也不应同时维护两套证据、OGSM和状态。选择新库后，它是唯一活动研究位置。
 
 ## 验证
 
@@ -56,3 +56,5 @@ python3 scripts/validate_research_vault.py .local/research-vault
 ```
 
 只读检查索引、元数据、链接、唯一ID及路径映射，不证明材料真实、科研推断正确或使用者的 Obsidian 已配置成功。引用和原文必须实际核查。库内可见的长期记忆是有来源的 Markdown，不是自动向模型注入全部历史。
+
+组会入口在 `10_日志复盘_Journal/03_组会_Lab-Meetings`，首页及核心Templates均已加入；详见 [组会指南](10_组会与持续研究指南.md)。

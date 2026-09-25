@@ -20,6 +20,8 @@ aliases: []
 
 ![完整体系架构 v1.7](00_系统_System/05_体系架构_Architecture.png)
 
+图示为v1.7基础架构；v1.8新增组会目录与第13类笔记模板，下方“准备组会”是当前入口。
+
 ## 从这里继续 / Start here
 
 - [第一次使用与 Obsidian 接入](00_系统_System/01_使用指南_User-Guide.md)
@@ -28,6 +30,8 @@ aliases: []
 - [科研 OGSM / Research plan](05_课题项目_Projects/00_主课题_Main-Project/03_研究方案_Design/02_科研OGSM_Research-OGSM.md)
 - [会话交接 / Handoff](11_长期记忆_Memory/03_会话交接_Session-Handoff.md)
 - [未闭环事项 / Open loops](11_长期记忆_Memory/02_开放问题_Open-Loops.md)
+
+- [准备组会 / Lab Meeting](10_日志复盘_Journal/03_组会_Lab-Meetings/00_index.md)
 
 ## 全库导航 / Library map
 

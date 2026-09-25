@@ -33,6 +33,8 @@ Obsidian 核心 Templates 可直接插入；用源代码模式编辑模板变量
 - [10_成果记录_Output.md](10_成果记录_Output.md)
 - [11_日常记录_Daily.md](11_日常记录_Daily.md)
 
+- [组会讨论 / Lab Meeting](12_组会讨论_Lab-Meeting.md)
+
 ## 本区维护
 
 新增记录后补充入口及一句话用途；没有记录就保持空白，不填虚构科研结果。

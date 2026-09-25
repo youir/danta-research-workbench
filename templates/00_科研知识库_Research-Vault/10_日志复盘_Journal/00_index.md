@@ -24,6 +24,8 @@ aliases: []
 - [01_会议_Meetings](01_会议_Meetings/00_index.md)
 - [02_复盘_Reviews](02_复盘_Reviews/00_index.md)
 
+- [组会讨论 / Lab Meetings](03_组会_Lab-Meetings/00_index.md)
+
 ## 本区维护
 
 新增记录后补充入口及一句话用途；没有记录就保持空白，不填虚构科研结果。

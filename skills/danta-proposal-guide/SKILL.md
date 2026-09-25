@@ -25,6 +25,9 @@ description: 以思维引导帮助生物医学博士从困惑和观察形成自�
 - 发展困惑、解释与问题：读 [thinking-dialogue.md](references/thinking-dialogue.md)。
 - 三个检查节点、方案状态及主张—证据映射：读 [decision-and-evidence.md](references/decision-and-evidence.md)，这里是这些规则的唯一详细定义。
 - 比较候选方向、制定研究计划或复盘：读 [ogsm.md](references/ogsm.md)，按阶段使用轻量比较或完整 OGSM，不把填表作为启动条件。
+- 准备组会、汇报或整理会后反馈：读 [lab-meeting.md](references/lab-meeting.md)，先明确要讨论的判断，再准备依据和会后行动。
+- 复盘新增文献或更新阅读总表：读 [literature-update.md](references/literature-update.md)，增量更新原记录，不按篇数凑成果。
+- 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
 - 用户要蒸馏专家、建立/更新人物顾问或主题框架：先读 [expert-distillation.md](references/expert-distillation.md)，再按原始 huashu-nuwa 流程执行。
 - 需要专业工具：读 [skill-routing.md](references/skill-routing.md)，再读实际可用技能。缺失能力如实报告，能做的部分继续。
