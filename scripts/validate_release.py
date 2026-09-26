@@ -86,6 +86,7 @@ def main():
         assert (ppt_dest / 'danta-bio-paper-writing/references/workflow.md').is_file()
         assert (ppt_dest / 'danta-bio-daily-briefing/SKILL.md').is_file()
         assert (ppt_dest / 'danta-bio-daily-briefing/scripts/render_brief.py').is_file()
+        assert (ppt_dest / 'danta-proposal-guide/references/biosafety-escalation.md').is_file()
         bundled_installer = ppt_dest / 'danta-research-ppt/scripts/install_ppt_master.py'
         assert bundled_installer.is_file()
         assert '4e239ac3c11036c8c9d3bb987f5ccbd02a176d6832f2404f8a067414d834d2a1' in bundled_installer.read_text()
@@ -105,6 +106,8 @@ def main():
         assert (copy / '.codex/agents/danta_evidence.toml').exists()
         assert (copy / 'templates/00_科研知识库_Research-Vault/12_笔记模板_Templates/14_科研图_Figure.md').exists()
         assert (copy / 'templates/00_科研知识库_Research-Vault/08_成果输出_Outputs/03_图表_Figures/00_index.md').exists()
+        assert (copy / 'templates/00_科研知识库_Research-Vault/00_系统_System/06_生物研究安全审查_Biosafety-Escalation.md').exists()
+        assert (copy / 'templates/00_科研知识库_Research-Vault/12_笔记模板_Templates/15_生物安全审查记录_Biosafety-Review.md').exists()
         assert not (copy / '.git').exists() and not (copy / '.local').exists()
         # Idempotent from the distribution and from inside a marked workspace.
         call(ROOT / 'scripts/start_project.py', ['--dest', copy])
@@ -139,7 +142,7 @@ def main():
     print('PASS: installers, staging integrity, conflict protection, bounded/idempotent copy, empty target, source symlink, integrity rejection')
     checked = 0
     for file in ROOT.rglob('*.md'):
-        if any(part in file.parts for part in ('.git', '.local', 'vendor', '__pycache__')):
+        if any(part in file.parts for part in ('.git', '.local', 'vendor', 'node_modules', '__pycache__')):
             continue
         for target in re.findall(r'\]\(([^)]+)\)', file.read_text(encoding='utf-8')):
             if '://' in target or target.startswith('#'):

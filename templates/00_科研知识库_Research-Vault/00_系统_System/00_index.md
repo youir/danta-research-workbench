@@ -24,6 +24,7 @@ aliases: []
 - [02_元数据与命名_Schema.md](02_元数据与命名_Schema.md)
 - [03_路径映射_Path-Map.json](03_路径映射_Path-Map.json)
 - [04_归档与维护_Archive-Maintenance.md](04_归档与维护_Archive-Maintenance.md)
+- [06_生物研究安全审查_Biosafety-Escalation.md](06_生物研究安全审查_Biosafety-Escalation.md)
 
 - [完整体系架构 / Architecture](05_体系架构_Architecture.png)
 - [生物科研日报 / Research Digest](../08_成果输出_Outputs/05_科研日报_Research-Digest/00_index.md)

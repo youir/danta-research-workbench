@@ -81,6 +81,6 @@
   <rect x="58" y="961" width="724" height="150" rx="18" fill="#e8f5ef" stroke="#b5ddc9"/>
   <rect x="816" y="961" width="726" height="150" rx="18" fill="#f0eff8" stroke="#cbc6e2"/>
   <text x="88" y="1005" class="head">决定权在人</text><text x="88" y="1044" class="body">研究方向、假说和实验决策由龚博士与导师掌握。</text><text x="88" y="1080" class="body">AI 提供依据、备选解释、风险和可执行的下一步。</text>
-  <text x="846" y="1005" class="head">资料有边界</text><text x="846" y="1044" class="body">仅读取龚博士授权的研究工作区与来源。</text><text x="846" y="1080" class="body">公开仓库只放系统和空白模板；真实研究资料留在私有库。</text>
+  <text x="846" y="1005" class="head">资料有边界</text><text x="846" y="1044" class="body">仅读取龚博士授权的研究工作区与来源。</text><text x="846" y="1080" class="small">审查时暂停风险部分，记录脱敏上下文；不自动外发。</text>
   <text x="60" y="1150" class="small">一条主线：说出需要 → 助理理解 → 按需协作 → 留下可信记录 → 下次接续</text>
 </svg>

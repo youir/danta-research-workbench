@@ -6,8 +6,9 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "1b047f2095bd1fe533de6b4689a795aaab87dfa5c26c7ea1832400af37d86c8f",
+        "SKILL.md": "23a286e34faaed3e60f1e678caa0c48ee35072e28dd4cf9af37cce2604e007fc",
         "agents/openai.yaml": "945dc0eb8e27f0478b0da327f54b2c7967a382455b1247c2274c913ea8396d60",
+        "references/biosafety-escalation.md": "1976f2431800664a6111a6a8333672c52f7f4498ed29bc8fa1d6d03402b3d152",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
         "references/expert-distillation.md": "5b5b80aebc307bb985fa5d35d8fb32a631e054eaa7aefea955b561c9f5a44b8f",
         "references/intake.md": "93c039351cfe75280459ef37ac42588efcbdfc83ca9f68a2b33feb40c5518387",
@@ -18,7 +19,7 @@
         "references/ogsm.md": "63b46980beb443aaa303205ae6e00d7738dfb0cb8e229274f1e5474746cb472c",
         "references/research-assistant.md": "bf028f4acadad910027e2e6c07fbcf53fe09f7ac74633143d3b9fb4420f651ab",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
-        "references/skill-routing.md": "a689f99d5dbfcd07c537f000f04d096d9ca6d268ee46b48bbfff2eed3647be93",
+        "references/skill-routing.md": "2f267717a9e00b0d9ebf224d3fca23a5b644a551a7faba6a1d944dba7cb94056",
         "references/thinking-dialogue.md": "0081bb8cdba78f7447bc627b788f1881b895d248893457b70b69bcd0e5d00b28",
         "references/writing-review-cards.md": "ffaa70e8ebb858a28d6144e8b6e34bb03eee5308d69e926adbae318818adbc9b"
       },
@@ -52,7 +53,7 @@
     "danta-bio-paper-writing": {
       "source": "skills/danta-bio-paper-writing",
       "files": {
-        "SKILL.md": "18634b5024c2e847ff653885a46056d668da88aa1796996282343caea9476dd0",
+        "SKILL.md": "6a1b4c57a45f44af958e08a1a176cdf29b9553a8abcc934ca3ed431aadc5ab04",
         "references/analysis-records.md": "e9d349b5fb747560742b530245c9e56bd1f0cd50161d73adcffb77dce402f565",
         "references/workflow.md": "bfee59de451c023b59c2faa8cd4be0adb8d639b60126494a9ece2584de78ea72"
       },

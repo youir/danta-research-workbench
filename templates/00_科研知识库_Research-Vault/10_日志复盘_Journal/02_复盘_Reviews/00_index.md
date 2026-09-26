@@ -20,6 +20,8 @@ aliases: []
 
 ## 入口 / Contents
 
+- [生物安全审查记录模板](../../12_笔记模板_Templates/15_生物安全审查记录_Biosafety-Review.md)
+- 安全审查记录仅保存至本人的私有 vault；记录命名建议 `YYYY-MM-DD_安全审查与连续性.md`，不在公开仓库创建个案记录。
 
 
 ## 本区维护

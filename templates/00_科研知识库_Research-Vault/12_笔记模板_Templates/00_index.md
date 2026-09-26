@@ -36,6 +36,7 @@ Obsidian 核心 Templates 可直接插入；用源代码模式编辑模板变量
 - [组会讨论 / Lab Meeting](12_组会讨论_Lab-Meeting.md)
 - [科研汇报与PPT / Research Presentation](13_科研汇报_Presentation.md)
 - [科研图与机制图 / Research Figure](14_科研图_Figure.md)
+- [生物安全审查与工作连续性 / Biosafety Review](15_生物安全审查记录_Biosafety-Review.md)
 
 ## 本区维护
 
