@@ -61,6 +61,12 @@ research-grants 中的特定资助机构模板仅作论证参考，学校要求�
 
 v1.10.0 的 GitHub 候选清单见 [扩展候选与试用标准](11_GitHub扩展候选与试用标准.md)。核查发现 OpenAI Life Science Research 插件的 GitHub 目录虽可公开浏览，manifest 却声明 Proprietary，因此不纳入开源发行包。`scientific-agent-skills` 由多个许可来源组成；必须审查具体 skill，而非仅依据整个仓库的 MIT 文档打包。
 
+## 生物数据库与论文写作扩展（v1.14）
+
+- `skills/danta-bioservices/` 是本工作台原创的跨数据库访问流程技能，支持规划 UniProt、KEGG、Reactome、ChEMBL 等查询与 ID 映射。上游参考为 [K-Dense scientific-agent-skills 的 bioservices](https://github.com/K-Dense-AI/scientific-agent-skills/tree/49c6e97775eaa18ba791bebe23162a70ae601c18/skills/bioservices)。其上游仓库根 `LICENSE.md` 是 MIT，但该项 `SKILL.md` 自标 GPLv3；为避免许可混用，本包没有复制其文本、脚本或 references。具体执行所需 Python `bioservices` 包按其自身许可另行安装。
+- `skills/danta-bio-paper-writing/` 为工作台原创，提供 R/RStudio 检测、后端选择/分析执行分层确认、证据驱动稿件流程和生物医学科研图检查。它参考截图所述 Codar 功能和 [Teng-bio/codex-skills-hub 的 bio-paper-writing](https://github.com/Teng-bio/codex-skills-hub/tree/c6fa6a320d82fdbdb6f68936473b5d54ed451b7b/skills/local/bio-paper-writing) 的用途描述；该上游未声明可再分发许可，未复制其代码/文本。截图展示的 Codar 版本并不等同于上述 GitHub 项目。
+- 两个原创技能随主引导依赖安装，在 Codex 中作为按需专项技能提供；并非 Codar 官方插件，也不代替真实数据库服务、R/Python 环境或 BioRender。Bio 图稿路由至工作台 PPT/科研图流程，并保留可编辑源文件、证据状态和真实病理图像边界。
+
 ## v1.5 女娲固定来源与适配
 
 [alchaincyf/nuwa-skill](https://github.com/alchaincyf/nuwa-skill/tree/fe0374687037c4cc51a65c1e0c145afe2981dc69)，提交 `fe0374687037c4cc51a65c1e0c145afe2981dc69`，实际技能名 `huashu-nuwa`。MIT，Copyright (c) 2026 Huashu (花叔)，见该技能内 LICENSE。

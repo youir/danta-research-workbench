@@ -28,3 +28,7 @@
 - `obsidian-plugins/DantaWorkbenchDashboard/`、构建脚本与测试由本项目编写，分发许可为 MIT，见 `obsidian-plugins/LICENSE`。
 - Obsidian API 类型声明来自 `obsidian` npm 包，仅用于本地开发/构建，不打包进插件。运行时依赖 Obsidian 自身。
 - RSS 请求采用 Obsidian 官方 `requestUrl` API；信息源由使用者自行选择，自动更新默认关闭，文章全文不自动保存。
+
+## 生物医学专项 skills（v1.14）
+
+`skills/danta-bioservices/` 与 `skills/danta-bio-paper-writing/` 为本工作台原创文本，未复制 BioServices 上游 skill 或 bio-paper-writing 候选仓库文件。参考链接、固定参考提交、许可冲突及实施边界见 `03_Skills来源与边界.md`。本包不分发 `bioservices` Python 包、R/Python 依赖、数据库内容、BioRender 素材或 Codar 专有插件。

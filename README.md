@@ -2,11 +2,11 @@
 
 **思维优先，决策在人。** 主 agent 是龚博士博士期间的持续科研助理与思考搭档：在她授权的工作区逐步了解资料和协作偏好，延续研究脉络，再通过倾听、证据和不同解释帮助她推进当下问题。
 
-本仓库是可下载的科研辅助工作区：包含龚博士的主引导 skill、固定版本科研 skills、PPT 与科研图工作流、PPT Master 官方固定版本安装器、女娲专家蒸馏 skill、可选专家角色配置和空白模板。它需要支持文件与工具的 AI 客户端运行，不是独立网页应用。PPT Master 不占用日常知识库空间，第一次需要真正制图时再按校验值下载到当前私有工作区。
+本仓库是可下载的科研辅助工作区：包含龚博士的主引导 skill、固定版本科研 skills、生物数据库查询与生信论文协作 skills、PPT 与科研图工作流、PPT Master 官方固定版本安装器、女娲专家蒸馏 skill、可选专家角色配置和空白模板。它需要支持文件与工具的 AI 客户端运行，不是独立网页应用。PPT Master 不占用日常知识库空间，第一次需要真正制图时再按校验值下载到当前私有工作区。
 
 ## 最快开始：下载一个知识库，打开两个应用
 
-龚博士已经使用 Obsidian，并已有 `GY` 知识库。建议先让 Codex 在龚博士自己的电脑上确认 Obsidian 当前打开的 vault 是否为 `GY`，再把插件安装到这个现有库；不另建 vault，也不要求迁移旧笔记。下载 [独立知识库 ZIP](https://github.com/youir/danta-research-workbench/releases/latest/download/danta-research-vault-v1.13.0.zip) 主要用于全新使用者。主引导、思维引导、PPT/科研图流程、RSS 信息源、管理面板与空白模板都已附带，无须先安装整套技能。第一次要求真正制作 PPT 或科研图时，Codex 才下载安装并配置所需工具。请复制 [本机部署与首次配置](12_本机部署与首次配置.md) 的启动语。
+龚博士已经使用 Obsidian，并已有 `GY` 知识库。建议先让 Codex 在龚博士自己的电脑上确认 Obsidian 当前打开的 vault 是否为 `GY`，再把插件安装到这个现有库；不另建 vault，也不要求迁移旧笔记。下载 [独立知识库 ZIP](https://github.com/youir/danta-research-workbench/releases/latest/download/danta-research-vault-v1.14.0.zip) 主要用于全新使用者。主引导、思维引导、生物数据库与生信写作专项技能、PPT/科研图流程、RSS 信息源、管理面板与空白模板都已附带，无须先安装整套技能。第一次要求真正制作 PPT 或科研图时，Codex 才下载安装并配置所需工具。请复制 [本机部署与首次配置](12_本机部署与首次配置.md) 的启动语。
 
 这是默认且唯一推荐的新项目入口。需要维护发行文件、离线安装第三方 skills 或运行校验时，维护者再使用完整工作台包。已有项目应继续使用其唯一私有工作区，不要为了采用新版本复制出第二套当前记录。
 
@@ -49,6 +49,7 @@
 ## 目录
 
 - [主引导技能](skills/danta-proposal-guide/SKILL.md) 与 [协作协议](skills/danta-proposal-guide/references/multi-agent.md)
+- [生物数据库查询技能](skills/danta-bioservices/SKILL.md) 与 [生信论文/科研图技能](skills/danta-bio-paper-writing/SKILL.md)
 - `.codex/agents/`：三个项目级角色配置
 - `vendor/skills/`：九个固定提交版本的第三方科研技能、女娲专家蒸馏 skill 及 nature-shared 支持包
 - `我的开题/`：空白模板，运行时请使用本地副本
@@ -67,6 +68,10 @@
 ## v1.13 Obsidian 信息源与管理面板
 
 增加 RSS/Atom 信息源插件和只读工作台面板。信息源支持手动或可选定时更新、来源分组、未读/收藏、搜索、OPML 导入导出与人工复核后存入知识库；面板汇总库内待跟进记录、RSS 线索和最近更新。两款插件面向现有 `GY` vault 部署，新空白 vault 模板也已包含插件。默认不订阅来源、不自动更新、不抓取全文、不上传笔记；部署时仅确定 vault 路径并安装插件，初始资料扫描必须另外取得龚博士本人授权。
+
+## v1.14 生物医学数据库、论文写作与科研图
+
+新增两个工作台原创 Codex skills：跨数据库查询/标识符映射，以及生信论文与分析协作。主引导依据自然语言任务按需调用；R/RStudio 环境检测不等于运行授权，分析后端与数据范围需分别确认。论文图稿接入既有 PPT Master/科研图流程，涵盖机制关系证据状态、组学流程和真实病理图像质检。没有复制 Codar 插件或许可不清的论文 skill 源码；数据库 Python 包、R 环境和 BioRender 仍需用户单独选择与配置。
 
 ## v1.10 易用性与架构收敛
 

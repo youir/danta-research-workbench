@@ -74,13 +74,16 @@ def main():
         call(primary, ['--dest', conflict_dest, '--only', 'nature-reader'], ok=False)
         assert not (conflict_dest / 'nature-reader').exists()
         assert (shared / 'SKILL.md').read_text() == 'Existing customized support package'
-        # The main guide brings the local PPT/scientific-figure wrapper. The large
-        # upstream runtime is installed from a pinned official release only on demand.
+        # The main guide brings local scientific-figure and bioinformatics wrappers.
+        # Large Python/R/PPT runtimes remain separate and are installed only on demand.
         ppt_dest = tmp / 'research-guide-only'
         call(primary, ['--dest', ppt_dest, '--only', 'danta-proposal-guide'])
         assert {p.name for p in ppt_dest.iterdir()} == {
-            'danta-proposal-guide', 'danta-research-ppt'
+            'danta-proposal-guide', 'danta-research-ppt',
+            'danta-bioservices', 'danta-bio-paper-writing'
         }
+        assert (ppt_dest / 'danta-bioservices/SKILL.md').is_file()
+        assert (ppt_dest / 'danta-bio-paper-writing/references/workflow.md').is_file()
         bundled_installer = ppt_dest / 'danta-research-ppt/scripts/install_ppt_master.py'
         assert bundled_installer.is_file()
         assert '4e239ac3c11036c8c9d3bb987f5ccbd02a176d6832f2404f8a067414d834d2a1' in bundled_installer.read_text()
