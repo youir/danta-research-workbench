@@ -6,7 +6,7 @@
 
 ## 最快开始：下载一个知识库，打开两个应用
 
-龚博士已经使用 Obsidian，建议下载 [独立知识库 ZIP](https://github.com/youir/danta-research-workbench/releases/latest/download/danta-research-vault-v1.10.1.zip)，解压到私有研究目录；Obsidian 和 Codex 同时打开 ZIP 中的 `00_科研知识库_Research-Vault`。主引导和个人画像模板已附带，无须先安装一整套技能或运行命令。想让 Codex 帮忙部署，照着 [本机部署与首次配置](12_本机部署与首次配置.md) 复制启动语即可。
+龚博士已经使用 Obsidian，建议下载 [独立知识库 ZIP](https://github.com/youir/danta-research-workbench/releases/latest/download/danta-research-vault-v1.10.2.zip)，解压到私有研究目录；Obsidian 和 Codex 同时打开 ZIP 中的 `00_科研知识库_Research-Vault`。主引导和个人画像模板已附带，无须先安装一整套技能或运行命令。想让 Codex 帮忙部署，照着 [本机部署与首次配置](12_本机部署与首次配置.md) 复制启动语即可。
 
 这是默认且唯一推荐的新项目入口。需要维护发行文件、离线安装第三方 skills 或运行校验时，维护者再使用完整工作台包。已有项目应继续使用其唯一私有工作区，不要为了采用新版本复制出第二套当前记录。
 
@@ -61,7 +61,7 @@
 
 ## v1.10 易用性与架构收敛
 
-新手默认下载独立 Obsidian vault ZIP，不需安装第三方 skills；主 agent 根据自然语言请求选用思考与开题、持续研究或组会写作路径。Codex 和 Obsidian 共用唯一私有 vault，技能、专家和外部服务仅按需开启。框架图已换成可编辑 SVG 与同步 PNG；候选扩展页记录许可和评估状态。
+新手默认下载独立 Obsidian vault ZIP，不需安装第三方 skills；主 agent 根据自然语言请求选用思考与开题、持续研究或组会写作路径。Codex 和 Obsidian 共用唯一私有 vault，技能、专家和外部服务仅按需开启。初始资料扫描需龚博士本人先授权指定范围，摘要带来源并待她核对。框架图已换成可编辑 SVG 与同步 PNG；候选扩展页记录许可和评估状态。
 
 ## 验证
 

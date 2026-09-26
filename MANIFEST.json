@@ -6,11 +6,11 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "214f55b57372f2ee4656b9cb8bd63948b3353d45905ec270b0a461fb6c381d2d",
+        "SKILL.md": "e15cf0378f1ca3972278c73f59911e9bae7e4b403b083ec07dd3a05450d14379",
         "agents/openai.yaml": "945dc0eb8e27f0478b0da327f54b2c7967a382455b1247c2274c913ea8396d60",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
         "references/expert-distillation.md": "5b5b80aebc307bb985fa5d35d8fb32a631e054eaa7aefea955b561c9f5a44b8f",
-        "references/intake.md": "46078d7d03c5abe85cbb10adfcf837edd4038af40764c313d38882f473ec3940",
+        "references/intake.md": "93c039351cfe75280459ef37ac42588efcbdfc83ca9f68a2b33feb40c5518387",
         "references/knowledge-vault.md": "2e1c0595777efa241bed24b532ba911d3754c8c8153d4d1cb922aea7979f0e04",
         "references/lab-meeting.md": "2585b206c2dc588c3c53cd574f52b67a0d0f0a7585df240e524d3cebc269c5d4",
         "references/literature-update.md": "af3311534df17e5229b81b641a04330667a9aeeddb01a8f65ecbeb818c5333b6",

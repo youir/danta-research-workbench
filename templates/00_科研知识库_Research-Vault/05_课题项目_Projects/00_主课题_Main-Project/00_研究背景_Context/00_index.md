@@ -23,6 +23,7 @@ aliases: []
 - [01_准备度_Readiness.md](01_准备度_Readiness.md)
 - [02_研究画像_Research-Profile.md](02_研究画像_Research-Profile.md)
 - [03_资源约束_Resources.md](03_资源约束_Resources.md)
+- [04_初始资料扫描_Initial-Scan.md](04_初始资料扫描_Initial-Scan.md)
 
 ## 本区维护
 

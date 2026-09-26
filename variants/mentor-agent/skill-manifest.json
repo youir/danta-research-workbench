@@ -2,10 +2,10 @@
   "name": "danta-research-mentor",
   "version": "1.2-reviewed",
   "files": {
-    "SKILL.md": "31b79b6c606b01682f4e1b5a6a4b905a58398aa32fd41f607d4d8aa98490a13d",
+    "SKILL.md": "29d728ed8a62e28bb4f2223eea7a20e7ccaa5dbfd8d2317be5825a361af27568",
     "agents/openai.yaml": "db77662b674d114c078cf5112b5f66184e8be2ab1816830874b5ed96901cf4ec",
     "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
-    "references/intake.md": "e9dc64ca378cc1211510db6c218ad64a7e3c80755dc54c99b4f390c055095dc4",
+    "references/intake.md": "c0b52c397b17e1e17203ad59643bbe0827fe795077ab8e9196e2e3b7cdc00905",
     "references/multi-agent.md": "16061564a0d11344c5a614ca60b4a4ebdd7916dbb842f01860e8252a273e6d1d",
     "references/research-lenses.md": "5088bfa0e55abc87a6d9f399a1626d65569d19074b14977f48109440c37d1660",
     "references/skill-routing.md": "6a0d8070c5c247092a8f2f7c281d297fc924ceed078eac510dae1f4e9c353088",
