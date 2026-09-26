@@ -65,7 +65,7 @@
     <rect x="1022" y="710" width="520" height="218" rx="20" fill="#fff" stroke="#d2c7ec" stroke-width="2"/>
   </g>
   <text x="88" y="754" class="head">Obsidian 和 Codex 打开同一文件夹</text>
-  <text x="88" y="787" class="small">Path-Map 指向唯一权威位置；记录有来源、有状态，不抄成多份台账</text>
+  <text x="88" y="787" class="small">Path-Map 指向唯一位置；RSS 线索经人工复核后入库，面板仅读汇总当前 vault</text>
   <rect x="86" y="815" width="204" height="76" rx="12" fill="#edf4fb"/><rect x="304" y="815" width="204" height="76" rx="12" fill="#edf4fb"/><rect x="522" y="815" width="204" height="76" rx="12" fill="#edf4fb"/><rect x="740" y="815" width="224" height="76" rx="12" fill="#edf4fb"/>
   <text x="188" y="847" text-anchor="middle" class="tag">画像与当前状态</text><text x="188" y="874" text-anchor="middle" class="small">背景 · 资源 · 进度</text>
   <text x="406" y="847" text-anchor="middle" class="tag">资料与证据</text><text x="406" y="874" text-anchor="middle" class="small">来源 · 阅读 · 文献</text>

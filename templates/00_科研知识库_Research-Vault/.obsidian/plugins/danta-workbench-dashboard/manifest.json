@@ -1,0 +1,9 @@
+{
+  "id": "danta-workbench-dashboard",
+  "name": "龚博士科研工作台面板",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "只读汇总当前 Obsidian 知识库的研究记录、收件箱和近期动态。",
+  "author": "Danta Research Workbench",
+  "isDesktopOnly": false
+}

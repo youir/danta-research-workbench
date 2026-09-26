@@ -21,3 +21,10 @@
 工作台不再随包分发旧版 `presentation-skill`。当前主引擎是 [hugohe3/ppt-master](https://github.com/hugohe3/ppt-master) v6.6.0，官方发布于 2026-09-19，固定版本技能包 SHA-256 为 `4e239ac3c11036c8c9d3bb987f5ccbd02a176d6832f2404f8a067414d834d2a1`。首次制图时安装器从 [官方 v6.6.0 Release](https://github.com/hugohe3/ppt-master/releases/tag/v6.6.0) 下载原始 ZIP，校验后仅安装到当前 `.agents/skills/ppt-master/`，不会修改或裁剪上游文件。完整性检查、MIT LICENSE、赞助信息与强制 attribution guard 保留在上游包内；工作台把科学证据审查写在自己的包装技能中。
 
 上游 requirements 为可选依赖集合；工作台不默认安装完整清单。上游将 PyMuPDF 标明为 AGPL-3.0，仅需 PDF 转换时再单独审查其许可与必要性。工作台不自动调用其在线研究、网页搜图、AI 图片生成或商业 API。未打包视频中的专有平台、上游演示资料、第三方科研来源及龚博士的研究材料。
+
+## Obsidian 插件（v1.13）
+
+- `obsidian-plugins/DantaRssCollector/` 的代码由本项目编写，分发许可为 GPL-3.0-only；该目录附有 GPL-3.0 完整许可文本。实现前阅读并参考了 [joeseesun/qiaomu-ai-rss](https://github.com/joeseesun/qiaomu-ai-rss) 的公开代码结构与安全处理思路；没有复制其源代码、资源、服务或数据，也没有将其代码纳入发行包。
+- `obsidian-plugins/DantaWorkbenchDashboard/`、构建脚本与测试由本项目编写，分发许可为 MIT，见 `obsidian-plugins/LICENSE`。
+- Obsidian API 类型声明来自 `obsidian` npm 包，仅用于本地开发/构建，不打包进插件。运行时依赖 Obsidian 自身。
+- RSS 请求采用 Obsidian 官方 `requestUrl` API；信息源由使用者自行选择，自动更新默认关闭，文章全文不自动保存。

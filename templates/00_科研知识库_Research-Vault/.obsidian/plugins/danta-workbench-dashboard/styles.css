@@ -1,0 +1,25 @@
+.danta-dashboard { padding: 16px; }
+.danta-dashboard-top { display: flex; align-items: flex-start; gap: 10px; }
+.danta-dashboard-top > div:first-child { flex: 1; }
+.danta-dashboard-top h2 { margin: 2px 0 5px; }
+.danta-dashboard-top p, .danta-dashboard-eyebrow, .danta-dashboard-muted, .danta-dashboard-privacy { color: var(--text-muted); }
+.danta-dashboard-top p { margin: 0; line-height: 1.5; }
+.danta-dashboard-eyebrow { font-size: var(--font-smaller); }
+.danta-dashboard-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin: 18px 0 22px; }
+.danta-dashboard-stat, .danta-dashboard-card { border: 1px solid var(--background-modifier-border); background: var(--background-secondary); border-radius: 10px; padding: 12px; }
+.danta-dashboard-stat strong { display: block; font-size: 1.45em; }
+.danta-dashboard-stat span, .danta-dashboard-card span { color: var(--text-muted); font-size: var(--font-smaller); }
+.danta-dashboard-section-heading { margin: 22px 0 8px; }
+.danta-dashboard-section-heading h3 { margin: 0 0 3px; }
+.danta-dashboard-section-heading span { color: var(--text-muted); font-size: var(--font-smaller); }
+.danta-dashboard-list { border-top: 1px solid var(--background-modifier-border); }
+.danta-dashboard-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; padding: 9px 2px; border-bottom: 1px solid var(--background-modifier-border); }
+.danta-dashboard-row a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.danta-dashboard-row > span, .danta-dashboard-row small { color: var(--text-muted); font-size: var(--font-smaller); }
+.danta-dashboard-row small { grid-column: 1 / -1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.danta-dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.danta-dashboard-card { display: flex; flex-direction: column; gap: 5px; }
+.danta-dashboard-card strong { font-size: var(--font-small); }
+.danta-dashboard-card a { font-size: var(--font-smaller); }
+.danta-dashboard-privacy { margin-top: 22px; font-size: var(--font-smaller); text-align: center; }
+@media (max-width: 560px) { .danta-dashboard-stats { grid-template-columns: 1fr; } .danta-dashboard-grid { grid-template-columns: 1fr 1fr; } }

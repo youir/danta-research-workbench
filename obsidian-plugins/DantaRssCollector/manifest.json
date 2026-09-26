@@ -1,0 +1,9 @@
+{
+  "id": "danta-rss-collector",
+  "name": "龚博士科研信息源",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "在 Obsidian 中按本人选择更新 RSS/Atom，筛选、收藏并归档文献线索。",
+  "author": "Danta Research Workbench",
+  "isDesktopOnly": false
+}
