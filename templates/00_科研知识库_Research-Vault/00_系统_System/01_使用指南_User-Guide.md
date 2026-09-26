@@ -16,13 +16,13 @@ aliases: []
 
 ## 第一次使用
 
-如果下载的是 `danta-research-vault-v1.9.0.zip`，直接解压并打开其中 `00_科研知识库_Research-Vault` 文件夹即可；已附主引导和角色配置，无需再运行初始化器。以下命令仅针对完整工作台发行包。
+下载 `danta-research-vault-v1.10.0.zip` 并解压到她的私有研究目录，然后用 Obsidian 和 Codex 打开同一个 `00_科研知识库_Research-Vault`。主引导与项目配置已附带；新使用者无须安装第三方技能、运行脚本或设置社区插件。以下命令仅针对完整工作台发行包。
 
 从发行包运行 `python3 scripts/create_research_vault.py --dest <一个尚不存在的新目录>`。脚本只复制公开模板、主引导和项目角色，不读取其他 vault，不安装第三方插件，不覆盖同名目录。终端中含空格的路径需加引号。新库路径是 Obsidian 与 Codex 共同打开的同一个目录。
 
 Obsidian：Manage Vaults → Open folder as vault，选择新库根目录；打开 `00_index.md`。初始化包附核心 Templates 设置，不依赖 Dataview、Templater 或同步服务。第一次确认 Settings → Core plugins → Templates 已启用，模板目录为 `12_笔记模板_Templates`。新建笔记后在正文调用 Templates: Insert template；变量会展开，复制粘贴模板文件本身则不会自动展开。
 
-Codex：打开同一新库，发“使用 $danta-proposal-guide，称呼我龚博士。先按 Path-Map 恢复我的研究画像、协作偏好、状态与 Idea 画布，再从我当前最需要的地方继续。”知识库不是自动注入模型的永久记忆；这套读取协议让新会话有依据地恢复。初始化画像中的资料均注明由准备者提供、待龚博士核实。
+Codex：打开同一新库，说“使用 $danta-proposal-guide，称呼我龚博士。先恢复本项目相关上下文，再从我今天最想处理的事开始：……”。主引导会按 Path-Map 找到相关档案，不要求她背路径或技能名。知识库不是自动注入模型的永久记忆；这套读取协议让新会话有依据地恢复。初始化画像中的资料均注明由准备者提供、待龚博士核实。
 
 外部科研 skills 仍按发行包安装指南安装，和已有目录冲突时备份比较。本库已附主引导，在全局装了旧版时优先显式阅读本库入口。真实子 agent、PDF解析和联网检索需单独试用；有配置不代表验证完成。
 

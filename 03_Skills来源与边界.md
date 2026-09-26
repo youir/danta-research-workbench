@@ -59,6 +59,8 @@ research-grants 中的特定资助机构模板仅作论证参考，学校要求�
 
 `nature-academic-search`、`nature-writing`、`researchwrite` 与实验执行模块仍未接入。若需要，应分别审查许可、依赖与实际行为，固定版本后引入；不会因本次安装自动可用。
 
+v1.10.0 的 GitHub 候选清单见 [扩展候选与试用标准](11_GitHub扩展候选与试用标准.md)。核查发现 OpenAI Life Science Research 插件的 GitHub 目录虽可公开浏览，manifest 却声明 Proprietary，因此不纳入开源发行包。`scientific-agent-skills` 由多个许可来源组成；必须审查具体 skill，而非仅依据整个仓库的 MIT 文档打包。
+
 ## v1.5 女娲固定来源与适配
 
 [alchaincyf/nuwa-skill](https://github.com/alchaincyf/nuwa-skill/tree/fe0374687037c4cc51a65c1e0c145afe2981dc69)，提交 `fe0374687037c4cc51a65c1e0c145afe2981dc69`，实际技能名 `huashu-nuwa`。MIT，Copyright (c) 2026 Huashu (花叔)，见该技能内 LICENSE。

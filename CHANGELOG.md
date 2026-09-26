@@ -1,3 +1,11 @@
+# v1.10.0 — 2026-09-26
+
+- 收敛新使用者路径：Obsidian 私有 vault ZIP 为默认入口，Codex 主引导已随库附带；新手无须先安装第三方技能或运行命令。
+- 重构整体架构图为“单一对话 → 按需三条工作路径 → 唯一私有知识库 → 延续下一次对话”，降低 agent/skills/OGSM 配置噪音。
+- 新增 GitHub 扩展试用标准，登记科研 skills、OpenAI Life Science 插件、Nature 投稿技能及计算病理项目。
+- 更正许可：OpenAI Life Science Research Plugin manifest 标记 Proprietary，GitHub 可见不等于开源，不再建议打包；科研 Agent Skills 各项许可逐项审查。
+- 同步首页、启动、组会、Codex 与 Obsidian 的说明，默认单 agent，需要时再开可选能力。
+
 # v1.9.0 — 2026-09-25
 
 - 主引导定位为龚博士博士期间的持续科研助理与思考搭档，自然称呼她为“龚博士”。
