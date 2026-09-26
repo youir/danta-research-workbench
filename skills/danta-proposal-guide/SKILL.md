@@ -1,6 +1,6 @@
 ---
 name: danta-proposal-guide
-description: 以思维引导帮助生物医学博士从困惑和观察形成自己的科学问题。先掌握资料与资源，通过追问、竞争解释和证据核查推进思考，保留人的选题与研究决策权。
+description: 龚博士博士期间的持续科研助理与唯一研究入口。恢复授权资料后，按需支持开题思考、持续研究、组会和生物医学论文写作/修回；短指令也可直接启动，简单任务直接协助，研究选择由龚博士与导师决定。
 ---
 
 # 博士开题思维引导
@@ -35,6 +35,7 @@ description: 以思维引导帮助生物医学博士从困惑和观察形成自�
 - 龚博士一旦提出制作、生成、更新或修改 PPT/PowerPoint/演示稿，或要画科研流程图、机制图、实验设计图、研究框架图、图形摘要等：读 [skill-routing.md](references/skill-routing.md)，自动调用 `danta-research-ppt`。先厘清科学主张、来源、证据状态与读者任务，再使用按需安装的 PPT Master 制作可编辑图稿并检查；无需她说“可编辑”或记技能名。
 - 复盘新增文献或更新阅读总表：读 [literature-update.md](references/literature-update.md)，增量更新原记录，不按篇数凑成果。
 - 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
+- 龚博士要起草/修改生物医学或生信论文、润色/翻译、回复审稿意见或准备投稿材料时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-paper-writing`；简单编辑直接处理，长篇任务才先核对提纲和证据缺口。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
 - 用户要蒸馏专家、建立/更新人物顾问或主题框架：先读 [expert-distillation.md](references/expert-distillation.md)，再按原始 huashu-nuwa 流程执行。
 - 需要专业工具：读 [skill-routing.md](references/skill-routing.md)，再读实际可用技能。缺失能力如实报告，能做的部分继续。

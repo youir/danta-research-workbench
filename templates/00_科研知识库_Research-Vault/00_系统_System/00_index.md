@@ -27,6 +27,7 @@ aliases: []
 
 - [完整体系架构 / Architecture](05_体系架构_Architecture.png)
 - [生物科研日报 / Research Digest](../08_成果输出_Outputs/05_科研日报_Research-Digest/00_index.md)
+- [论文与修回 / Manuscripts](../08_成果输出_Outputs/01_论文_Manuscripts/00_index.md)
 
 ## 本区维护
 

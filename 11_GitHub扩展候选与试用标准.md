@@ -13,12 +13,23 @@
 | [PathAgent](https://github.com/G14nTDo4/PathAgent) | 研究全视野病理图像（WSI）的 agent 式多步证据检索与尺度选择。 | 仅当龚博士研究数字病理/WSI 时有直接参考价值；这是研究代码，不是通用 Codex skill。 | **方向待确认** |
 | [MOOZY](https://github.com/AtlasAnalyticsLab/MOOZY) | 以患者病例为单位建模多个 WSI 的计算病理基础模型。 | 若研究目标涉及计算病理、跨切片患者表征或公开模型基准，再读论文、代码与模型卡；不因名字新或榜单结果就直接用于临床/实验结论。 | **方向待确认** |
 | [kawaiier/daily-brief](https://github.com/kawaiier/daily-brief) | 以来源采集、结构化内容与单文件 HTML 呈现构成每日简报。 | “30秒扫完、短清单不凑数、来源追溯、每日单独归档、无数据就显示空状态”适合科研日报。其日历/邮件/聊天流程不适配当前未连接这些来源的环境；本工作台只借鉴架构思路并自行实现 RSS/论文证据版，没有复制上游代码。 | **设计参考；本地原创实现** |
+| [codex-academic-writing-skills](https://github.com/zl9099/codex-academic-writing-skills) | 面向中文科研人员的学术中英翻译、论文润色、审稿意见回复、逻辑审查、投稿信和引文核验。README 声明 MIT。 | 任务覆盖正好补足本工作台的修回/投稿场景；可参考其保留公式、P 值、基因名和论断强度的写作边界。工作台按自己的证据和授权规则重写流程，不直接复制代码或把该仓库设为运行依赖。 | **设计参考；未打包** |
+| [fmschulz/omics-skills](https://github.com/fmschulz/omics-skills) | 目录中列出 scientific-writing、方法文档、文献检索/引用和稿件审查等 Omics 技能。 | 适合后续按某个具体短板评估。当前仅查看技能目录，不等于逐项验证其脚本、许可与依赖；不复制或安装整套集合。 | **目录参考；未验证、未打包** |
+| [SpicyChicken6/bioinfo-skills](https://github.com/SpicyChicken6/bioinfo-skills) | 将已完成的生信结果、表格和图稿整理为有来源边界的研究解释；README 表明默认不代跑分析。 | 可供未来比较结果解读的表达方式；未完成许可与脚本安全核查，故只保留链接，不分发其内容。 | **观察中；未打包** |
 
 ## 关于已读 GitHub 技能的许可纠正
 
 之前的讨论将 OpenAI Life Science Research 称为开源插件；核对插件 manifest 后发现这一表述不准确。GitHub 仓库公开可读不等于开放许可：插件清单明确标注 `Proprietary`。因此本包只记录链接与适用边界，不复制其技能、脚本或图标。
 
 `scientific-agent-skills` 仓库的 `LICENSE.md` 也说明其 MIT 许可只覆盖仓库自有的目录元数据、文档、网站和打包脚本；`skills/` 下各项内容遵循各自来源许可，并要求先查 `THIRD_PARTY_NOTICES.md`。若未来要分发某一项，先核实该技能的确切来源许可和原文；无许可说明时不再分发。
+
+## 本机生信技能库评估
+
+已阅读用户提供的 `/Desktop/生信写作助手-底层设定.md`，并检查本机 `技能哭/codar-biomedical-science-0.1.1/skills/` 中与写作有关的模块。附件正文与本机 `bioinformatics-writer/SKILL.md` 完全匹配；目录还含 `methods-section-writer`、`reporting-guideline-compliance-checker`、`literature-review` 和论文精读等不同用途的技能，以及组学分析、数据库、蛋白结构等专项模块。
+
+其中值得吸收的是：先审查真实结果、让结果问题对应证据和图表；方法部分补齐复现所需细节；报告规范审查区分缺失、不适用和薄弱。对龚博士日常协作不采用的部分是：每次先选固定服务菜单、从写作自动升级为完整分析、即使已有结果也必须跑完多份 PRD/JSON 审批，以及把所有稿件锁定为某一个 TeX→DOCX 工具链。写作助手现以短文直接修订、长稿先对齐实质提纲为默认节奏。
+
+该本机技能包的插件清单没有给出可再分发许可证，因此仅作能力和工作流参考；本工作台没有复制或打包其技能文件、脚本或素材。这里记录的流程是根据龚博士的 Codex/Obsidian 环境独立整理的。
 
 ## 如何试用一个候选
 
@@ -28,9 +39,9 @@
 4. 用实际节省的步骤、来源核查质量、可复现性、依赖负担、隐私与决定权来比较。不仅看 README 的自报基准或“全自动”演示。
 5. 仅当结果清楚改善工作、许可允许分发、安装安全且能在 Codex 实测后，才考虑作为**可选模块**固定提交并打包。默认安装仍以主 agent 和私有知识库为主。
 
-### 本工作台已接入：生物数据库与生信论文写作
+### 本工作台已接入：生物数据库与生物医学论文写作
 
-截图中的两项能力现已作为 Codex 专项 skills 接入：`danta-bioservices` 与 `danta-bio-paper-writing`。它们由主引导依赖安装、按任务路由调用，采用本工作台自己的授权和证据规则。前者针对数据库查询/ID 映射；后者针对稿件协作、分析决定记录及生物医学图稿。BioServices 与截图里的 Codar 产品仍是上游/外部服务，未声称本仓库包含 Codar 官方插件。来源与许可边界见 [03_Skills来源与边界.md](03_Skills来源与边界.md#生物数据库与论文写作扩展-v114)。
+截图中的两项能力现已作为 Codex 专项 skills 接入：`danta-bioservices` 与 `danta-bio-paper-writing`。后者覆盖论文起草/修改、学术翻译、审稿意见回复和投稿材料，并与分析审批、文献检索及科研图能力分工协作。Skills 由主引导依赖安装、按任务路由调用，采用本工作台自己的授权和证据规则。BioServices 与截图里的 Codar 产品仍是外部来源；本仓库不包含 Codar 官方插件。来源与许可边界见 [03_Skills来源与边界.md](03_Skills来源与边界.md#生物数据库与论文写作扩展-v114)。
 
 ## 研究方向明确后怎么选
 

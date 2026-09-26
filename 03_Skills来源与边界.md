@@ -64,8 +64,16 @@ v1.10.0 的 GitHub 候选清单见 [扩展候选与试用标准](11_GitHub扩展
 ## 生物数据库与论文写作扩展（v1.14）
 
 - `skills/danta-bioservices/` 是本工作台原创的跨数据库访问流程技能，支持规划 UniProt、KEGG、Reactome、ChEMBL 等查询与 ID 映射。上游参考为 [K-Dense scientific-agent-skills 的 bioservices](https://github.com/K-Dense-AI/scientific-agent-skills/tree/49c6e97775eaa18ba791bebe23162a70ae601c18/skills/bioservices)。其上游仓库根 `LICENSE.md` 是 MIT，但该项 `SKILL.md` 自标 GPLv3；为避免许可混用，本包没有复制其文本、脚本或 references。具体执行所需 Python `bioservices` 包按其自身许可另行安装。
-- `skills/danta-bio-paper-writing/` 为工作台原创，提供 R/RStudio 检测、后端选择/分析执行分层确认、证据驱动稿件流程和生物医学科研图检查。它参考截图所述 Codar 功能和 [Teng-bio/codex-skills-hub 的 bio-paper-writing](https://github.com/Teng-bio/codex-skills-hub/tree/c6fa6a320d82fdbdb6f68936473b5d54ed451b7b/skills/local/bio-paper-writing) 的用途描述；该上游未声明可再分发许可，未复制其代码/文本。截图展示的 Codar 版本并不等同于上述 GitHub 项目。
+- `skills/danta-bio-paper-writing/` 是工作台原创的稿件协作技能。v1.14 首次接入时包含按需 R/RStudio 与分析授权流程、证据驱动写作和科研图检查；v1.16 扩展到简短指令下的论文起草/修订、中英编辑、审稿回复及投稿协作。它参考截图所述 Codar 功能和 [Teng-bio/codex-skills-hub 的 bio-paper-writing](https://github.com/Teng-bio/codex-skills-hub/tree/c6fa6a320d82fdbdb6f68936473b5d54ed451b7b/skills/local/bio-paper-writing) 的用途描述；该上游未声明可再分发许可，未复制其代码/文本。截图展示的 Codar 版本并不等同于上述 GitHub 项目。
 - 两个原创技能随主引导依赖安装，在 Codex 中作为按需专项技能提供；并非 Codar 官方插件，也不代替真实数据库服务、R/Python 环境或 BioRender。Bio 图稿路由至工作台 PPT/科研图流程，并保留可编辑源文件、证据状态和真实病理图像边界。
+
+## v1.16 论文写作流程参考与重写
+
+已检查工作区外的本机 `技能哭/codar-biomedical-science-0.1.1` 技能集合以及用户提供的 `生信写作助手-底层设定.md`。附件中的 46,324 字节正文与本机 `bioinformatics-writer/SKILL.md` 完全一致。借鉴了结果问题—证据—图表映射、基于真实协议补齐 Methods 可复现信息、按研究类型核查报告规范，以及长篇写作先对齐结构等做法。
+
+该 Codar 插件清单未提供可再分发许可证；本工作台没有复制其 `SKILL.md`、脚本、模板或图稿。`danta-bio-paper-writing` 的新写作流程由本工作台重新编写，适配龚博士常用的短自然语言请求、Codex、Obsidian 和现有技能路由。长篇分析 PRD、强制 TeX→DOCX 流水线、专有服务菜单等不作为写作必经步骤。
+
+设计参考还包括 [zl9099/codex-academic-writing-skills](https://github.com/zl9099/codex-academic-writing-skills) 的中英文学术编辑、审稿回复与引文核验任务覆盖，以及 [fmschulz/omics-skills](https://github.com/fmschulz/omics-skills) 的科研写作/Methods 分类。只参考公开描述与组织思路，没有复制或打包这些项目的文件；其余来源状态见 [候选评估页](11_GitHub扩展候选与试用标准.md)。
 
 ## v1.5 女娲固定来源与适配
 

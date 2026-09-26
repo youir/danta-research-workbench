@@ -57,7 +57,7 @@
   <rect x="58" y="438" width="10" height="190" rx="5" fill="#3b75b8"/><rect x="562" y="438" width="10" height="190" rx="5" fill="#318477"/><rect x="1066" y="438" width="10" height="190" rx="5" fill="#bf7a35"/>
   <text x="88" y="482" class="lane-title">思考与开题</text><text x="88" y="522" class="lane-body">困惑与观察 → 问题 → 竞争解释</text><text x="88" y="556" class="lane-body">→ 查证据 → 龚博士与导师选择</text><text x="88" y="599" class="small">不催定题；可以暂定、回退或分叉</text>
   <text x="592" y="482" class="lane-title">持续研究</text><text x="592" y="522" class="lane-body">问题 → 文献 / 方法 / 数据</text><text x="592" y="556" class="lane-body">→ 最小验证 → 根据新证据复盘</text><text x="592" y="599" class="small">保留来源、条件和可复现记录</text>
-  <text x="1096" y="482" class="lane-title">组会、写作与科研图</text><text x="1096" y="522" class="lane-body">先定讨论判断 → 证据与方案</text><text x="1096" y="556" class="lane-body">→ 提纲 / PPT / 机制图与流程图</text><text x="1096" y="599" class="small">关系标证据状态；不补造结果或导师意见</text>
+  <text x="1096" y="482" class="lane-title">组会、论文与科研图</text><text x="1096" y="522" class="lane-body">稿件 / 审稿意见 → 证据与论证</text><text x="1096" y="556" class="lane-body">组会提纲 / PPT / 可编辑科研图</text><text x="1096" y="599" class="small">短指令起步；写作、修回按需协作</text>
 
   <text x="60" y="681" class="step">03　同一个私有 Obsidian vault 是研究事实与长期上下文的唯一来源</text>
   <g filter="url(#shadow)">
@@ -74,7 +74,7 @@
 
   <text x="1052" y="754" class="head">可选支持，遇到需要再用</text>
   <text x="1052" y="799" class="body">专项 skills：文献、统计、生信、科研日报与科研图</text>
-  <text x="1052" y="835" class="body">数据库查询 · 生信论文 · 科研日报 · 机制图稿</text>
+  <text x="1052" y="835" class="body">数据库查询 · 论文写作/修回 · 科研日报 · 机制图稿</text>
   <text x="1052" y="871" class="body">分析后端与运行范围逐项确认</text>
   <text x="1052" y="905" class="small">Agent / 顾问 / 外部工具按需核验</text>
 
