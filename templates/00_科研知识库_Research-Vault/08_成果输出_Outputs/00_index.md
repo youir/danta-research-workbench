@@ -25,6 +25,7 @@ aliases: []
 - [02_报告_Reports](02_报告_Reports/00_index.md)
 - [03_图表_Figures](03_图表_Figures/00_index.md)
 - [04_科研汇报与答辩_Presentations](04_科研汇报与答辩_Presentations/00_index.md)
+- [05_科研日报_Research-Digest](05_科研日报_Research-Digest/00_index.md)
 
 ## 本区维护
 

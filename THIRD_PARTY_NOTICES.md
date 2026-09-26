@@ -32,3 +32,7 @@
 ## 生物医学专项 skills（v1.14）
 
 `skills/danta-bioservices/` 与 `skills/danta-bio-paper-writing/` 为本工作台原创文本，未复制 BioServices 上游 skill 或 bio-paper-writing 候选仓库文件。参考链接、固定参考提交、许可冲突及实施边界见 `03_Skills来源与边界.md`。本包不分发 `bioservices` Python 包、R/Python 依赖、数据库内容、BioRender 素材或 Codar 专有插件。
+
+## 生物科研日报（v1.15）
+
+`skills/danta-bio-daily-briefing/`、日报数据结构、HTML 渲染器及测试由本工作台编写。流程设计参考 [kawaiier/daily-brief](https://github.com/kawaiier/daily-brief)，固定审阅其公开提交 `d66d7a22810ca68a6f3073fe9ed9d1344064384b`；本次只借鉴“内容规格 → 结构化数据 → 单文件 HTML”和逐日报存档的架构思想，未复制上游源码、字体或图片。该仓库 README 声明 MIT，但所审阅提交没有可核对的 LICENSE 文件或 GitHub SPDX 标记，因此不把上游代码纳入发行包。

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Danta Biomedical Research Daily Brief",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["date", "status", "title", "coverage", "sections"],
+  "properties": {
+    "date": {"type": "string", "format": "date"},
+    "status": {"enum": ["ready", "partial", "no_sources", "no_new_items"]},
+    "title": {"type": "string", "maxLength": 100},
+    "intro": {"type": "string", "maxLength": 240},
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["period", "sources"],
+      "properties": {
+        "period": {"type": "string", "maxLength": 100},
+        "sources": {"type": "array", "items": {"type": "string", "maxLength": 120}},
+        "unavailable": {"type": "array", "items": {"type": "string", "maxLength": 120}}
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "items"],
+        "properties": {
+          "title": {"type": "string", "maxLength": 60},
+          "items": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "title", "summary", "source", "evidence", "published"],
+              "properties": {
+                "id": {"type": "string", "maxLength": 80},
+                "title": {"type": "string", "minLength": 1, "maxLength": 80},
+                "summary": {"type": "string", "minLength": 1, "maxLength": 600},
+                "relevance": {"type": "string", "maxLength": 300},
+                "question": {"type": "string", "maxLength": 240},
+                "source": {"type": "string", "maxLength": 120},
+                "url": {"type": "string", "maxLength": 2048},
+                "evidence": {"enum": ["peer_reviewed", "preprint", "guideline", "database", "commentary", "unknown"]},
+                "published": {"type": "string", "maxLength": 40},
+                "read_depth": {"enum": ["metadata", "abstract", "full_text", "user_provided", "unknown"]}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

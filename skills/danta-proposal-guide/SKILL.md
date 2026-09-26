@@ -39,6 +39,7 @@ description: 以思维引导帮助生物医学博士从困惑和观察形成自�
 - 用户要蒸馏专家、建立/更新人物顾问或主题框架：先读 [expert-distillation.md](references/expert-distillation.md)，再按原始 huashu-nuwa 流程执行。
 - 需要专业工具：读 [skill-routing.md](references/skill-routing.md)，再读实际可用技能。缺失能力如实报告，能做的部分继续。
 - 龚博士要查生物数据库、跨库映射或整理论文中的生信证据时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bioservices` 或 `danta-bio-paper-writing`；若包含科研图，继续接入 `danta-research-ppt`。数据库注释不能单独支撑机制结论。
+- 龚博士提出制作生物日报或科研晨报时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-daily-briefing`。只整理本轮可用或她明确授权的来源；没有来源就直说，不能假装已连接日历、邮件或聊天，也不创建循环任务。
 
 ## 证据纪律
 

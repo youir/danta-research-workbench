@@ -80,10 +80,12 @@ def main():
         call(primary, ['--dest', ppt_dest, '--only', 'danta-proposal-guide'])
         assert {p.name for p in ppt_dest.iterdir()} == {
             'danta-proposal-guide', 'danta-research-ppt',
-            'danta-bioservices', 'danta-bio-paper-writing'
+            'danta-bioservices', 'danta-bio-paper-writing', 'danta-bio-daily-briefing'
         }
         assert (ppt_dest / 'danta-bioservices/SKILL.md').is_file()
         assert (ppt_dest / 'danta-bio-paper-writing/references/workflow.md').is_file()
+        assert (ppt_dest / 'danta-bio-daily-briefing/SKILL.md').is_file()
+        assert (ppt_dest / 'danta-bio-daily-briefing/scripts/render_brief.py').is_file()
         bundled_installer = ppt_dest / 'danta-research-ppt/scripts/install_ppt_master.py'
         assert bundled_installer.is_file()
         assert '4e239ac3c11036c8c9d3bb987f5ccbd02a176d6832f2404f8a067414d834d2a1' in bundled_installer.read_text()

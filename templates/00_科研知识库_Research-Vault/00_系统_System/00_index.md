@@ -26,6 +26,7 @@ aliases: []
 - [04_归档与维护_Archive-Maintenance.md](04_归档与维护_Archive-Maintenance.md)
 
 - [完整体系架构 / Architecture](05_体系架构_Architecture.png)
+- [生物科研日报 / Research Digest](../08_成果输出_Outputs/05_科研日报_Research-Digest/00_index.md)
 
 ## 本区维护
 

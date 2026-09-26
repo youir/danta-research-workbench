@@ -45,6 +45,7 @@
     "lab_meetings": "10_日志复盘_Journal/03_组会_Lab-Meetings",
     "literature_access": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/04_文献获取版本_Access-Versions.csv",
     "presentation_outputs": "08_成果输出_Outputs/04_科研汇报与答辩_Presentations",
-    "research_figures": "08_成果输出_Outputs/03_图表_Figures"
+    "research_figures": "08_成果输出_Outputs/03_图表_Figures",
+    "research_digest": "08_成果输出_Outputs/05_科研日报_Research-Digest"
   }
 }

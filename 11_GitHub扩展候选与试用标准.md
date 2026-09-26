@@ -12,6 +12,7 @@
 | [Nature-Paper-Skills](https://github.com/Boom5426/Nature-Paper-Skills) | 面向 Nature 系列投稿的论文结构、图文对齐、统计报告、图形检查和投稿前审查。 | 本工作台已有 Nature 阅读能力；该项目主要补论文后期写作与提交，和开题思维不是同一阶段。未来进入稿件阶段时按具体缺口挑选，注意官方安装器有覆盖/升级行为，须先审查脚本与现有版本。 | **后期观察；非默认项** |
 | [PathAgent](https://github.com/G14nTDo4/PathAgent) | 研究全视野病理图像（WSI）的 agent 式多步证据检索与尺度选择。 | 仅当龚博士研究数字病理/WSI 时有直接参考价值；这是研究代码，不是通用 Codex skill。 | **方向待确认** |
 | [MOOZY](https://github.com/AtlasAnalyticsLab/MOOZY) | 以患者病例为单位建模多个 WSI 的计算病理基础模型。 | 若研究目标涉及计算病理、跨切片患者表征或公开模型基准，再读论文、代码与模型卡；不因名字新或榜单结果就直接用于临床/实验结论。 | **方向待确认** |
+| [kawaiier/daily-brief](https://github.com/kawaiier/daily-brief) | 以来源采集、结构化内容与单文件 HTML 呈现构成每日简报。 | “30秒扫完、短清单不凑数、来源追溯、每日单独归档、无数据就显示空状态”适合科研日报。其日历/邮件/聊天流程不适配当前未连接这些来源的环境；本工作台只借鉴架构思路并自行实现 RSS/论文证据版，没有复制上游代码。 | **设计参考；本地原创实现** |
 
 ## 关于已读 GitHub 技能的许可纠正
 
