@@ -74,18 +74,32 @@ def main():
         call(primary, ['--dest', conflict_dest, '--only', 'nature-reader'], ok=False)
         assert not (conflict_dest / 'nature-reader').exists()
         assert (shared / 'SKILL.md').read_text() == 'Existing customized support package'
-        # The main research guide brings the PPT workflow and its upstream renderer.
+        # The main guide brings the local PPT/scientific-figure wrapper. The large
+        # upstream runtime is installed from a pinned official release only on demand.
         ppt_dest = tmp / 'research-guide-only'
         call(primary, ['--dest', ppt_dest, '--only', 'danta-proposal-guide'])
         assert {p.name for p in ppt_dest.iterdir()} == {
-            'danta-proposal-guide', 'danta-research-ppt', 'presentation-skill'
+            'danta-proposal-guide', 'danta-research-ppt'
         }
-        assert (ppt_dest / 'presentation-skill/LICENSE').is_file()
+        bundled_installer = ppt_dest / 'danta-research-ppt/scripts/install_ppt_master.py'
+        assert bundled_installer.is_file()
+        assert '4e239ac3c11036c8c9d3bb987f5ccbd02a176d6832f2404f8a067414d834d2a1' in bundled_installer.read_text()
+        assert 'ppt-master' not in {p.name for p in ppt_dest.iterdir()}
+        local_skills = tmp / 'private-vault/.agents/skills'
+        local_skills.mkdir(parents=True)
+        shutil.copytree(ppt_dest / 'danta-research-ppt', local_skills / 'danta-research-ppt')
+        installer = local_skills / 'danta-research-ppt/scripts/install_ppt_master.py'
+        status = subprocess.run([sys.executable, str(installer), '--check'], capture_output=True, text=True)
+        assert status.returncode == 1 and '没有下载或更改文件' in status.stderr
+        global_status = subprocess.run([sys.executable, str(bundled_installer), '--check'], capture_output=True, text=True)
+        assert global_status.returncode == 1 and '必须是当前私有工作区的 .agents/skills' in global_status.stderr
         call(primary, ['--dest', ppt_dest, '--only', 'danta-proposal-guide'])
         # The vault includes the same transitive closure without installing other skills.
         copy = tmp / 'work'
         call(ROOT / 'scripts/start_project.py', ['--dest', copy])
         assert (copy / '.codex/agents/danta_evidence.toml').exists()
+        assert (copy / 'templates/00_科研知识库_Research-Vault/12_笔记模板_Templates/14_科研图_Figure.md').exists()
+        assert (copy / 'templates/00_科研知识库_Research-Vault/08_成果输出_Outputs/03_图表_Figures/00_index.md').exists()
         assert not (copy / '.git').exists() and not (copy / '.local').exists()
         # Idempotent from the distribution and from inside a marked workspace.
         call(ROOT / 'scripts/start_project.py', ['--dest', copy])

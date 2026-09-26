@@ -32,6 +32,8 @@ aliases: []
 - [未闭环事项 / Open loops](11_长期记忆_Memory/02_开放问题_Open-Loops.md)
 
 - [准备组会 / Lab Meeting](10_日志复盘_Journal/03_组会_Lab-Meetings/00_index.md)
+- [科研图索引 / Research Figures](08_成果输出_Outputs/03_图表_Figures/00_index.md)
+- [做科研图 / Research Figure template](12_笔记模板_Templates/14_科研图_Figure.md)
 
 ## 全库导航 / Library map
 

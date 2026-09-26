@@ -32,7 +32,7 @@ description: 以思维引导帮助生物医学博士从困惑和观察形成自�
 - 三个检查节点、方案状态及主张—证据映射：读 [decision-and-evidence.md](references/decision-and-evidence.md)，这里是这些规则的唯一详细定义。
 - 比较候选方向、制定研究计划或复盘：读 [ogsm.md](references/ogsm.md)，按阶段使用轻量比较或完整 OGSM，不把填表作为启动条件。
 - 准备组会、汇报或整理会后反馈：读 [lab-meeting.md](references/lab-meeting.md)，先明确要讨论的判断，再准备依据和会后行动。
-- 龚博士一旦提出制作、生成、更新或修改 PPT、PowerPoint、演示稿或汇报幻灯片：读 [skill-routing.md](references/skill-routing.md)，自动调用 `danta-research-ppt`；不要求她说“可编辑”或记技能名。先理清证据状态与叙事，再交给 `presentation-skill` 生成并检查文件。
+- 龚博士一旦提出制作、生成、更新或修改 PPT/PowerPoint/演示稿，或要画科研流程图、机制图、实验设计图、研究框架图、图形摘要等：读 [skill-routing.md](references/skill-routing.md)，自动调用 `danta-research-ppt`。先厘清科学主张、来源、证据状态与读者任务，再使用按需安装的 PPT Master 制作可编辑图稿并检查；无需她说“可编辑”或记技能名。
 - 复盘新增文献或更新阅读总表：读 [literature-update.md](references/literature-update.md)，增量更新原记录，不按篇数凑成果。
 - 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
