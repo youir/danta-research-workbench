@@ -6,7 +6,7 @@
 
 ## 最快开始：下载一个知识库，打开两个应用
 
-龚博士已经使用 Obsidian，建议下载 [v1.10.0 独立知识库 ZIP](https://github.com/youir/danta-research-workbench/releases/latest/download/danta-research-vault-v1.10.0.zip)，解压到私有研究目录；Obsidian 和 Codex 同时打开 ZIP 中的 `00_科研知识库_Research-Vault`。主引导和个人画像模板已附带，无须先安装一整套技能或运行命令。向 Codex 说：“使用 `$danta-proposal-guide`，称呼我龚博士；先恢复本项目上下文，再从我今天想做的事开始：……”。详细步骤见 [知识库指南](09_科研知识库与Obsidian.md)。
+龚博士已经使用 Obsidian，建议下载 [独立知识库 ZIP](https://github.com/youir/danta-research-workbench/releases/latest/download/danta-research-vault-v1.10.1.zip)，解压到私有研究目录；Obsidian 和 Codex 同时打开 ZIP 中的 `00_科研知识库_Research-Vault`。主引导和个人画像模板已附带，无须先安装一整套技能或运行命令。想让 Codex 帮忙部署，照着 [本机部署与首次配置](12_本机部署与首次配置.md) 复制启动语即可。
 
 这是默认且唯一推荐的新项目入口。需要维护发行文件、离线安装第三方 skills 或运行校验时，维护者再使用完整工作台包。已有项目应继续使用其唯一私有工作区，不要为了采用新版本复制出第二套当前记录。
 
@@ -54,6 +54,7 @@
 - `我的开题/`：空白模板，运行时请使用本地副本
 - [全周期课题助手](variants/mentor-agent/index.md)：可选的另一种工作区，包含开题后的研究推进；二选一作为主工作区
 - [GitHub 扩展候选与试用标准](11_GitHub扩展候选与试用标准.md)：近期项目、许可核查和按需试用流程
+- [本机部署与首次配置](12_本机部署与首次配置.md)：复制给 Codex 的部署说明
 - [验证与优化说明](04_打包验证说明.md)
 
 本仓库不含真实研究数据、私人聊天、账号配置或已启用的后台日报。日报线索只能作为待核实信息；复制工作区不会迁移已有自动化。
