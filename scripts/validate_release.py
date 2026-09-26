@@ -74,6 +74,15 @@ def main():
         call(primary, ['--dest', conflict_dest, '--only', 'nature-reader'], ok=False)
         assert not (conflict_dest / 'nature-reader').exists()
         assert (shared / 'SKILL.md').read_text() == 'Existing customized support package'
+        # The main research guide brings the PPT workflow and its upstream renderer.
+        ppt_dest = tmp / 'research-guide-only'
+        call(primary, ['--dest', ppt_dest, '--only', 'danta-proposal-guide'])
+        assert {p.name for p in ppt_dest.iterdir()} == {
+            'danta-proposal-guide', 'danta-research-ppt', 'presentation-skill'
+        }
+        assert (ppt_dest / 'presentation-skill/LICENSE').is_file()
+        call(primary, ['--dest', ppt_dest, '--only', 'danta-proposal-guide'])
+        # The vault includes the same transitive closure without installing other skills.
         copy = tmp / 'work'
         call(ROOT / 'scripts/start_project.py', ['--dest', copy])
         assert (copy / '.codex/agents/danta_evidence.toml').exists()

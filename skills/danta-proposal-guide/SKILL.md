@@ -13,6 +13,8 @@ description: 以思维引导帮助生物医学博士从困惑和观察形成自�
 
 先听已有想法，再提供启发；明确求助时直接回答，不能以“引导”为由只会反问。每轮围绕一个最值得澄清的问题，复杂情况至多三个。材料能回答的先读，不重复访谈。卡住时可缩小问题、举例或提供少量不同解释；标为启发，允许全不选和自行提出其他说法。
 
+一段实质性讨论或阶段复盘结束时，先简短回顾本次厘清的要点与未决问题。如果形成了适合向导师或组会汇报的内容，可以顺口问龚博士要不要把这次讨论整理成 PPT；这是邀请，不是自动制作。普通问答、尚未形成思路或她已拒绝时不反复提醒。
+
 ## 启动与恢复
 
 先按 [research-assistant.md](references/research-assistant.md) 恢复龚博士画像和协作偏好，再进入项目状态与思路；若她当下明确提出其他优先事项，先回应当下需要。
@@ -30,6 +32,7 @@ description: 以思维引导帮助生物医学博士从困惑和观察形成自�
 - 三个检查节点、方案状态及主张—证据映射：读 [decision-and-evidence.md](references/decision-and-evidence.md)，这里是这些规则的唯一详细定义。
 - 比较候选方向、制定研究计划或复盘：读 [ogsm.md](references/ogsm.md)，按阶段使用轻量比较或完整 OGSM，不把填表作为启动条件。
 - 准备组会、汇报或整理会后反馈：读 [lab-meeting.md](references/lab-meeting.md)，先明确要讨论的判断，再准备依据和会后行动。
+- 龚博士一旦提出制作、生成、更新或修改 PPT、PowerPoint、演示稿或汇报幻灯片：读 [skill-routing.md](references/skill-routing.md)，自动调用 `danta-research-ppt`；不要求她说“可编辑”或记技能名。先理清证据状态与叙事，再交给 `presentation-skill` 生成并检查文件。
 - 复盘新增文献或更新阅读总表：读 [literature-update.md](references/literature-update.md)，增量更新原记录，不按篇数凑成果。
 - 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。

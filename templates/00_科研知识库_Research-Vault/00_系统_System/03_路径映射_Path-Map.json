@@ -28,7 +28,8 @@
     "我的开题/10_组会与复盘/03_文献增量复盘.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/03_文献增量_Literature-Update.md",
     "我的开题/10_组会与复盘/04_会后纪要与行动.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/04_会后行动_Post-Meeting.md",
     "我的开题/10_组会与复盘/05_会前核查.md": "10_日志复盘_Journal/03_组会_Lab-Meetings/05_会前核查_Readiness-Check.md",
-    "我的开题/03_文献与证据/文献获取与版本.csv": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/04_文献获取版本_Access-Versions.csv"
+    "我的开题/03_文献与证据/文献获取与版本.csv": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/04_文献获取版本_Access-Versions.csv",
+    "我的开题/11_科研汇报与答辩/PPT输出/": "08_成果输出_Outputs/04_科研汇报与答辩_Presentations/"
   },
   "roles": {
     "current_state": "05_课题项目_Projects/00_主课题_Main-Project/00_当前状态_Current-State.md",
@@ -42,6 +43,7 @@
     "advisor_profiles": "09_专家顾问_Advisors/01_顾问包_Profiles",
     "memory_index": "11_长期记忆_Memory/00_index.md",
     "lab_meetings": "10_日志复盘_Journal/03_组会_Lab-Meetings",
-    "literature_access": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/04_文献获取版本_Access-Versions.csv"
+    "literature_access": "03_文献证据_Literature-Evidence/01_检索与证据_Registers/04_文献获取版本_Access-Versions.csv",
+    "presentation_outputs": "08_成果输出_Outputs/04_科研汇报与答辩_Presentations"
   }
 }

@@ -34,6 +34,7 @@ Obsidian 核心 Templates 可直接插入；用源代码模式编辑模板变量
 - [11_日常记录_Daily.md](11_日常记录_Daily.md)
 
 - [组会讨论 / Lab Meeting](12_组会讨论_Lab-Meeting.md)
+- [科研汇报与PPT / Research Presentation](13_科研汇报_Presentation.md)
 
 ## 本区维护
 

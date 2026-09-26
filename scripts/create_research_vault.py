@@ -44,9 +44,25 @@ def source_plan():
     errors = verify_bundle(data)
     if errors:
         raise ValueError('Skill integrity check failed: ' + '; '.join(errors))
-    guide = data['skills']['danta-proposal-guide']
-    for name in guide['files']:
-        plan.append((ROOT / guide['source'] / name, Path('.agents/skills/danta-proposal-guide') / name))
+    # Include the selected primary skill and its transitive support modules.
+    selected, visiting = [], set()
+    def add_skill(name):
+        if name in selected:
+            return
+        if name in visiting:
+            raise ValueError('Cyclic skill dependency: ' + name)
+        if name not in data['skills']:
+            raise ValueError('Missing bundled dependency: ' + name)
+        visiting.add(name)
+        for dependency in data['skills'][name].get('dependencies', []):
+            add_skill(dependency)
+        visiting.remove(name)
+        selected.append(name)
+    add_skill('danta-proposal-guide')
+    for skill in selected:
+        info = data['skills'][skill]
+        for name in info['files']:
+            plan.append((ROOT / info['source'] / name, Path('.agents/skills') / skill / name))
     # Roles are copied from the same reviewed project distribution, never global configuration.
     listed = json.loads((ROOT / 'project-files.json').read_text(encoding='utf-8'))['files']
     for name in listed:

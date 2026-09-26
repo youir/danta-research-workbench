@@ -15,3 +15,7 @@
 ## 女娲（v1.5）
 
 `vendor/skills/huashu-nuwa/` 的运行文件来自 alchaincyf/nuwa-skill，固定提交 `fe0374687037c4cc51a65c1e0c145afe2981dc69`，MIT许可见目录内 LICENSE，Copyright (c) 2026 Huashu (花叔)。所分发的上游文件未修改；工作台适配说明另存于主引导references。生成顾问按原模板保留女娲与创建者归属。本包未分发原仓库人物示例或任何新生成专家语料。
+
+## 可编辑科研 PPT（v1.11）
+
+`vendor/skills/presentation-skill/` 来自 [siril9/presentation-skill](https://github.com/siril9/presentation-skill)，固定提交 `b6b0974e75e4c7702cfa48ba037d241f2b601d9c`（上游版本 `0.12.0`）。完整上游 MIT `LICENSE` 与技能文件随包保留；本工作台另增 `UPSTREAM_SOURCE.md` 记录固定来源。它提供从结构化提纲生成与校验可编辑 `.pptx` 的工作流。使用其依赖时各依赖仍按自己的许可证分发；本工作台没有附带私有视频平台、第三方研究资料或上游 demo 研究源文件。
