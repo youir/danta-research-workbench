@@ -2,11 +2,11 @@
   "name": "danta-research-mentor",
   "version": "1.2-reviewed",
   "files": {
-    "SKILL.md": "29d728ed8a62e28bb4f2223eea7a20e7ccaa5dbfd8d2317be5825a361af27568",
+    "SKILL.md": "9a7a7abe3293ea6568a14feebca172ef4bac6df67d8761a2fe48661107036153",
     "agents/openai.yaml": "db77662b674d114c078cf5112b5f66184e8be2ab1816830874b5ed96901cf4ec",
     "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
     "references/intake.md": "c0b52c397b17e1e17203ad59643bbe0827fe795077ab8e9196e2e3b7cdc00905",
-    "references/multi-agent.md": "16061564a0d11344c5a614ca60b4a4ebdd7916dbb842f01860e8252a273e6d1d",
+    "references/multi-agent.md": "b3d2494bc5f21bcdec320b1e62b2bd682e63fc96bbb337e3ed9c2898b483f318",
     "references/research-lenses.md": "5088bfa0e55abc87a6d9f399a1626d65569d19074b14977f48109440c37d1660",
     "references/skill-routing.md": "6a0d8070c5c247092a8f2f7c281d297fc924ceed078eac510dae1f4e9c353088",
     "references/thinking-dialogue.md": "1566cb5e05d6b0088d3a6d536a483dd9f2a85e0bc1a5408439cca4639efeb418",

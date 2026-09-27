@@ -21,7 +21,7 @@ python3 scripts/create_research_vault.py
 
 用 Obsidian 的 **Open folder as vault** 打开这个目录；Codex 也打开同一目录，阅读 `00_index.md`。这种本地文件夹方式是 Obsidian 官方支持的使用方式，见 [Vault 管理](https://obsidian.md/help/manage-vaults)。本次只交付模板和初始化能力，没有操作蛋挞电脑上的应用或现有库。
 
-初始化已附带主引导 skill、三个 agent 的项目配置和核心 Templates 配置。科研第三方 skills 仍按 [安装指南](01_安装与环境指南.md) 安装；不会自动装社区插件、云同步或后台任务。没有 Python 时，可以完整复制 [模板目录](templates/00_科研知识库_Research-Vault/00_index.md) 所在文件夹到私有位置，再按指南从发行包安装或显式读取主引导；手工复制不自动附加主引导与agent配置。
+初始化已附带主引导 skill、七个职责 agent 的项目配置和核心 Templates 配置。主引导按龚博士提出的任务自动分派，简单工作直接完成；独立子任务才并行，最多三个。科研第三方 skills 仍按 [安装指南](01_安装与环境指南.md) 安装；不会自动装社区插件、云同步或后台任务。没有 Python 时，可以完整复制 [模板目录](templates/00_科研知识库_Research-Vault/00_index.md) 所在文件夹到私有位置，再按指南从发行包安装或显式读取主引导；手工复制不自动附加主引导与 agent 配置。
 
 第一次启动时可以说：
 

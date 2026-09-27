@@ -1,86 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1160" viewBox="0 0 1600 1160">
   <defs>
     <linearGradient id="head" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#e7f0ff"/><stop offset="1" stop-color="#effaf8"/>
     </linearGradient>
     <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
-      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#22324d" flood-opacity=".08"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#22324d" flood-opacity=".08"/>
     </filter>
     <style>
       text { font-family: "Hiragino Sans GB", "PingFang SC", "Noto Sans CJK SC", sans-serif; fill: #20324d; }
-      .title { font-size: 42px; font-weight: 700; }
+      .title { font-size: 40px; font-weight: 700; }
       .subtitle { font-size: 21px; fill: #526681; }
-      .step { font-size: 20px; font-weight: 700; }
-      .head { font-size: 25px; font-weight: 700; }
-      .body { font-size: 19px; fill: #53637a; }
-      .small { font-size: 17px; fill: #617189; }
-      .lane-title { font-size: 24px; font-weight: 700; }
-      .lane-body { font-size: 20px; fill: #53637a; }
-      .tag { font-size: 18px; font-weight: 600; }
-      .white { fill: #fff; }
-      .navy { fill: #123056; }
+      .section { font-size: 22px; font-weight: 700; }
+      .label { font-size: 18px; fill: #526681; }
+      .cardtitle { font-size: 21px; font-weight: 700; }
+      .body { font-size: 17px; fill: #405674; }
+      .small { font-size: 15px; fill: #526681; }
     </style>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#607d9d"/>
-    </marker>
   </defs>
-  <rect width="1600" height="1180" fill="#f7f9fc"/>
-  <rect x="0" y="0" width="1600" height="138" fill="url(#head)"/>
-  <text x="58" y="62" class="title">龚博士科研工作台</text>
-  <text x="60" y="103" class="subtitle">一个对话入口 · 一位持续协作的科研助理 · 一份私有研究档案</text>
-  <text x="1540" y="60" text-anchor="end" class="small">思维优先　·　决定在人</text>
+  <rect width="1600" height="1160" fill="#f6f8fc"/>
+  <rect width="1600" height="125" fill="url(#head)"/>
+  <text x="60" y="60" class="title">龚博士科研工作台</text>
+  <text x="60" y="98" class="subtitle">一个对话入口 · 七类职责 agent · 一份私有研究档案</text>
+  <text x="1360" y="65" class="label">思维优先 · 决定在人</text>
 
-  <text x="60" y="178" class="step">01　今天只需说出你要做什么</text>
+  <text x="60" y="165" class="section">01　龚博士只需说想推进什么</text>
   <g filter="url(#shadow)">
-    <rect x="58" y="205" width="275" height="150" rx="18" fill="#fff" stroke="#cbd8e8"/>
-    <rect x="365" y="205" width="275" height="150" rx="18" fill="#e8f4ff" stroke="#b7d0ef"/>
-    <rect x="672" y="205" width="275" height="150" rx="18" fill="#eaf7f3" stroke="#b9ddd2"/>
-    <rect x="979" y="205" width="275" height="150" rx="18" fill="#fff5e8" stroke="#ead4ad"/>
-    <rect x="1286" y="205" width="256" height="150" rx="18" fill="#f1edff" stroke="#d0c6ee"/>
+    <rect x="60" y="190" width="280" height="125" rx="18" fill="#fff" stroke="#cad7e8"/>
+    <rect x="365" y="190" width="280" height="125" rx="18" fill="#e9f3ff" stroke="#b8d2f1"/>
+    <rect x="670" y="190" width="280" height="125" rx="18" fill="#eaf7f3" stroke="#b8dfd3"/>
+    <rect x="975" y="190" width="280" height="125" rx="18" fill="#fff5e9" stroke="#efd3ae"/>
+    <rect x="1280" y="190" width="260" height="125" rx="18" fill="#f2edff" stroke="#d5c9f5"/>
   </g>
-  <path d="M337 280 H355" stroke="#607d9d" stroke-width="3" marker-end="url(#arrow)"/>
-  <path d="M644 280 H662" stroke="#607d9d" stroke-width="3" marker-end="url(#arrow)"/>
-  <path d="M951 280 H969" stroke="#607d9d" stroke-width="3" marker-end="url(#arrow)"/>
-  <path d="M1258 280 H1276" stroke="#607d9d" stroke-width="3" marker-end="url(#arrow)"/>
-  <text x="82" y="242" class="small">龚博士</text><text x="82" y="279" class="head">自然表达需要</text><text x="82" y="315" class="body">不必选流程或技能</text>
-  <text x="389" y="242" class="small">主 agent</text><text x="389" y="279" class="head">恢复相关上下文</text><text x="389" y="315" class="body">倾听、引导或直接协助</text>
-  <text x="696" y="242" class="small">按需处理</text><text x="696" y="279" class="head">推进当前任务</text><text x="696" y="315" class="body">最少必要的工具与步骤</text>
-  <text x="1003" y="242" class="small">可判断的结果</text><text x="1003" y="279" class="head">依据与未知清楚</text><text x="1003" y="315" class="body">给出下一步选项</text>
-  <text x="1310" y="242" class="small">持续接续</text><text x="1310" y="279" class="head">重要变化入库</text><text x="1310" y="315" class="body">下次从这里继续</text>
+  <text x="82" y="225" class="label">龚博士</text><text x="82" y="260" class="cardtitle">自然表达需求</text><text x="82" y="292" class="body">不必选 agent 或技能</text>
+  <text x="387" y="225" class="label">主 agent</text><text x="387" y="260" class="cardtitle">恢复相关上下文</text><text x="387" y="292" class="body">理解目标与当前边界</text>
+  <text x="692" y="225" class="label">按职责路由</text><text x="692" y="260" class="cardtitle">指定工作负责人</text><text x="692" y="292" class="body">简单任务主 agent 直接做</text>
+  <text x="997" y="225" class="label">核对交付</text><text x="997" y="260" class="cardtitle">依据、未知、产物</text><text x="997" y="292" class="body">说明限制与下一步</text>
+  <text x="1302" y="225" class="label">持续接续</text><text x="1302" y="260" class="cardtitle">重要变化入库</text><text x="1302" y="292" class="body">下次仍从这里继续</text>
+  <path d="M342 252h16m287 0h16m287 0h16m287 0h16" stroke="#7187a4" stroke-width="3"/>
 
-  <text x="60" y="410" class="step">02　主 agent 按当前目标走一条工作路径；三条路径可往返</text>
+  <text x="60" y="365" class="section">02　七类 agent 分工，一项主要工作一个负责人</text>
   <g filter="url(#shadow)">
-    <rect x="58" y="438" width="476" height="190" rx="20" fill="#fff" stroke="#9dbce2" stroke-width="2"/>
-    <rect x="562" y="438" width="476" height="190" rx="20" fill="#fff" stroke="#a9d5c8" stroke-width="2"/>
-    <rect x="1066" y="438" width="476" height="190" rx="20" fill="#fff" stroke="#dfc4a0" stroke-width="2"/>
+    <rect x="60" y="392" width="350" height="180" rx="18" fill="#fff" stroke="#9cbbe3"/>
+    <rect x="430" y="392" width="350" height="180" rx="18" fill="#fff" stroke="#9bd2c3"/>
+    <rect x="800" y="392" width="350" height="180" rx="18" fill="#fff" stroke="#efc88f"/>
+    <rect x="1170" y="392" width="370" height="180" rx="18" fill="#fff" stroke="#c7b8ed"/>
+    <rect x="60" y="592" width="350" height="180" rx="18" fill="#fff" stroke="#9cbbe3"/>
+    <rect x="430" y="592" width="350" height="180" rx="18" fill="#fff" stroke="#9bd2c3"/>
+    <rect x="800" y="592" width="350" height="180" rx="18" fill="#fff" stroke="#e5a6a0"/>
+    <rect x="1170" y="592" width="370" height="180" rx="18" fill="#f1f4f8" stroke="#d2dbe7"/>
   </g>
-  <rect x="58" y="438" width="10" height="190" rx="5" fill="#3b75b8"/><rect x="562" y="438" width="10" height="190" rx="5" fill="#318477"/><rect x="1066" y="438" width="10" height="190" rx="5" fill="#bf7a35"/>
-  <text x="88" y="482" class="lane-title">思考与开题</text><text x="88" y="522" class="lane-body">困惑与观察 → 问题 → 竞争解释</text><text x="88" y="556" class="lane-body">→ 查证据 → 龚博士与导师选择</text><text x="88" y="599" class="small">不催定题；可以暂定、回退或分叉</text>
-  <text x="592" y="482" class="lane-title">持续研究</text><text x="592" y="522" class="lane-body">问题 → 文献 / 方法 / 数据</text><text x="592" y="556" class="lane-body">→ 最小验证 → 根据新证据复盘</text><text x="592" y="599" class="small">保留来源、条件和可复现记录</text>
-  <text x="1096" y="482" class="lane-title">组会、论文与科研图</text><text x="1096" y="522" class="lane-body">稿件 / 审稿意见 → 证据与论证</text><text x="1096" y="556" class="lane-body">组会提纲 / PPT / 可编辑科研图</text><text x="1096" y="599" class="small">短指令起步；写作、修回按需协作</text>
+  <text x="84" y="430" class="label">danta_evidence</text><text x="84" y="465" class="cardtitle">文献与证据</text><text x="84" y="500" class="body">检索 · 精读 · 证据核查</text><text x="84" y="530" class="body">研究空白 · 日报线索复核</text>
+  <text x="454" y="430" class="label">danta_methods</text><text x="454" y="465" class="cardtitle">方法与统计</text><text x="454" y="500" class="body">研究设计 · 终点 · 统计假设</text><text x="454" y="530" class="body">可行性 · 替代解释</text>
+  <text x="824" y="430" class="label">danta_bioinformatics</text><text x="824" y="465" class="cardtitle">生信与数据库</text><text x="824" y="500" class="body">数据库映射 · 分析方案</text><text x="824" y="530" class="body">获授权的执行与运行记录</text>
+  <text x="1194" y="430" class="label">danta_writing</text><text x="1194" y="465" class="cardtitle">论文写作</text><text x="1194" y="500" class="body">起草 · 修订 · 翻译</text><text x="1194" y="530" class="body">审稿回复 · 投稿材料</text>
+  <text x="84" y="630" class="label">danta_communication</text><text x="84" y="665" class="cardtitle">组会与科研表达</text><text x="84" y="700" class="body">会前准备 · 会后复盘</text><text x="84" y="730" class="body">PPT · 机制图 · 科研图</text>
+  <text x="454" y="630" class="label">danta_knowledge</text><text x="454" y="665" class="cardtitle">知识库整理</text><text x="454" y="700" class="body">权威路径 · 索引 · 归档建议</text><text x="454" y="730" class="body">只读草稿，主 agent 审核写入</text>
+  <text x="824" y="630" class="label">danta_critic</text><text x="824" y="665" class="cardtitle">质疑与质量审查</text><text x="824" y="700" class="body">论证 · 设计 · 稿件 · 汇报</text><text x="824" y="730" class="body">反例、缺口与改进方向</text>
+  <text x="1194" y="630" class="label">按任务选择最小组合</text><text x="1194" y="665" class="cardtitle">最多 3 个并行</text><text x="1194" y="700" class="body">独立问题可并行</text><text x="1194" y="730" class="body">有依赖的步骤顺序完成</text>
 
-  <text x="60" y="681" class="step">03　同一个私有 Obsidian vault 是研究事实与长期上下文的唯一来源</text>
+  <text x="60" y="827" class="section">03　主 agent 核对并接续到同一份私有研究档案</text>
   <g filter="url(#shadow)">
-    <rect x="58" y="710" width="935" height="218" rx="20" fill="#fff" stroke="#bdd0e4" stroke-width="2"/>
-    <rect x="1022" y="710" width="520" height="218" rx="20" fill="#fff" stroke="#d2c7ec" stroke-width="2"/>
+    <rect x="60" y="854" width="720" height="205" rx="20" fill="#fff" stroke="#b8cce7"/>
+    <rect x="800" y="854" width="740" height="205" rx="20" fill="#f2effb" stroke="#d2c7ec"/>
   </g>
-  <text x="88" y="754" class="head">Obsidian 和 Codex 打开同一文件夹</text>
-  <text x="88" y="787" class="small">Path-Map 指向唯一位置；RSS 线索经人工复核后入库，面板仅读汇总当前 vault</text>
-  <rect x="86" y="815" width="204" height="76" rx="12" fill="#edf4fb"/><rect x="304" y="815" width="204" height="76" rx="12" fill="#edf4fb"/><rect x="522" y="815" width="204" height="76" rx="12" fill="#edf4fb"/><rect x="740" y="815" width="224" height="76" rx="12" fill="#edf4fb"/>
-  <text x="188" y="847" text-anchor="middle" class="tag">画像与当前状态</text><text x="188" y="874" text-anchor="middle" class="small">背景 · 资源 · 进度</text>
-  <text x="406" y="847" text-anchor="middle" class="tag">资料与证据</text><text x="406" y="874" text-anchor="middle" class="small">来源 · 阅读 · 文献</text>
-  <text x="624" y="847" text-anchor="middle" class="tag">思路与决定</text><text x="624" y="874" text-anchor="middle" class="small">Idea · 方案 · 决策</text>
-  <text x="852" y="847" text-anchor="middle" class="tag">组会与长期记忆</text><text x="852" y="874" text-anchor="middle" class="small">反馈 · 成果 · 交接</text>
-
-  <text x="1052" y="754" class="head">可选支持，遇到需要再用</text>
-  <text x="1052" y="799" class="body">专项 skills：文献、统计、生信、科研日报与科研图</text>
-  <text x="1052" y="835" class="body">数据库查询 · 论文写作/修回 · 科研日报 · 机制图稿</text>
-  <text x="1052" y="871" class="body">分析后端与运行范围逐项确认</text>
-  <text x="1052" y="905" class="small">Agent / 顾问 / 外部工具按需核验</text>
-
-  <rect x="58" y="961" width="724" height="150" rx="18" fill="#e8f5ef" stroke="#b5ddc9"/>
-  <rect x="816" y="961" width="726" height="150" rx="18" fill="#f0eff8" stroke="#cbc6e2"/>
-  <text x="88" y="1005" class="head">决定权在人</text><text x="88" y="1044" class="body">研究方向、假说和实验决策由龚博士与导师掌握。</text><text x="88" y="1080" class="body">AI 提供依据、备选解释、风险和可执行的下一步。</text>
-  <text x="846" y="1005" class="head">资料有边界</text><text x="846" y="1044" class="body">仅读取龚博士授权的研究工作区与来源。</text><text x="846" y="1080" class="small">审查时暂停风险部分，记录脱敏上下文；不自动外发。</text>
-  <text x="60" y="1150" class="small">一条主线：说出需要 → 助理理解 → 按需协作 → 留下可信记录 → 下次接续</text>
+  <text x="90" y="895" class="cardtitle">唯一 Obsidian vault：证据、思路、决定、组会与产物</text>
+  <text x="90" y="934" class="body">主 agent 汇总来源、阅读范围、结果状态、分歧与待核实项。</text>
+  <text x="90" y="968" class="body">共享画像、当前状态和决策日志由主 agent 核对后统一更新。</text>
+  <text x="90" y="1016" class="small">临时讨论不自动成为长期记忆；不同 agent 的一致意见不等于新增证据。</text>
+  <text x="830" y="895" class="cardtitle">龚博士与导师保留研究决定权</text>
+  <text x="830" y="934" class="body">AI 提供证据、方法选项、写作草案与可执行下一步。</text>
+  <text x="830" y="968" class="body">授权范围、资料外发和分析执行按本轮任务明确核对。</text>
+  <text x="830" y="1016" class="small">Skills 是工作方法；职责 agent 不是独立的科学权威。</text>
+  <text x="60" y="1110" class="label">一条主线：说出需要 → 主 agent 指定负责人 → 核对交付 → 更新唯一档案 → 下次接续</text>
 </svg>

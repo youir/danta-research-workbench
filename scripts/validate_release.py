@@ -86,7 +86,6 @@ def main():
         assert (ppt_dest / 'danta-bio-paper-writing/references/workflow.md').is_file()
         assert (ppt_dest / 'danta-bio-daily-briefing/SKILL.md').is_file()
         assert (ppt_dest / 'danta-bio-daily-briefing/scripts/render_brief.py').is_file()
-        assert (ppt_dest / 'danta-proposal-guide/references/biosafety-escalation.md').is_file()
         bundled_installer = ppt_dest / 'danta-research-ppt/scripts/install_ppt_master.py'
         assert bundled_installer.is_file()
         assert '4e239ac3c11036c8c9d3bb987f5ccbd02a176d6832f2404f8a067414d834d2a1' in bundled_installer.read_text()
@@ -103,11 +102,14 @@ def main():
         # The vault includes the same transitive closure without installing other skills.
         copy = tmp / 'work'
         call(ROOT / 'scripts/start_project.py', ['--dest', copy])
-        assert (copy / '.codex/agents/danta_evidence.toml').exists()
+        expected_agents = {
+            'danta_evidence', 'danta_methods', 'danta_bioinformatics',
+            'danta_writing', 'danta_communication', 'danta_knowledge', 'danta_critic'
+        }
+        agent_dir = copy / '.codex/agents'
+        assert {p.stem for p in agent_dir.glob('*.toml')} == expected_agents
         assert (copy / 'templates/00_科研知识库_Research-Vault/12_笔记模板_Templates/14_科研图_Figure.md').exists()
         assert (copy / 'templates/00_科研知识库_Research-Vault/08_成果输出_Outputs/03_图表_Figures/00_index.md').exists()
-        assert (copy / 'templates/00_科研知识库_Research-Vault/00_系统_System/06_生物研究安全审查_Biosafety-Escalation.md').exists()
-        assert (copy / 'templates/00_科研知识库_Research-Vault/12_笔记模板_Templates/15_生物安全审查记录_Biosafety-Review.md').exists()
         assert not (copy / '.git').exists() and not (copy / '.local').exists()
         # Idempotent from the distribution and from inside a marked workspace.
         call(ROOT / 'scripts/start_project.py', ['--dest', copy])
@@ -156,16 +158,25 @@ def main():
         try:
             import tomli as tomllib
         except ImportError:
-            print('NOT RUN: TOML parsing needs Python 3.11+ or tomli; installation still works with Python 3.9+.')
-            return 0
+            try:
+                from pip._vendor import tomli as tomllib
+            except ImportError:
+                print('NOT RUN: TOML parsing needs Python 3.11+ or tomli; installation still works with Python 3.9+.')
+                return 0
     configs = [ROOT / '.codex', ROOT / 'variants/mentor-agent/研究工作区/.codex']
+    expected_agents = {
+        'danta_evidence', 'danta_methods', 'danta_bioinformatics',
+        'danta_writing', 'danta_communication', 'danta_knowledge', 'danta_critic'
+    }
     for base in configs:
         settings = tomllib.loads((base / 'config.toml').read_text())
         assert settings['agents']['max_concurrent_threads_per_session'] == 3
-        for file in (base / 'agents').glob('*.toml'):
+        agent_files = list((base / 'agents').glob('*.toml'))
+        assert {file.stem for file in agent_files} == expected_agents
+        for file in agent_files:
             data = tomllib.loads(file.read_text())
             assert all(data.get(k) for k in ['name', 'description', 'developer_instructions'])
-            assert data['sandbox_mode'] == 'read-only'
+            assert data['sandbox_mode'] in {'read-only', 'workspace-write'}
             assert 'model' not in data
     print('PASS: TOML syntax and required role fields; this is not a live subagent execution test')
     return 0

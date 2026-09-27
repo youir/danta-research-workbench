@@ -21,7 +21,7 @@ description: 蛋挞的生物医学课题助手。先盘点资料、导师要求�
 
 思路成形时回看问题边界、文献定位与研究架构三个节点。具体按 [decision-and-evidence.md](references/decision-and-evidence.md) 执行：暂定内容可以继续推演，明确的人类选择才记为工作基线；不要逐项索要重复确认。CONFIRMED 是方案决定状态，不是科学证明；阻塞只约束对应动作。先读 [thinking-dialogue.md](references/thinking-dialogue.md) 选择本轮引导方式。
 
-仅在需要评估研究策略时读取 [research-lenses.md](references/research-lenses.md)。每次选最相关的 1—3 个视角，不机械召开“名师会诊”，仅在采用本包多 agent 协作方式且有独立子任务时，按 multi-agent.md 委派。先报告事实依据，再报告方法归纳与本次建议。研究方向不同就换适合的框架，不把焦亡、探针或某条通路硬套给用户。
+仅在需要评估研究策略时读取 [research-lenses.md](references/research-lenses.md)。每次选最相关的 1—3 个视角，不机械召开“名师会诊”；主引导按任务路由到文献、方法统计、生信数据库、写作、组会表达、知识库或质疑 agent。先报告事实依据，再报告方法归纳与本次建议。研究方向不同就换适合的框架，不把焦亡、探针或某条通路硬套给用户。
 
 扩展技能按 [skill-routing.md](references/skill-routing.md) 调用。没有安装时说明限制并在能力范围内继续；未经核验不得声称调用成功。
 
@@ -45,4 +45,4 @@ description: 蛋挞的生物医学课题助手。先盘点资料、导师要求�
 
 ## 多 agent 协作
 
-用户选用多 agent 协助时，按 [multi-agent.md](references/multi-agent.md) 派工。主引导保持唯一日常对话入口；专家只提供证据、设计或质疑，不写共享研究档案，也不替人决定。先验证真实工具，未运行不得声称多 agent 复核完成。
+主引导按 [multi-agent.md](references/multi-agent.md) 路由和派工，保持唯一日常对话入口。每项主要工作指定对应负责人；共享研究档案由主引导核对后更新，研究决定仍由龚博士与导师作出。先验证真实工具，未运行不得声称多 agent 复核完成。
