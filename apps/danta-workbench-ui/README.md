@@ -33,3 +33,11 @@ npm run start
 ```bash
 npm run check
 ```
+
+## 机制图与图解说明
+
+主导航中的「机制图」与「研究记录」同级；PPT 工作区也可进入。打开后填写简短主题和已有证据，点击「生成专用启动语」，复制到 Codex。启动语会调用 danta-research-ppt 与 PPT Master，依次核对节点关系和来源、确认逻辑草图、制作可编辑图形并检查。
+
+「查看制作过程」展示步骤说明，当前不表示实时执行进度。工作区内的 BioTender 链接打开技能集合；BioRender 链接打开绘图平台。链接不传送研究材料，也不代表已安装技能或已连接绘图 API。
+
+[图片版使用说明](../../docs/assets/quickstart.png) · [工作台框架图](../../docs/assets/workbench-map.png)

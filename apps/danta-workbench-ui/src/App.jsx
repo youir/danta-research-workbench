@@ -1,9 +1,12 @@
+import quickstartImage from '../../../docs/assets/quickstart.png';
+import frameworkImage from '../../../docs/assets/workbench-map.png';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, BookOpenText, Check, ClockCounterClockwise, Copy, FolderOpen, House, Notebook } from '@phosphor-icons/react';
+import { ArrowRight, ArrowSquareOut, BookOpenText, Check, ClockCounterClockwise, Copy, FolderOpen, House, Notebook, ShareNetwork } from '@phosphor-icons/react';
 
 const NAV_ITEMS = [
   { id: 'start', label: '开始', Icon: House },
   { id: 'records', label: '研究记录', Icon: Notebook },
+  { id: 'mechanism', label: '机制图', Icon: ShareNetwork },
   { id: 'literature', label: '文献', Icon: BookOpenText },
   { id: 'vault', label: '知识库', Icon: FolderOpen },
 ];
@@ -20,6 +23,7 @@ function makeKickoffPrompt(thought, focus) {
     '选题思路': '先梳理研究现象、证据缺口和可行条件，不替我决定题目。',
     '论文写作': '按需调用 $danta-bio-paper-writing；依据稿件和已有证据协作，不补造结果或文献。',
     '科研 PPT': '按需调用 $danta-research-ppt 与 PPT Master；先理清汇报目的、叙事主线和证据，再制作可编辑稿。',
+    '科研机制图': '按需调用 $danta-research-ppt 与 PPT Master。先把图的用途、主张和适用场景说清，再整理“节点—关系—来源”表；逐项核对物种/模型、关系方向、来源位置和证据状态。直接证据与推断关系必须区分，不确定关系先标待核实，不擅自补线。先让我确认生物学逻辑，再制作可编辑机制图（优先保留 SVG 源文件）并检查科学准确性、图例和可读性。',
     '组会工作': '按组会流程整理目标、关键问题、已决定与待定事项及行动项；复盘和制作 PPT 分开处理。',
     '生物科研日报': '按需调用 $danta-bio-daily-briefing；只汇总可核实来源，注明来源覆盖和日期，无来源时如实给出空状态。',
   }[focus];
@@ -39,6 +43,7 @@ function getStartActionLabel(focus) {
     '选题思路': '开始梳理选题',
     '论文写作': '准备写作启动语',
     '科研 PPT': '准备 PPT 启动语',
+    '科研机制图': '准备机制图启动语',
     '组会工作': '准备组会启动语',
     '生物科研日报': '准备日报启动语',
   }[focus] || '开始梳理';
@@ -54,6 +59,9 @@ export function App() {
   const [notice, setNotice] = useState('');
   const [vaultName, setVaultName] = useState('');
   const [filesByWorkflow, setFilesByWorkflow] = useState({});
+  const [showMechanismProcess, setShowMechanismProcess] = useState(false);
+  const [mechanismWorkspaceOpen, setMechanismWorkspaceOpen] = useState(false);
+  const [mechanismBrief, setMechanismBrief] = useState('研究主题 / 核心发现：……\n已有证据或参考文献：……\n使用场景：PPT 汇报 / 论文插图');
   const pickerRef = useRef(null);
   const workflowFilesRef = useRef(null);
   const textareaRef = useRef(null);
@@ -127,6 +135,7 @@ export function App() {
   function openWorkflow({ id, seed, focus }) {
     setThought(seed);
     setTaskFocus(focus);
+    setMechanismWorkspaceOpen(false);
     setActivePage(id);
   }
 
@@ -141,12 +150,17 @@ export function App() {
     event.target.value = '';
   }
 
+  function startMechanismDiagram() {
+    beginDiscussion(mechanismBrief, '科研机制图');
+  }
+
   function renderWorkflow(workflow) {
     const files = filesByWorkflow[workflow.id] || [];
+    const hasMechanismWorkspace = workflow.id === 'ppt' || workflow.id === 'mechanism';
     return (
       <section className="workspace-view" aria-labelledby={`${workflow.id}-title`}>
         <div className="workspace-topline">
-          <button className="back-link" type="button" onClick={() => setActivePage('start')}>← 全部工作</button>
+          <button className="back-link" type="button" onClick={() => { setMechanismWorkspaceOpen(false); setActivePage('start'); }}>← 全部工作</button>
           <span>独立工作区</span>
         </div>
         <div className="workspace-heading">
@@ -154,7 +168,25 @@ export function App() {
           <h1 id={`${workflow.id}-title`}>{workflow.label}</h1>
           <p>{workflow.workspaceDescription}</p>
         </div>
-        <div className="workspace-grid">
+        {workflow.id === 'ppt' && !mechanismWorkspaceOpen && <section className="mechanism-launcher" aria-labelledby="mechanism-tools-title">
+          <div className="mechanism-launcher-copy"><span className="panel-kicker">科研图示 · 证据先行</span><h2 id="mechanism-tools-title">机制图制作</h2><p>把机制图的逻辑梳理、证据核对、制图工具和制作过程集中在一个工作区。</p></div>
+          <button className="primary-button compact" type="button" onClick={() => { setMechanismWorkspaceOpen(true); setShowMechanismProcess(false); }}><ShareNetwork size={18} aria-hidden="true" />进入机制图工作区 <ArrowRight size={16} aria-hidden="true" /></button>
+        </section>}
+        {hasMechanismWorkspace && mechanismWorkspaceOpen ? <section className="mechanism-workspace" aria-labelledby="mechanism-workspace-title">
+          <div className="mechanism-workspace-top"><button className="back-link" type="button" onClick={() => { setMechanismWorkspaceOpen(false); if (workflow.id === 'mechanism') setActivePage('start'); }}>← {workflow.id === 'ppt' ? '返回 PPT 工作区' : '全部工作'}</button><span>机制图 · 独立工作区</span></div>
+          <div className="mechanism-workspace-heading"><div><span className="panel-kicker">科研图示 · 证据先行</span><h2 id="mechanism-workspace-title">把生物学逻辑变成可核对的图</h2><p>先确认每条关系的证据，再选绘图方式。研究材料不会自动发送到外部网站。</p></div><button className="secondary-button process-toggle" type="button" aria-expanded={showMechanismProcess} aria-controls="mechanism-process" onClick={() => setShowMechanismProcess(value => !value)}>{showMechanismProcess ? '收起制作过程' : '查看制作过程'} <ArrowRight size={16} aria-hidden="true" /></button></div>
+          {showMechanismProcess && <div id="mechanism-process"><p className="mechanism-boundary">以下为制作步骤说明；当前未连接执行进度，实际制作在 Codex 中进行。</p><ol className="mechanism-process">
+            <li><span>01</span><div><strong>明确图的任务</strong><small>确认汇报场景、核心主张、受众和图中边界。</small></div><em>龚博士决定</em></li>
+            <li><span>02</span><div><strong>建立节点—关系—来源表</strong><small>记录分子/细胞/组织、关系方向、模型背景和来源位置。</small></div><em>逐条核对</em></li>
+            <li><span>03</span><div><strong>标出证据状态与不确定处</strong><small>区分直接证据、推断和待验证假说；无依据的关系不画。</small></div><em>不补造机制</em></li>
+            <li><span>04</span><div><strong>先确认逻辑草图</strong><small>把争议点和待核实问题交给龚博士确认后再进入制图。</small></div><em>人工确认</em></li>
+            <li><span>05</span><div><strong>绘制并检查</strong><small>调用 danta-research-ppt 与 PPT Master，输出可编辑图形和 SVG 源稿，再做科学与版面检查。</small></div><em>可编辑交付</em></li>
+          </ol></div>}
+          <div className="mechanism-workspace-grid">
+            <section className="workspace-panel mechanism-brief-panel" aria-labelledby="mechanism-brief-title"><div className="workspace-panel-heading"><div><span className="panel-kicker">先描述研究问题</span><h3 id="mechanism-brief-title">机制图需求</h3></div><span className="panel-status">由你确认</span></div><label className="visually-hidden" htmlFor="mechanism-brief">描述机制图的主题、证据和要求</label><textarea id="mechanism-brief" value={mechanismBrief} onChange={event => setMechanismBrief(event.target.value)} rows={8} /><div className="workspace-form-footer"><span>填写主题和证据；完整制图要求会自动加入启动语。</span><button className="primary-button compact" type="button" onClick={startMechanismDiagram}>生成专用启动语 <ArrowRight size={16} aria-hidden="true" /></button></div></section>
+            <section className="workspace-panel mechanism-resource-panel" aria-labelledby="mechanism-resources-title"><div className="workspace-panel-heading"><div><span className="panel-kicker">工具与技能</span><h3 id="mechanism-resources-title">绘图资源</h3></div></div><a className="mechanism-resource-link" href="https://github.com/BioTender-max/awesome-bio-agent-skills" target="_blank" rel="noreferrer"><span><strong>BioTender 生物技能库</strong><small>查找生物信息学分析、科研图表和图形设计技能</small></span><ArrowSquareOut size={17} aria-hidden="true" /></a><a className="mechanism-resource-link" href="https://www.biorender.com/" target="_blank" rel="noreferrer"><span><strong>BioRender 绘图工具</strong><small>打开科研示意图和机制图绘制平台</small></span><ArrowSquareOut size={17} aria-hidden="true" /></a><div className="mechanism-local-skill"><strong>本机制图工作流</strong><span>Codex 调用 <code>$danta-research-ppt</code> 与 PPT Master，先做证据表和逻辑草图，再生成可编辑 PPT / SVG。</span></div><p className="mechanism-boundary">BioTender 是生物科研资讯与技能索引，BioRender 才是绘图工具。以上入口只打开网站，不会自动传送研究内容或文件；是否上传由龚博士决定。</p></section>
+          </div>
+        </section> : <div className="workspace-grid">
           <section className="workspace-panel discussion-panel" aria-labelledby={`${workflow.id}-discussion`}>
             <div className="workspace-panel-heading"><div><span className="panel-kicker">开始工作</span><h2 id={`${workflow.id}-discussion`}>新建讨论</h2></div><span className="panel-status">启动语由你确认</span></div>
             <label className="visually-hidden" htmlFor={`${workflow.id}-thought`}>描述本次{workflow.label}任务</label>
@@ -171,7 +203,7 @@ export function App() {
               {files.length ? <ul className="workflow-file-list">{files.map(name => <li key={name}><span title={name}>{name}</span><button type="button" aria-label={`移除 ${name}`} onClick={() => setFilesByWorkflow(current => ({ ...current, [workflow.id]: (current[workflow.id] || []).filter(item => item !== name) }))}>移除</button></li>)}</ul> : <div className="workspace-empty"><p>还没有添加工作文件。</p><span>选择后仅暂存文件名，不读取或上传内容；刷新页面后清空。</span></div>}
             </section>
           </div>
-        </div>
+        </div>}
       </section>
     );
   }
@@ -187,7 +219,7 @@ export function App() {
   }
 
   function renderPage() {
-    const workflow = PROMPT_STARTERS.find(item => item.id === activePage);
+    const workflow = activePage === 'mechanism' ? { id: 'mechanism', label: '机制图制作', focus: '科研机制图', workspaceDescription: '从研究问题到证据关系、逻辑草图与可编辑科研图，在这里集中完成。' } : PROMPT_STARTERS.find(item => item.id === activePage);
     if (workflow) return renderWorkflow(workflow);
     if (activePage === 'start') {
       return (
@@ -285,7 +317,7 @@ export function App() {
 
   return (
     <div className="app-frame">
-      <header className="titlebar"><span className="titlebar-brand">龚博士科研工作台</span><span className="titlebar-caption">思维优先 · 决策在人</span></header>
+      <header className="titlebar"><span className="titlebar-brand">龚博士科研工作台</span><span className="titlebar-help"><a href={quickstartImage} target="_blank" rel="noreferrer">使用说明</a><a href={frameworkImage} target="_blank" rel="noreferrer">框架图</a></span></header>
       <div className="app-body">
         <aside className="sidebar" aria-label="主导航">
           <button className="vault-status" type="button" onClick={() => setActivePage('vault')}>
@@ -293,13 +325,13 @@ export function App() {
             <span className="vault-status-label">{vaultName ? `${vaultName} · 已选择` : 'GY 本机知识库 · 未连接'}</span>
           </button>
           <nav className="primary-nav">
-            {NAV_ITEMS.map(({ id, label, Icon }) => (
-              <button key={id} className={`nav-item ${activePage === id ? 'active' : ''}`} type="button" aria-current={activePage === id ? 'page' : undefined} onClick={() => setActivePage(id)}>
+          {NAV_ITEMS.map(({ id, label, Icon }) => (
+              <button key={id} className={`nav-item ${activePage === id ? 'active' : ''}`} type="button" aria-current={activePage === id ? 'page' : undefined} onClick={() => { setMechanismWorkspaceOpen(id === 'mechanism'); setActivePage(id); }}>
                 <Icon size={21} weight={activePage === id ? 'regular' : 'light'} aria-hidden="true" /><span>{label}</span>
               </button>
             ))}
           </nav>
-          <div className="sidebar-footer"><span>与思考同行</span><span>让好问题生长</span></div>
+          <div className="sidebar-footer"><a href={quickstartImage} target="_blank" rel="noreferrer">图片版使用说明 ↗</a><a href={frameworkImage} target="_blank" rel="noreferrer">工作台框架图 ↗</a></div>
         </aside>
         <main className="main-content">{renderPage()}</main>
       </div>
