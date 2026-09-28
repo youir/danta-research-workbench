@@ -29,6 +29,11 @@ export class ErrorBoundary extends Component {
           <p style={{ marginBottom: '20px', color: 'var(--ink-muted, #526681)' }}>
             请刷新页面重试,或联系技术支持。
           </p>
+          {import.meta.env.DEV && this.state.error && (
+            <pre style={{ maxWidth: 'min(90vw, 760px)', overflow: 'auto', textAlign: 'left', whiteSpace: 'pre-wrap', fontSize: '12px', color: '#a5453b' }}>
+              {this.state.error.stack || this.state.error.message}
+            </pre>
+          )}
           <button
             onClick={() => window.location.reload()}
             style={{

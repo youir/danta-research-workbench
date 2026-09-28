@@ -13,6 +13,7 @@
         "references/intake.md": "93c039351cfe75280459ef37ac42588efcbdfc83ca9f68a2b33feb40c5518387",
         "references/knowledge-vault.md": "2e1c0595777efa241bed24b532ba911d3754c8c8153d4d1cb922aea7979f0e04",
         "references/lab-meeting.md": "2585b206c2dc588c3c53cd574f52b67a0d0f0a7585df240e524d3cebc269c5d4",
+        "references/literature-search.md": "1aabe19cfce78a981abc7193399f3351331bd25bb0360d36510ba7978dbf827a",
         "references/literature-update.md": "af3311534df17e5229b81b641a04330667a9aeeddb01a8f65ecbeb818c5333b6",
         "references/multi-agent.md": "427404cc231d00a6442598714995216b14f0e119242dd297b156ccbbd6532e27",
         "references/ogsm.md": "63b46980beb443aaa303205ae6e00d7738dfb0cb8e229274f1e5474746cb472c",
@@ -20,7 +21,8 @@
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
         "references/skill-routing.md": "9fe811648603c5267fe5f98b58e2713ce31a0f38df9ff1d3f8534af22df6b1dc",
         "references/thinking-dialogue.md": "0081bb8cdba78f7447bc627b788f1881b895d248893457b70b69bcd0e5d00b28",
-        "references/writing-review-cards.md": "ffaa70e8ebb858a28d6144e8b6e34bb03eee5308d69e926adbae318818adbc9b"
+        "references/writing-review-cards.md": "ffaa70e8ebb858a28d6144e8b6e34bb03eee5308d69e926adbae318818adbc9b",
+        "scripts/search_literature.py": "c0182e19b2bc2c2d539ae06621fc904b9e4e3fec84f3358e74cae3969d083303"
       },
       "dependencies": [
         "danta-research-ppt",
@@ -321,9 +323,9 @@
       "source": "skills/danta-research-ppt",
       "files": {
         "SKILL.md": "c333a79699d7004f69b61b8682a29b6fcf63b522bd21b1fa3b2abaa1feb691c8",
+        "references/svg-reconstruction.md": "8b0739d65275983cd9b7794ec0dc91c47b5e7ac9c99ac3bf924af05cbbf1c612",
         "references/workflow.md": "8c1c18b3307182e1925bcda20d3ef6ba4a65d1c297f71032c118e4721538c49a",
-        "scripts/install_ppt_master.py": "237b11dbec62cd26c08477bd2ada223371ad84cade2e13dab9b1286dd39c2ee2",
-        "references/svg-reconstruction.md": "8b0739d65275983cd9b7794ec0dc91c47b5e7ac9c99ac3bf924af05cbbf1c612"
+        "scripts/install_ppt_master.py": "237b11dbec62cd26c08477bd2ada223371ad84cade2e13dab9b1286dd39c2ee2"
       }
     }
   },

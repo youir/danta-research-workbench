@@ -1,6 +1,7 @@
 ---
 title: "科研工具地图 / Research Tool Map"
 tags: [research, tools, project-record]
+created: 2026-09-28
 type: project-record
 project: P001
 status: template

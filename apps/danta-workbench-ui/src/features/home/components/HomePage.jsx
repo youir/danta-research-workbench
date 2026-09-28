@@ -1,71 +1,54 @@
-import { memo } from 'react';
-import { PROMPT_STARTERS } from '../../../shared/constants/workflows.js';
-import { PromptStarter } from '../../../shared/components/PromptStarter.jsx';
+import { memo, useRef } from 'react';
+import { ArrowRight, ClockCounterClockwise } from '@phosphor-icons/react';
+import { PROMPT_STARTERS, getStartActionLabel } from '../../../shared/constants/workflows.js';
 
-export const HomePage = memo(({ onOpenWorkflow }) => (
-  <div className="home-page">
-    <section className="home-hero">
+export const HomePage = memo(({ thought, setThought, taskFocus, onBegin, onOpenWorkflow, onOpenRecords }) => {
+  const textareaRef = useRef(null);
+
+  return (
+    <section className="home-view" aria-labelledby="home-title">
       <div className="home-eyebrow">龚博士的研究工作台</div>
-      <h1>今天,最想弄清楚什么?</h1>
-      <p>把零散的科研想法、证据线索和工作任务集中到独立空间,逐步梳理并付诸实施。</p>
-    </section>
+      <h1 id="home-title">今天，最想弄清楚什么？</h1>
+      <p className="home-lede">写下一个观察、困惑或正在犹豫的决定。主助理会先理解问题，再陪你推进。</p>
 
-    <section className="prompt-starters-section" aria-labelledby="starters-title">
-      <h2 id="starters-title" className="visually-hidden">快速启动</h2>
-      <div className="prompt-starters">
-        {PROMPT_STARTERS.map((starter, index) => (
-          <PromptStarter
-            key={starter.id}
-            {...starter}
-            onClick={() => onOpenWorkflow(starter)}
-            ariaKeyshortcuts={`Alt+${index + 1}`}
-          />
+      <form className="thought-form" onSubmit={event => { event.preventDefault(); onBegin(thought, taskFocus); }}>
+        <label className="visually-hidden" htmlFor="research-thought">写下研究观察、困惑或决定</label>
+        <textarea
+          id="research-thought"
+          ref={textareaRef}
+          value={thought}
+          onChange={event => setThought(event.target.value)}
+          onKeyDown={event => { if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') onBegin(thought, taskFocus); }}
+          placeholder="例如：这个病理现象背后可能有哪些机制？我手头的证据还缺什么？"
+          rows={4}
+        />
+        <button className="primary-button" type="submit">{getStartActionLabel(taskFocus)} <ArrowRight size={18} weight="bold" aria-hidden="true" /></button>
+      </form>
+
+      <div className="quick-start-heading">
+        <h2>或直接进入一项工作</h2>
+        <p>每项工作都有自己的讨论页；启动语可以继续修改。</p>
+      </div>
+      <div className="workflow-entry-grid" aria-label="常用科研工作">
+        {PROMPT_STARTERS.map((workflow, index) => (
+          <button className="workflow-entry" key={workflow.id} type="button" onClick={() => onOpenWorkflow(workflow)}>
+            <span className="workflow-entry-number">0{index + 1}</span>
+            <span className="workflow-entry-copy"><strong>{workflow.label}</strong><small>{workflow.detail}</small></span>
+            <ArrowRight size={17} aria-hidden="true" />
+          </button>
         ))}
       </div>
+
+      <button className="resume-row" type="button" onClick={onOpenRecords}>
+        <ClockCounterClockwise size={20} aria-hidden="true" />
+        <span className="resume-label">最近研究记录</span>
+        <span className="resume-divider" aria-hidden="true" />
+        <span className="resume-summary">研究记录尚未连接；进入后查看真实连接状态</span>
+        <span className="inline-link">查看 <ArrowRight size={15} aria-hidden="true" /></span>
+      </button>
+      <p className="local-note">本机界面 · 不读取 GY · 研究判断由龚博士和导师作出</p>
     </section>
-
-    <section className="home-guide" aria-labelledby="guide-title">
-      <div className="guide-content">
-        <span className="guide-eyebrow">工作台结构</span>
-        <h2 id="guide-title">七类 agent 分工协作</h2>
-        <p>
-          工作台按职责调用七类专业 agent:文献证据、生信数据、论文写作、方法统计、组会汇报、质疑审查、知识整理。
-          每类 agent 只处理自己职责内的工作,不替你作研究判断。
-        </p>
-        <ul className="guide-features">
-          <li>文献证据带来源,生信结果带参数,不假装核查过</li>
-          <li>PPT 和机制图自动生成可编辑格式,区分真实与计划数据</li>
-          <li>研究记录保存在你的 Obsidian 知识库,下次对话从这里继续</li>
-        </ul>
-      </div>
-      <div className="guide-visual">
-        <svg className="guide-image" viewBox="0 0 480 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="480" height="360" rx="16" fill="var(--surface-raised)"/>
-          <rect x="24" y="24" width="432" height="48" rx="8" fill="var(--accent-soft)"/>
-          <circle cx="48" cy="48" r="12" fill="var(--accent-primary)"/>
-          <rect x="72" y="40" width="120" height="8" rx="4" fill="var(--accent-primary)"/>
-          <rect x="72" y="52" width="80" height="6" rx="3" fill="var(--accent-border)"/>
-
-          <rect x="24" y="96" width="200" height="112" rx="12" fill="var(--surface-sidebar)"/>
-          <rect x="40" y="112" width="168" height="8" rx="4" fill="var(--ink-muted)"/>
-          <rect x="40" y="132" width="120" height="6" rx="3" fill="var(--line-default)"/>
-          <rect x="40" y="156" width="168" height="32" rx="8" fill="var(--accent-soft)"/>
-
-          <rect x="240" y="96" width="216" height="240" rx="12" fill="var(--surface-sidebar)"/>
-          <rect x="256" y="112" width="184" height="8" rx="4" fill="var(--ink-muted)"/>
-          <rect x="256" y="132" width="140" height="6" rx="3" fill="var(--line-default)"/>
-          <rect x="256" y="156" width="184" height="48" rx="8" fill="var(--accent-soft)"/>
-          <circle cx="272" cy="180" r="8" fill="var(--accent-primary)"/>
-          <rect x="256" y="220" width="184" height="48" rx="8" fill="var(--surface-hover)"/>
-          <rect x="256" y="284" width="184" height="40" rx="8" fill="var(--surface-hover)"/>
-
-          <rect x="24" y="224" width="200" height="112" rx="12" fill="var(--surface-sidebar)"/>
-          <rect x="40" y="240" width="140" height="8" rx="4" fill="var(--ink-muted)"/>
-          <rect x="40" y="260" width="168" height="60" rx="8" fill="var(--line-subtle)"/>
-        </svg>
-      </div>
-    </section>
-  </div>
-));
+  );
+});
 
 HomePage.displayName = 'HomePage';

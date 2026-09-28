@@ -1,55 +1,64 @@
 export const PROMPT_STARTERS = [
   {
-    id: 'evidence',
-    label: '文献证据',
-    detail: '检索文献、整理证据、追溯来源'
-  },
-  {
-    id: 'bioinformatics',
-    label: '生信数据',
-    detail: '查询数据库、分析表达、验证靶点'
+    id: 'topic',
+    label: '选题思路',
+    detail: '从研究现象、证据和现实条件开始',
+    focus: '选题思路',
+    seed: '我想梳理一个研究方向：……目前观察到……已有证据和现实条件是……',
+    workspaceDescription: '把研究困惑、证据线索和现实条件放在一起，逐步形成可讨论的研究问题。',
   },
   {
     id: 'writing',
     label: '论文写作',
-    detail: '起草稿件、修改润色、回复审稿'
+    detail: '起草、修改、润色或回复审稿',
+    focus: '论文写作',
+    seed: '我准备处理一篇论文：……（起草 / 修改 / 润色 / 回复审稿意见）。请结合我提供或授权的稿件与研究证据。',
+    workspaceDescription: '围绕当前稿件开展起草、修改、润色或审稿回复；科学主张由龚博士决定。',
   },
   {
-    id: 'methods',
-    label: '方法统计',
-    detail: '设计实验、统计分析、数据可视化'
+    id: 'ppt',
+    label: '科研 PPT',
+    detail: '组会、开题或阶段汇报',
+    focus: '科研 PPT',
+    seed: '我需要一份可编辑的科研汇报 PPT：……（主题、听众、用途和已有材料）。请先帮我梳理主线与证据，再制作。',
+    workspaceDescription: '先梳理听众、汇报目的、叙事主线和证据，再制作可编辑的科研汇报稿。',
   },
   {
-    id: 'communication',
-    label: '组会汇报',
-    detail: '生成PPT、准备口头摘要、可视化机制图'
-  }
+    id: 'meeting',
+    label: '组会准备 / 复盘',
+    detail: '整理讨论、决定和下一步',
+    focus: '组会工作',
+    seed: '我想准备或复盘一次组会：……请按讨论目标、关键问题、已决定 / 待定事项和行动项整理，只使用我提供或授权的内容。',
+    workspaceDescription: '集中准备组会目标与讨论提纲，或复盘真实讨论中的决定、待办和后续问题。',
+  },
+  {
+    id: 'briefing',
+    label: '生物科研日报',
+    detail: '汇总有来源的研究动态',
+    focus: '生物科研日报',
+    seed: '请为我生成今天的生物科研日报，围绕我已确认的研究兴趣，使用本轮已连接或明确授权的信息源，标注来源和日期；没有可用来源时请如实说明。',
+    workspaceDescription: '按已确认的研究兴趣整理可靠动态，逐条标注来源、日期和证据状态。',
+  },
 ];
 
-export const WORKFLOW_CONFIGS = {
-  evidence: {
-    title: '文献证据工作流',
-    description: '检索相关文献,整理关键证据,追溯数据来源。每条证据都标注出处,不假装核查过。',
-    agents: ['文献检索', '证据整理', '来源追溯']
-  },
-  bioinformatics: {
-    title: '生信数据工作流',
-    description: '查询生物信息数据库,分析基因表达,验证分子靶点。结果带查询参数,便于复现。',
-    agents: ['数据库查询', '表达分析', '靶点验证']
-  },
-  writing: {
-    title: '论文写作工作流',
-    description: '起草学术稿件,修改润色文字,回复审稿意见。支持中英文互译和格式调整。',
-    agents: ['稿件起草', '语言润色', '审稿回复']
-  },
-  methods: {
-    title: '方法统计工作流',
-    description: '设计实验方案,进行统计分析,制作数据可视化图表。',
-    agents: ['实验设计', '统计分析', '数据可视化']
-  },
-  communication: {
-    title: '组会汇报工作流',
-    description: '生成PPT大纲,准备口头摘要,绘制可编辑的机制图。区分真实数据与计划数据。',
-    agents: ['PPT生成', '摘要提炼', '机制图绘制']
-  }
+export const TASK_GUIDES = {
+  '选题思路': '先梳理研究现象、证据缺口和可行条件，不替我决定题目；给出不同解释和可验证路径。',
+  '论文写作': '按需调用 $danta-bio-paper-writing；依据稿件和已有证据协作，不补造结果、方法或引文。',
+  '科研 PPT': '按需调用 $danta-research-ppt 与 PPT Master；先理清汇报目的、叙事主线和证据，再制作可编辑稿。',
+  '科研机制图': '按需调用 $danta-research-ppt 与 PPT Master。先整理节点—关系—来源表，核对模型背景、关系方向和证据状态；区分直接证据、推断与假说，先让我确认逻辑，再制作可编辑机制图并检查。',
+  '组会工作': '按组会流程整理目标、关键问题、已决定与待定事项及行动项；准备与复盘分开处理，只依据真实材料。',
+  '生物科研日报': '按需调用 $danta-bio-daily-briefing；只汇总可核实来源，注明来源覆盖和日期，无来源时如实给出空状态。',
 };
+
+export function getStartActionLabel(focus) {
+  const labels = {
+    '自由讨论': '开始梳理',
+    '选题思路': '开始梳理选题',
+    '论文写作': '准备写作启动语',
+    '科研 PPT': '准备 PPT 启动语',
+    '科研机制图': '准备机制图启动语',
+    '组会工作': '准备组会启动语',
+    '生物科研日报': '准备日报启动语',
+  };
+  return labels[focus] || '开始梳理';
+}

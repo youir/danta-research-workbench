@@ -1,54 +1,56 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const appDirectory = path.dirname(fileURLToPath(import.meta.url));
+let appCommit = '';
+let appHasLocalChanges = false;
+
+try {
+  appCommit = execFileSync('git', ['rev-parse', 'HEAD'], {
+    cwd: appDirectory,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'ignore'],
+  }).trim();
+} catch {
+  // A source archive without .git still runs; the update panel will explain that it cannot compare commits.
+}
+
+try {
+  appHasLocalChanges = Boolean(execFileSync('git', ['status', '--porcelain'], {
+    cwd: appDirectory,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'ignore'],
+  }).trim());
+} catch {
+  // No .git metadata; the update panel will skip the local comparison.
+}
 
 export default defineConfig({
-  plugins: [
-    react(),
-    {
-      name: 'inject-version',
-      buildStart() {
-        // 读取 package.json 获取版本号
-        const pkg = JSON.parse(
-          fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf-8')
-        );
-        const version = pkg.version;
-
-        // 写入 version.json 到 public 目录
-        const publicDir = path.resolve(__dirname, 'public');
-        if (!fs.existsSync(publicDir)) {
-          fs.mkdirSync(publicDir, { recursive: true });
-        }
-        fs.writeFileSync(
-          path.resolve(publicDir, 'version.json'),
-          JSON.stringify({ version, buildTime: new Date().toISOString() }, null, 2)
-        );
-      }
-    }
-  ],
+  plugins: [react()],
   define: {
-    // 将版本号注入到全局变量
-    '__APP_VERSION__': JSON.stringify(process.env.npm_package_version || '0.1.0')
+    __APP_COMMIT__: JSON.stringify(appCommit),
+    __APP_HAS_LOCAL_CHANGES__: JSON.stringify(appHasLocalChanges),
+  },
+  server: {
+    host: '127.0.0.1',
+    strictPort: true,
+  },
+  preview: {
+    host: '127.0.0.1',
   },
   build: {
     target: 'es2020',
-    minify: 'esbuild',
     sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          icons: ['@phosphor-icons/react']
-        }
-      }
-    }
+          icons: ['@phosphor-icons/react'],
+        },
+      },
+    },
   },
-  server: {
-    port: 5173,
-    strictPort: true
-  }
 });
