@@ -8,20 +8,40 @@ const NAV_ITEMS = [
   { id: 'vault', label: '知识库', Icon: FolderOpen },
 ];
 const PROMPT_STARTERS = [
-  { label: '梳理选题思路', focus: '选题思路', seed: '我目前的研究方向是……想先从研究现象、已有证据和现实条件梳理思路。' },
-  { label: '复盘组会 / 做 PPT', focus: '组会复盘', seed: '我想复盘最近一次组会，整理关键讨论、待解决问题和下一步；再判断是否需要做成 PPT。' },
-  { label: '开始论文写作', focus: '论文写作', seed: '我准备写或修改论文的……请先帮我确认目标、现有材料和最需要解决的问题。' },
+  { label: '选题思路', detail: '从现象、证据和现实条件开始', focus: '选题思路', seed: '我想梳理一个研究方向：……目前观察到……已有证据和现实条件是……' },
+  { label: '论文写作', detail: '起草、修改、润色或回复审稿', focus: '论文写作', seed: '我准备处理一篇论文：……（起草 / 修改 / 润色 / 回复审稿意见）。请结合我提供或授权的稿件与研究证据。' },
+  { label: '制作 PPT', detail: '组会、开题或阶段汇报', focus: '科研 PPT', seed: '我需要一份可编辑的科研汇报 PPT：……（主题、听众、用途和已有材料）。请先帮我梳理主线与证据，再制作。' },
+  { label: '组会准备 / 复盘', detail: '整理讨论、决定和下一步', focus: '组会工作', seed: '我想准备或复盘一次组会：……请按讨论目标、关键问题、已决定 / 待定事项和行动项整理，只使用我提供或授权的内容。' },
+  { label: '生物科研日报', detail: '汇总有来源的研究动态', focus: '生物科研日报', seed: '请为我生成今天的生物科研日报，围绕我已确认的研究兴趣，使用本轮已连接或明确授权的信息源，标注来源和日期；没有可用来源时请如实说明。' },
 ];
 
 function makeKickoffPrompt(thought, focus) {
+  const taskGuide = {
+    '选题思路': '先梳理研究现象、证据缺口和可行条件，不替我决定题目。',
+    '论文写作': '按需调用 $danta-bio-paper-writing；依据稿件和已有证据协作，不补造结果或文献。',
+    '科研 PPT': '按需调用 $danta-research-ppt 与 PPT Master；先理清汇报目的、叙事主线和证据，再制作可编辑稿。',
+    '组会工作': '按组会流程整理目标、关键问题、已决定与待定事项及行动项；复盘和制作 PPT 分开处理。',
+    '生物科研日报': '按需调用 $danta-bio-daily-briefing；只汇总可核实来源，注明来源覆盖和日期，无来源时如实给出空状态。',
+  }[focus];
   return [
     '使用 $danta-proposal-guide，称呼我龚博士。',
     `本次方向：${focus}。`,
-    '先陪我把问题想清楚：复述你理解的观察或困惑，区分已知事实、可能解释和待核实之处。',
-    '不要替我选题或下结论；先指出最值得继续讨论的一两个问题。最终研究判断由我和导师作出。',
+    taskGuide || '先陪我把问题想清楚：复述重点，区分已有事实、可能解释和待核实之处。',
+    '先理解我的目标和已有材料，再决定是提问、梳理还是直接动手；研究判断由我和导师作出。',
     '',
     `我现在想讨论：${thought.trim()}`,
   ].join('\n');
+}
+
+function getStartActionLabel(focus) {
+  return {
+    '自由讨论': '开始梳理',
+    '选题思路': '开始梳理选题',
+    '论文写作': '准备写作启动语',
+    '科研 PPT': '准备 PPT 启动语',
+    '组会工作': '准备组会启动语',
+    '生物科研日报': '准备日报启动语',
+  }[focus] || '开始梳理';
 }
 
 export function App() {
@@ -132,12 +152,15 @@ export function App() {
               placeholder="写下一个观察、困惑，或正在犹豫的决定…"
               rows={5}
             />
-            <button className="primary-button" type="submit">开始梳理 <ArrowRight size={20} weight="bold" aria-hidden="true" /></button>
+            <button className="primary-button" type="submit">{getStartActionLabel(taskFocus)} <ArrowRight size={20} weight="bold" aria-hidden="true" /></button>
           </form>
-          <div className="quick-start-label">常用工作入口</div>
+          <div className="quick-start-label">选择一项工作开始</div>
+          <div className="quick-start-help">入口会带入对应讨论起点，内容可以再修改。</div>
           <div className="prompt-starters" aria-label="常用科研工作">
-            {PROMPT_STARTERS.map(({ label, focus, seed }) => (
-              <button key={label} onClick={() => selectPrompt({ seed, focus })} type="button">{label}</button>
+            {PROMPT_STARTERS.map(({ label, detail, focus, seed }) => (
+              <button key={label} className={taskFocus === focus ? 'is-selected' : ''} aria-pressed={taskFocus === focus} onClick={() => selectPrompt({ seed, focus })} type="button">
+                <span className="starter-title">{label}</span><span className="starter-detail">{detail}</span><ArrowRight size={16} aria-hidden="true" />
+              </button>
             ))}
           </div>
           <div className="resume-row" aria-label="最近研究记录状态">
