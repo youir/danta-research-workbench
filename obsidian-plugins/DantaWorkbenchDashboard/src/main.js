@@ -52,25 +52,56 @@ export default class DantaWorkbenchDashboard extends Plugin {
 
   refreshViews() {
     for (const leaf of this.app.workspace.getLeavesOfType(VIEW)) {
-      if (leaf.view instanceof DashboardView) leaf.view.render();
+      if (leaf.view instanceof DashboardView) {
+        leaf.view.invalidateCache();
+        leaf.view.render();
+      }
     }
   }
 }
 
 class DashboardView extends ItemView {
-  constructor(leaf, plugin) { super(leaf); this.plugin = plugin; }
+  constructor(leaf, plugin) {
+    super(leaf);
+    this.plugin = plugin;
+    this.cache = {
+      files: null,
+      stats: null,
+      timestamp: 0
+    };
+  }
+
   getViewType() { return VIEW; }
   getDisplayText() { return '科研工作台'; }
   getIcon() { return 'layout-dashboard'; }
   async onOpen() { this.render(); }
 
+  getFilesWithCache() {
+    const now = Date.now();
+    const cacheValid = now - this.cache.timestamp < 1000;
+
+    if (cacheValid && this.cache.files) {
+      return this.cache.files;
+    }
+
+    const files = this.app.vault.getMarkdownFiles().filter(file =>
+      DIRS.some(([path]) => file.path.startsWith(`${path}/`))
+    );
+
+    this.cache.files = files;
+    this.cache.timestamp = now;
+    return files;
+  }
+
+  invalidateCache() {
+    this.cache.timestamp = 0;
+  }
+
   render() {
     const root = this.containerEl.children[1];
     root.empty();
     root.addClass('danta-dashboard');
-    const files = this.app.vault.getMarkdownFiles().filter(file =>
-      DIRS.some(([path]) => file.path.startsWith(`${path}/`))
-    );
+    const files = this.getFilesWithCache();
     const frontmatter = file => this.app.metadataCache.getFileCache(file)?.frontmatter || {};
     const pending = files.filter(file => OPEN_STATUSES.has(String(frontmatter(file).status || '').toLowerCase()));
     const rssNotes = files.filter(file => String(frontmatter(file).kind || '') === 'rss-lead');
