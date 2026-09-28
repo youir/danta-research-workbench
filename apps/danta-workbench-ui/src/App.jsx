@@ -68,12 +68,16 @@ export function App() {
   const dialogRef = useRef(null);
   const copyButtonRef = useRef(null);
   const noticeTimer = useRef(null);
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
     const picker = pickerRef.current;
     picker?.setAttribute('webkitdirectory', '');
     picker?.setAttribute('directory', '');
-    return () => window.clearTimeout(noticeTimer.current);
+    return () => {
+      isMountedRef.current = false;
+      window.clearTimeout(noticeTimer.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -113,9 +117,12 @@ export function App() {
   const vaultStatus = useMemo(() => (vaultName ? `已选择 · ${vaultName}` : '尚未选择 GY 知识库'), [vaultName]);
 
   function showNotice(message) {
+    if (!isMountedRef.current) return;
     setNotice(message);
     window.clearTimeout(noticeTimer.current);
-    noticeTimer.current = window.setTimeout(() => setNotice(''), 3200);
+    noticeTimer.current = window.setTimeout(() => {
+      if (isMountedRef.current) setNotice('');
+    }, 3200);
   }
 
   function beginDiscussion(value = thought, focus = taskFocus) {
