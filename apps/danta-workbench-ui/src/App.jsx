@@ -8,11 +8,11 @@ const NAV_ITEMS = [
   { id: 'vault', label: '知识库', Icon: FolderOpen },
 ];
 const PROMPT_STARTERS = [
-  { label: '选题思路', detail: '从现象、证据和现实条件开始', focus: '选题思路', seed: '我想梳理一个研究方向：……目前观察到……已有证据和现实条件是……' },
-  { label: '论文写作', detail: '起草、修改、润色或回复审稿', focus: '论文写作', seed: '我准备处理一篇论文：……（起草 / 修改 / 润色 / 回复审稿意见）。请结合我提供或授权的稿件与研究证据。' },
-  { label: '制作 PPT', detail: '组会、开题或阶段汇报', focus: '科研 PPT', seed: '我需要一份可编辑的科研汇报 PPT：……（主题、听众、用途和已有材料）。请先帮我梳理主线与证据，再制作。' },
-  { label: '组会准备 / 复盘', detail: '整理讨论、决定和下一步', focus: '组会工作', seed: '我想准备或复盘一次组会：……请按讨论目标、关键问题、已决定 / 待定事项和行动项整理，只使用我提供或授权的内容。' },
-  { label: '生物科研日报', detail: '汇总有来源的研究动态', focus: '生物科研日报', seed: '请为我生成今天的生物科研日报，围绕我已确认的研究兴趣，使用本轮已连接或明确授权的信息源，标注来源和日期；没有可用来源时请如实说明。' },
+  { id: 'topic', label: '选题思路', detail: '从现象、证据和现实条件开始', focus: '选题思路', seed: '我想梳理一个研究方向：……目前观察到……已有证据和现实条件是……', workspaceDescription: '把研究困惑、证据线索和现实条件放在一起，逐步形成可讨论的研究问题。' },
+  { id: 'writing', label: '论文写作', detail: '起草、修改、润色或回复审稿', focus: '论文写作', seed: '我准备处理一篇论文：……（起草 / 修改 / 润色 / 回复审稿意见）。请结合我提供或授权的稿件与研究证据。', workspaceDescription: '围绕当前稿件开展起草、修改、润色或审稿回复；保留作者对科学主张的决定权。' },
+  { id: 'ppt', label: '制作 PPT', detail: '组会、开题或阶段汇报', focus: '科研 PPT', seed: '我需要一份可编辑的科研汇报 PPT：……（主题、听众、用途和已有材料）。请先帮我梳理主线与证据，再制作。', workspaceDescription: '先梳理听众、汇报目的、叙事主线和证据，再制作可编辑的科研汇报稿。' },
+  { id: 'meeting', label: '组会准备 / 复盘', detail: '整理讨论、决定和下一步', focus: '组会工作', seed: '我想准备或复盘一次组会：……请按讨论目标、关键问题、已决定 / 待定事项和行动项整理，只使用我提供或授权的内容。', workspaceDescription: '集中准备组会目标、讨论提纲，或复盘真实讨论中的决定、待办和后续问题。' },
+  { id: 'briefing', label: '生物科研日报', detail: '汇总有来源的研究动态', focus: '生物科研日报', seed: '请为我生成今天的生物科研日报，围绕我已确认的研究兴趣，使用本轮已连接或明确授权的信息源，标注来源和日期；没有可用来源时请如实说明。', workspaceDescription: '按已确认的研究兴趣整理少量可靠动态，逐条标注来源、日期和证据状态。' },
 ];
 
 function makeKickoffPrompt(thought, focus) {
@@ -53,7 +53,9 @@ export function App() {
   const [copied, setCopied] = useState(false);
   const [notice, setNotice] = useState('');
   const [vaultName, setVaultName] = useState('');
+  const [filesByWorkflow, setFilesByWorkflow] = useState({});
   const pickerRef = useRef(null);
+  const workflowFilesRef = useRef(null);
   const textareaRef = useRef(null);
   const dialogRef = useRef(null);
   const copyButtonRef = useRef(null);
@@ -65,6 +67,10 @@ export function App() {
     picker?.setAttribute('directory', '');
     return () => window.clearTimeout(noticeTimer.current);
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activePage]);
 
   useEffect(() => {
     if (!modalOpen) return undefined;
@@ -118,11 +124,56 @@ export function App() {
     setModalOpen(true);
   }
 
-  function selectPrompt({ seed, focus }) {
+  function openWorkflow({ id, seed, focus }) {
     setThought(seed);
     setTaskFocus(focus);
-    setActivePage('start');
-    textareaRef.current?.focus();
+    setActivePage(id);
+  }
+
+  function addWorkflowFiles(event) {
+    const names = [...(event.target.files || [])].map(file => file.name);
+    if (names.length) {
+      setFilesByWorkflow(current => ({
+        ...current,
+        [activePage]: [...new Set([...(current[activePage] || []), ...names])],
+      }));
+    }
+    event.target.value = '';
+  }
+
+  function renderWorkflow(workflow) {
+    const files = filesByWorkflow[workflow.id] || [];
+    return (
+      <section className="workspace-view" aria-labelledby={`${workflow.id}-title`}>
+        <div className="workspace-topline">
+          <button className="back-link" type="button" onClick={() => setActivePage('start')}>← 全部工作</button>
+          <span>独立工作区</span>
+        </div>
+        <div className="workspace-heading">
+          <div className="home-eyebrow">龚博士的研究工作台</div>
+          <h1 id={`${workflow.id}-title`}>{workflow.label}</h1>
+          <p>{workflow.workspaceDescription}</p>
+        </div>
+        <div className="workspace-grid">
+          <section className="workspace-panel discussion-panel" aria-labelledby={`${workflow.id}-discussion`}>
+            <div className="workspace-panel-heading"><div><span className="panel-kicker">开始工作</span><h2 id={`${workflow.id}-discussion`}>新建讨论</h2></div><span className="panel-status">启动语由你确认</span></div>
+            <label className="visually-hidden" htmlFor={`${workflow.id}-thought`}>描述本次{workflow.label}任务</label>
+            <textarea id={`${workflow.id}-thought`} value={thought} onChange={event => setThought(event.target.value)} rows={6} />
+            <div className="workspace-form-footer"><span>起点可修改；生成后复制到 Codex 继续。</span><button className="primary-button compact" type="button" onClick={() => beginDiscussion(thought, workflow.focus)}>准备启动语 <ArrowRight size={17} weight="bold" aria-hidden="true" /></button></div>
+          </section>
+          <div className="workspace-sidepanels">
+            <section className="workspace-panel" aria-labelledby={`${workflow.id}-conversations`}>
+              <div className="workspace-panel-heading"><div><span className="panel-kicker">Codex</span><h2 id={`${workflow.id}-conversations`}>对话</h2></div><span className="connection-pill">未连接</span></div>
+              <div className="workspace-empty"><p>Codex 对话尚未同步到此工作区。</p><span>生成启动语后，在 Codex 中开始或继续讨论；当前页面不能读取历史对话。</span></div>
+            </section>
+            <section className="workspace-panel" aria-labelledby={`${workflow.id}-files`}>
+              <div className="workspace-panel-heading"><div><span className="panel-kicker">本次任务</span><h2 id={`${workflow.id}-files`}>工作文件</h2></div><button className="file-add-button" type="button" onClick={() => workflowFilesRef.current?.click()}>＋ 添加</button></div>
+              {files.length ? <ul className="workflow-file-list">{files.map(name => <li key={name}><span title={name}>{name}</span><button type="button" aria-label={`移除 ${name}`} onClick={() => setFilesByWorkflow(current => ({ ...current, [workflow.id]: (current[workflow.id] || []).filter(item => item !== name) }))}>移除</button></li>)}</ul> : <div className="workspace-empty"><p>还没有添加工作文件。</p><span>选择后仅暂存文件名，不读取或上传内容；刷新页面后清空。</span></div>}
+            </section>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   async function copyKickoff() {
@@ -136,6 +187,8 @@ export function App() {
   }
 
   function renderPage() {
+    const workflow = PROMPT_STARTERS.find(item => item.id === activePage);
+    if (workflow) return renderWorkflow(workflow);
     if (activePage === 'start') {
       return (
         <section className="home-view" aria-labelledby="home-title">
@@ -157,8 +210,8 @@ export function App() {
           <div className="quick-start-label">选择一项工作开始</div>
           <div className="quick-start-help">入口会带入对应讨论起点，内容可以再修改。</div>
           <div className="prompt-starters" aria-label="常用科研工作">
-            {PROMPT_STARTERS.map(({ label, detail, focus, seed }) => (
-              <button key={label} className={taskFocus === focus ? 'is-selected' : ''} aria-pressed={taskFocus === focus} onClick={() => selectPrompt({ seed, focus })} type="button">
+            {PROMPT_STARTERS.map(({ id, label, detail, focus, seed }) => (
+              <button key={label} onClick={() => openWorkflow({ id, seed, focus })} type="button">
                 <span className="starter-title">{label}</span><span className="starter-detail">{detail}</span><ArrowRight size={16} aria-hidden="true" />
               </button>
             ))}
@@ -258,6 +311,7 @@ export function App() {
         showNotice(`已记下文件夹名称“${rootName}”；原型没有读取文件内容。`);
         event.target.value = '';
       }} aria-label="选择 GY 知识库文件夹" />
+      <input ref={workflowFilesRef} className="visually-hidden" type="file" multiple onChange={addWorkflowFiles} aria-label="添加本次工作文件" />
       {notice && <div className="toast" role="status">{notice}</div>}
       {modalOpen && (
         <div className="modal-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) setModalOpen(false); }}>
