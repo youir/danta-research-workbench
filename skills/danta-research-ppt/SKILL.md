@@ -9,6 +9,8 @@ description: 龚博士提到制作、生成、更新或修改 PPT/PowerPoint/演
 
 先阅读 [工作流](references/workflow.md)。制作 PPT 或科研图时使用固定上游 [PPT Master](https://github.com/hugohe3/ppt-master) v6.6.0；首次需要时，用随包安装器安装到当前私有工作区的 `.agents/skills/ppt-master/`。如果本技能本身位于该库的 `.agents/skills/`，直接调用安装器；如果主引导技能是全局安装，则依据当前打开的知识库路径显式传入 `--skills-dir <私有知识库>/.agents/skills`。不猜测 CWD 或全局安装位置。安装完成后先读上游 `SKILL.md` 并严格执行其规定的 `attribution_guard.py`、路由、加载次序和用户确认门槛。上游文件、完整性检查、署名/许可文件不得删改、跳过或绕过。
 
+需要把科研示意图或参考图重建为矢量时，优先使用 [Codex 直接 SVG 重建](references/svg-reconstruction.md)：由 Codex 编写 SVG 源码，再交给 PPT Master 转为可编辑对象；此路线不调用 Cell_ppt 的小描路径识别 API，也不消耗小描识别额度。它仍使用 Codex 自身的模型用量。根据现有位图重建时，遵守下文的外发授权规则。
+
 ## 触发与产物
 
 - 她提到要做 PPT、PowerPoint、汇报稿、组会或开题展示时，整理叙事和逐页结构，再制作可编辑 `.pptx`。

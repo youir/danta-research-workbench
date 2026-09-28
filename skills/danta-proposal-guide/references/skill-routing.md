@@ -29,6 +29,7 @@
 
 | 当前任务 | 读取的上游技能 |
 |---|---|
+| 快速检索学术论文、并行比较 Consensus 与 Semantic Scholar 的发现结果 | 工作台内置脚本 `danta-proposal-guide/scripts/search_literature.py`（先读 `references/literature-search.md`；仅发送本轮明确给出的公开或获准查询词） |
 | 提到要制作、生成、更新或修改 PPT/PowerPoint/演示稿，或绘制科研流程图、机制图、实验设计图、研究框架图、图形摘要 | danta-research-ppt → 按需安装的 PPT Master（先梳理证据、科学关系和用途，再制作与质检；无需点名技能或强调“可编辑”） |
 | 蒸馏/更新专家顾问、按需诊断顾问候选 | huashu-nuwa（先读 expert-distillation.md） |
 | 生成和整理候选问题 | scientific-brainstorming |

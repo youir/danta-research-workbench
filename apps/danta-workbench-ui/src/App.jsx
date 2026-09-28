@@ -2,6 +2,7 @@ import quickstartImage from '../../../docs/assets/quickstart.png';
 import frameworkImage from '../../../docs/assets/workbench-map.png';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, ArrowSquareOut, BookOpenText, Check, ClockCounterClockwise, Copy, FolderOpen, House, Notebook, ShareNetwork } from '@phosphor-icons/react';
+import { UpdateNotification } from './UpdateNotification.jsx';
 
 const NAV_ITEMS = [
   { id: 'start', label: '开始', Icon: House },
@@ -324,6 +325,7 @@ export function App() {
 
   return (
     <div className="app-frame">
+      <UpdateNotification />
       <header className="titlebar"><span className="titlebar-brand">龚博士科研工作台</span><span className="titlebar-help"><a href={quickstartImage} target="_blank" rel="noreferrer">使用说明</a><a href={frameworkImage} target="_blank" rel="noreferrer">框架图</a></span></header>
       <div className="app-body">
         <aside className="sidebar" aria-label="主导航">

@@ -48,6 +48,109 @@ button:focus-visible, textarea:focus-visible { outline: 3px solid #aaa0ed; outli
 }
 .titlebar-brand { color: var(--ink); font-weight: 600; }
 .titlebar-caption { color: var(--muted-light); font-size: 12px; }
+
+.update-notification {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10000;
+  background: var(--surface);
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(23, 42, 67, 0.08), 0 1px 4px rgba(23, 42, 67, 0.04);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 320px;
+  max-width: 400px;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.update-content {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.update-icon {
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.update-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.update-text strong {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.update-text span {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.update-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.update-dismiss,
+.update-apply {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.update-dismiss {
+  background: transparent;
+  color: var(--muted);
+}
+
+.update-dismiss:hover {
+  background: var(--line);
+  color: var(--ink);
+}
+
+.update-apply {
+  background: var(--accent);
+  color: white;
+}
+
+.update-apply:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(118, 103, 216, 0.25);
+}
+
+.update-apply:active {
+  transform: translateY(0);
+}
+
 .app-body { min-height: calc(100vh - 44px); display: flex; }
 
 .sidebar {

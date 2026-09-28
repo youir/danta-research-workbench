@@ -46,6 +46,8 @@
 
 需要生成 PPTX 或可编辑图时，按随包固定安装器取得 PPT Master v6.6.0：`python3 "${SKILL_DIR}/scripts/install_ppt_master.py"`。如果当前技能来自全局目录，则在命令末尾传入当前私有知识库 `.agents/skills` 的绝对路径：`--skills-dir "<private-vault>/.agents/skills"`。只从 Codex 已打开的 Obsidian/项目路径取得这个目录，不猜 CWD。上游绘图工具需要 Python 3.10+；默认 Python 版本不足时，优先使用 Codex 管理的 Python 运行时。之后把其目录作为 `SKILL_DIR`，先读取上游 `SKILL.md`，逐项履行归属完整性检查、路径规则、唯一正确工作路由、文件加载顺序及其中明确要求的人类确认门槛。不得跳过它的 blocking gate；默认流程适合科研和组会汇报，不用 quick 路线绕过审阅。只要一张图时，生成一页独立画布即可，勿强行套整套论文汇报。
 
+需要科研示意图、流程图、机制图或参考图的可编辑矢量重建时，读取 [Codex 直接 SVG 重建](svg-reconstruction.md)。Codex 可直接生成结构化 SVG 并交给 PPT Master 处理，不需要调用小描路径识别 API或消耗其识别额度。若依据位图绘制，先按该参考文件和隐私规则确认该图是否可由云端模型读取。ImageGen 输出的位图不能替代需要可编辑路径的 SVG 源。
+
 让 PowerPoint 文本、形状、线和连接符尽量保持原生可编辑；使用 SVG 时只使用上游已支持且经 QA 的 SVG 元素，并保留原始 SVG 源。真实显微图等像素证据作为单独图像对象保持不变，只在许可范围内添加图注/箭头标注。特殊滤镜、外部图片或复杂 SVG 可能无法转成可编辑形状，必须标注对象边界。
 
 ## 6. 专项图型检查

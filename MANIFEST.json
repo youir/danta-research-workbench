@@ -6,7 +6,7 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "5411fad9f2a83572c2007c5d2ee4ef5b3d0fba0104eeaa7521bb8a5a4f94885f",
+        "SKILL.md": "fc051e8cd7254bc1339cbde21a826fde8bb00c7de090bb2d105ede735cd1fefc",
         "agents/openai.yaml": "945dc0eb8e27f0478b0da327f54b2c7967a382455b1247c2274c913ea8396d60",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
         "references/expert-distillation.md": "5b5b80aebc307bb985fa5d35d8fb32a631e054eaa7aefea955b561c9f5a44b8f",
@@ -18,7 +18,7 @@
         "references/ogsm.md": "63b46980beb443aaa303205ae6e00d7738dfb0cb8e229274f1e5474746cb472c",
         "references/research-assistant.md": "bf028f4acadad910027e2e6c07fbcf53fe09f7ac74633143d3b9fb4420f651ab",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
-        "references/skill-routing.md": "90b0c69d876ed73ee8125afd7c4776c54af3dae6c182e2562af16dae648176c4",
+        "references/skill-routing.md": "9fe811648603c5267fe5f98b58e2713ce31a0f38df9ff1d3f8534af22df6b1dc",
         "references/thinking-dialogue.md": "0081bb8cdba78f7447bc627b788f1881b895d248893457b70b69bcd0e5d00b28",
         "references/writing-review-cards.md": "ffaa70e8ebb858a28d6144e8b6e34bb03eee5308d69e926adbae318818adbc9b"
       },
@@ -320,9 +320,10 @@
     "danta-research-ppt": {
       "source": "skills/danta-research-ppt",
       "files": {
-        "SKILL.md": "f3eaaaaae6b750acf0d5d22afeb99b8231edd481fb8b5de8f2afcfd89b4a2f9a",
-        "references/workflow.md": "738a2f25abcf8448c3e6f1b6c5ebc3c48a5c340c6fc5d8c01ea41bc24bb776dc",
-        "scripts/install_ppt_master.py": "237b11dbec62cd26c08477bd2ada223371ad84cade2e13dab9b1286dd39c2ee2"
+        "SKILL.md": "c333a79699d7004f69b61b8682a29b6fcf63b522bd21b1fa3b2abaa1feb691c8",
+        "references/workflow.md": "8c1c18b3307182e1925bcda20d3ef6ba4a65d1c297f71032c118e4721538c49a",
+        "scripts/install_ppt_master.py": "237b11dbec62cd26c08477bd2ada223371ad84cade2e13dab9b1286dd39c2ee2",
+        "references/svg-reconstruction.md": "8b0739d65275983cd9b7794ec0dc91c47b5e7ac9c99ac3bf924af05cbbf1c612"
       }
     }
   },
