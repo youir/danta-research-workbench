@@ -37,3 +37,11 @@ npm run start
 导航和主要表单适配键盘及窄屏；更新面板会报告网络错误或缺少 Git 元数据，不会把无法比较的状态误报为“已是最新”。
 
 [图片版使用说明](../../docs/assets/quickstart.png) · [工作台框架图](../../docs/assets/workbench-map.png)
+
+## 当前界面预览
+
+2026-09-28 本机实拍，深色模式首屏。
+
+![工作台首页](../../docs/assets/workbench-ui.png)
+
+![机制图工作区](../../docs/assets/mechanism-ui.png)

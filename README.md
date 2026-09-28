@@ -4,6 +4,12 @@
 
 本仓库包含龚博士的主引导 skill、固定版本科研 skills、生物数据库查询、生物医学论文写作与修回、生物科研日报、PPT 与科研图工作流、Consensus 与 Semantic Scholar 双源文献检索、科研工具地图、PPT Master 官方固定版本安装器、女娲专家蒸馏 skill、可选职责 agent 配置、空白模板，以及可在本机启动的网页入口。网页负责分流任务、整理可编辑的启动语和展示真实连接状态；科研协作仍在 Codex 中完成，网页不会自动连接对话、读取 GY 或运行 agent。外部检索按需调用；账号 API key 由使用者申请并在本机环境配置，不写入发行包。PPT Master 不占用日常知识库空间，第一次需要真正制图时再按校验值下载到当前私有工作区。
 
+当前网页界面（2026-09-28，本机深色模式首屏）：
+
+![工作台首页](docs/assets/workbench-ui.png)
+
+[机制图工作区截图](docs/assets/mechanism-ui.png)
+
 ## 最快开始：下载一个知识库，打开两个应用
 
 龚博士已经使用 Obsidian，并已有 `GY` 知识库。建议先让 Codex 在龚博士自己的电脑上确认 Obsidian 当前打开的 vault 是否为 `GY`，再把插件安装到这个现有库；不另建 vault，也不要求迁移旧笔记。下载 [独立知识库 ZIP](https://github.com/youir/danta-research-workbench/releases/latest/download/danta-research-vault-v1.21.0.zip) 主要用于全新使用者。主引导、思维引导、生物数据库与生物医学论文写作、生物科研日报专项技能、PPT/科研图流程、RSS 信息源、管理面板与空白模板都已附带，无须先安装整套技能。第一次要求真正制作 PPT 或科研图时，Codex 才下载安装并配置所需工具。请复制 [本机部署与首次配置](12_本机部署与首次配置.md) 的启动语。
