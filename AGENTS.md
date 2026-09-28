@@ -19,3 +19,15 @@
 公开仓库中的研究目录是模板。首次真实使用使用发行包提供的独立 Obsidian vault 或 `scripts/start_project.py` 创建仓库外的私有工作副本；两种方式选一种，不能同时维护两份当前状态、证据矩阵或决策日志。已处于用户指定的私有工作区时不重复复制。开发/验证系统本身时可直接操作仓库。不要自动提交或上传研究档案。
 
 创建或维护 Obsidian 科研知识库时读 `09_科研知识库与Obsidian.md`。新库用 create_research_vault.py 初始化，进入新库后遵循其AGENTS及Path-Map，不再创建旧版研究副本。只发布空白模板，禁止把真实库、个人记忆或hwm内容一并提交。
+
+## Windows 本机前端更新与启动
+
+当龚博士在 Codex 里说“查看 Git 仓库更新，并配置、打开网页前端”或意思相同：
+
+1. 这是要在龚博士自己的 Windows 电脑上启动工作台，不要把当前 Codex 执行环境的 localhost 当成她电脑的地址。
+2. 先确认当前目录是不是 `https://github.com/youir/danta-research-workbench.git` 的克隆。若不是，克隆到用户 Documents 下的 `Danta-Research-Workbench` 文件夹；若目录已存在，先检查远端和状态。
+3. 更新前先检查 Git 状态并获取远端更新。只在可安全快进时更新 `main`；禁止 `reset --hard`、清理未跟踪文件或覆盖用户改动。更新会覆盖本地改动时，保留现场并说明阻塞，不擅自 stash、删除或重置。
+4. 只配置和启动 `apps/danta-workbench-ui`，不要扫描 GY 或其他研究目录。按该目录 README 检查 Node.js 20.19+、安装 npm 依赖，然后运行 `启动工作台.bat`；它会绑定 `127.0.0.1` 并打开 Windows 默认浏览器。
+5. 亲自确认浏览器显示“龚博士科研工作台”后再完成。服务需要保持运行；若 Node.js 缺失或过旧，清楚告诉她安装要求和官方地址，不要假装已启动。
+
+可直接复制：`请检查并安全更新龚博士科研工作台的 Git 仓库，然后在我的 Windows 电脑上配置并打开最新的网页前端。按仓库说明操作，只启动 apps/danta-workbench-ui；保留所有本地改动，不扫描 GY。`
