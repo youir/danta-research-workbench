@@ -102,12 +102,12 @@ button:focus-visible, textarea:focus-visible { outline: 3px solid #aaa0ed; outli
 .home-view {
   width: min(100%, 990px);
   margin-inline: auto;
-  padding-top: clamp(90px, 12.5vh, 140px);
+  padding-top: clamp(64px, 9vh, 108px);
   text-align: center;
 }
 .home-eyebrow { color: #718098; font-size: 14px; letter-spacing: .035em; }
 .home-view h1, .subpage-view h1 {
-  margin: 52px 0 58px;
+  margin: 36px 0 40px;
   color: var(--ink);
   font-size: clamp(38px, 4vw, 54px);
   font-weight: 650;
@@ -117,7 +117,7 @@ button:focus-visible, textarea:focus-visible { outline: 3px solid #aaa0ed; outli
 .thought-form { display: flex; flex-direction: column; align-items: center; }
 .thought-form textarea {
   width: 100%;
-  min-height: 220px;
+  min-height: 190px;
   resize: vertical;
   padding: 29px 28px;
   border: 1px solid #d8dce5;
@@ -133,12 +133,12 @@ button:focus-visible, textarea:focus-visible { outline: 3px solid #aaa0ed; outli
 .thought-form textarea:focus { border-color: #a9a0e7; box-shadow: 0 0 0 4px rgb(118 103 216 / 10%); outline: none; }
 .primary-button {
   min-width: 262px;
-  min-height: 64px;
+  min-height: 58px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 15px;
-  margin-top: 30px;
+  margin-top: 22px;
   padding: 0 27px;
   border: 0;
   border-radius: 13px;
@@ -175,7 +175,7 @@ button:focus-visible, textarea:focus-visible { outline: 3px solid #aaa0ed; outli
   cursor: pointer;
   transition: color .16s ease, border-color .16s ease, background-color .16s ease;
 }
-.quick-start-label { margin-top: 36px; color: #929bac; font-size: 12px; letter-spacing: .04em; }
+.quick-start-label { margin-top: 26px; color: #929bac; font-size: 12px; letter-spacing: .04em; }
 .prompt-starters button:hover { border-color: #d5d0f0; background: #fbfaff; color: var(--accent-strong); }
 
 .resume-row {
