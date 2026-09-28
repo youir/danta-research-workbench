@@ -30,4 +30,4 @@
 4. 只配置和启动 `apps/danta-workbench-ui`，不要扫描 GY 或其他研究目录。按该目录 README 检查 Node.js 20.19+、安装 npm 依赖，然后运行 `启动工作台.bat`；它会绑定 `127.0.0.1` 并打开 Windows 默认浏览器。
 5. 亲自确认浏览器显示“龚博士科研工作台”后再完成。服务需要保持运行；若 Node.js 缺失或过旧，清楚告诉她安装要求和官方地址，不要假装已启动。
 
-可直接复制：`请检查并安全更新龚博士科研工作台的 Git 仓库，然后在我的 Windows 电脑上配置并打开最新的网页前端。按仓库说明操作，只启动 apps/danta-workbench-ui；保留所有本地改动，不扫描 GY。`
+可直接复制：`请检查并安全更新 https://github.com/youir/danta-research-workbench.git，然后在我的 Windows 电脑上配置并打开 apps/danta-workbench-ui 网页前端；若本机还没有仓库，就克隆到 Documents\Danta-Research-Workbench。保留本地改动，有覆盖风险就先停下问我；不要扫描 GY。`
