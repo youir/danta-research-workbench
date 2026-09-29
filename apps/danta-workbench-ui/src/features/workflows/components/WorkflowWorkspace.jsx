@@ -1,9 +1,10 @@
 import { memo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, FilePlus, ShareNetwork, X } from '@phosphor-icons/react';
+import { ArrowLeft, ArrowRight, CheckCircle, DownloadSimple, FilePlus, ShareNetwork, X } from '@phosphor-icons/react';
+import { PPT_TEMPLATES } from '../../../shared/constants/pptTemplates.js';
 
 const MEETING_REVIEW_SEED = '我想复盘一次组会：……请根据实际讨论记录整理导师/同门反馈、已决定事项、尚未决定的问题和行动项，不要补写没有发生的内容。';
 
-export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism }) => {
+export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], selectedPptTemplate = null, onSelectPptTemplate, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism }) => {
   const fileInputRef = useRef(null);
   const [meetingMode, setMeetingMode] = useState('prepare');
 
@@ -26,10 +27,29 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
       </div>
 
       {workflow.id === 'ppt' && (
-        <section className="mechanism-launcher">
-          <div><span className="panel-kicker">科研图示 · 证据先行</span><h2>机制图制作</h2><p>专门核对机制关系与来源，再制作可编辑的科研图。</p></div>
-          <button className="secondary-button" type="button" onClick={onOpenMechanism}><ShareNetwork size={18} aria-hidden="true" />进入机制图工作区 <ArrowRight size={16} aria-hidden="true" /></button>
-        </section>
+        <>
+          <section className="ppt-template-library" aria-labelledby="ppt-template-title">
+            <div className="ppt-template-heading">
+              <div><span className="panel-kicker">组会汇报 · 可编辑 PPTX</span><h2 id="ppt-template-title">选择一套汇报模板</h2><p>四种科研版式都保留真实病理与实验图表的呈现空间，可先预览，也可直接下载。</p></div>
+              <button className="secondary-button" type="button" onClick={onOpenMechanism}><ShareNetwork size={17} aria-hidden="true" />机制图工作区 <ArrowRight size={15} aria-hidden="true" /></button>
+            </div>
+            <div className="ppt-template-grid" role="group" aria-label="组会 PPT 模板">
+              {PPT_TEMPLATES.map(template => {
+                const selected = selectedPptTemplate?.id === template.id;
+                return (
+                  <article className={`ppt-template-card${selected ? ' is-selected' : ''}`} key={template.id} style={{ '--template-accent': template.accent }}>
+                    <button className="ppt-template-pick" type="button" aria-pressed={selected} aria-label={`选择${template.title}`} onClick={() => onSelectPptTemplate(template)}>
+                      <span className="ppt-template-preview"><img src={template.preview} alt={`${template.title}封面预览`} loading="lazy" /><span className="ppt-template-selection">{selected ? <><CheckCircle size={15} weight="fill" aria-hidden="true" />已选</> : '预览风格'}</span></span>
+                      <span className="ppt-template-copy"><span className="ppt-template-meta">{template.style}</span><strong>{template.title}</strong><small>{template.description}</small></span>
+                    </button>
+                    <a className="ppt-template-download" href={template.downloadUrl} download={template.fileName}><DownloadSimple size={15} aria-hidden="true" />下载可编辑 PPTX</a>
+                  </article>
+                );
+              })}
+            </div>
+            <div className="ppt-template-status" aria-live="polite"><span>{selectedPptTemplate ? `已选择：${selectedPptTemplate.title}。整理启动语时会附上模板文件路径。` : '暂未选择模板。可以先比较四种风格，也可以直接整理启动语。'}</span>{selectedPptTemplate && <button type="button" onClick={() => onSelectPptTemplate(null)}>清除选择</button>}</div>
+          </section>
+        </>
       )}
 
       <div className="workspace-grid">
@@ -48,7 +68,7 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
           <textarea id={`${workflow.id}-thought`} className="discussion-textarea" value={thought} onChange={event => setThought(event.target.value)} rows={7} />
           <div className="workspace-form-footer">
             <span>生成后由你检查启动语，再复制到 Codex；本页不会启动对话。</span>
-            <button className="primary-button compact" type="button" onClick={() => onBegin(thought, workflow.focus)}>整理启动语 <ArrowRight size={16} aria-hidden="true" /></button>
+            <button className="primary-button compact" type="button" onClick={() => onBegin(thought, workflow.focus, workflow.id === 'ppt' ? selectedPptTemplate : null)}>整理启动语 <ArrowRight size={16} aria-hidden="true" /></button>
           </div>
         </section>
 
