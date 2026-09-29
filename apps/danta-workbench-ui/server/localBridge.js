@@ -1,5 +1,5 @@
 import { execFile, spawn } from 'node:child_process';
-import { accessSync, constants as fsConstants } from 'node:fs';
+import { accessSync, constants as fsConstants, statSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
@@ -48,6 +48,24 @@ const SCOPE_INFO = {
 const KNOWN_HIDDEN_DIRECTORIES = new Set(['.git', '.trash', '.obsidian']);
 
 function resolveCodexBinary() {
+  if (process.platform === 'win32') {
+    const explicit = process.env.CODEX_CLI_PATH?.replace(/^"|"$/g, '');
+    const directories = [
+      ...(explicit && path.dirname(explicit) !== '.' ? [path.dirname(explicit)] : []),
+      ...(process.env.PATH || '').split(path.delimiter),
+      process.env.APPDATA ? path.join(process.env.APPDATA, 'npm') : '',
+    ].filter(Boolean);
+    const names = explicit
+      ? [path.basename(explicit), ...(['.exe', '.cmd', '.bat'].map(extension => `${explicit}${extension}`)).map(candidate => path.basename(candidate))]
+      : ['codex.exe', 'codex.cmd', 'codex.bat', 'codex'];
+    for (const directory of directories) {
+      for (const name of names) {
+        const candidate = path.isAbsolute(name) ? name : path.join(directory, name);
+        try { if (statSync(candidate).isFile()) return candidate; } catch { /* Try the next PATH entry. */ }
+      }
+    }
+    return explicit || 'codex';
+  }
   const candidates = [
     process.env.CODEX_CLI_PATH,
     '/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex',
@@ -137,7 +155,11 @@ class CodexRpcClient {
   }
 
   async start() {
-    this.child = spawn(this.binary, ['app-server', '--stdio'], {
+    const command = process.platform === 'win32' && /\.(cmd|bat)$/i.test(this.binary) ? (process.env.ComSpec || 'cmd.exe') : this.binary;
+    const args = command === this.binary
+      ? ['app-server', '--stdio']
+      : ['/d', '/s', '/c', `""${this.binary}" app-server --stdio"`];
+    this.child = spawn(command, args, {
       cwd: process.cwd(),
       stdio: ['pipe', 'pipe', 'pipe'],
       windowsHide: true,
@@ -599,35 +621,40 @@ export function createLocalBridgeService({
   return service;
 }
 
+export function createLocalBridgeRequestHandler(service) {
+  return async (req, res, next = () => {}) => {
+    const requestUrl = new URL(req.url || '/', 'http://127.0.0.1');
+    if (!requestUrl.pathname.startsWith(API_PREFIX)) return next();
+    if (!localAddress(req.headers.host)) return json(res, 403, { error: '本机功能只接受来自本地工作台的请求。' });
+    if (!originMatchesRequest(req)) return json(res, 403, { error: '请求来源无效，请从本机工作台操作。' });
+    try {
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}codex/status`) return json(res, 200, await service.codexStatus());
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/status`) return json(res, 200, await service.vaultStatus());
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/data`) return json(res, 200, await service.vaultData(requestUrl.searchParams.get('section')));
+      if (req.method !== 'POST') return json(res, 405, { error: '不支持此请求。' });
+      if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return json(res, 415, { error: '请求格式无效。' });
+      const body = await readJsonBody(req);
+      if (requestUrl.pathname === `${API_PREFIX}vault/select`) return json(res, 200, await service.chooseVault());
+      if (requestUrl.pathname === `${API_PREFIX}vault/authorize`) return json(res, 200, await service.authorizeScopes(body.scopes));
+      if (requestUrl.pathname === `${API_PREFIX}vault/disconnect`) return json(res, 200, await service.disconnectVault());
+      if (requestUrl.pathname === `${API_PREFIX}vault/archive`) return json(res, 201, await service.createArchive(body));
+      if (requestUrl.pathname === `${API_PREFIX}codex/new-thread`) return json(res, 201, await service.createCodexThread(body));
+      return json(res, 404, { error: '没有这个本机功能。' });
+    } catch (error) {
+      const status = Number(error?.statusCode) || 400;
+      const message = safeText(error?.message || '本机操作失败。', 300);
+      return json(res, status, { error: message });
+    }
+  };
+}
+
 export function createLocalBridgePlugin(options = {}) {
   const service = options.service || createLocalBridgeService(options);
+  const handleRequest = createLocalBridgeRequestHandler(service);
   return {
     name: 'danta-local-workbench-bridge',
     configureServer(server) {
-      server.middlewares.use(async (req, res, next) => {
-        const requestUrl = new URL(req.url || '/', 'http://127.0.0.1');
-        if (!requestUrl.pathname.startsWith(API_PREFIX)) return next();
-        if (!localAddress(req.headers.host)) return json(res, 403, { error: '本机功能只接受来自本地工作台的请求。' });
-        if (!originMatchesRequest(req)) return json(res, 403, { error: '请求来源无效，请从本机工作台操作。' });
-        try {
-          if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}codex/status`) return json(res, 200, await service.codexStatus());
-          if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/status`) return json(res, 200, await service.vaultStatus());
-          if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/data`) return json(res, 200, await service.vaultData(requestUrl.searchParams.get('section')));
-          if (req.method !== 'POST') return json(res, 405, { error: '不支持此请求。' });
-          if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return json(res, 415, { error: '请求格式无效。' });
-          const body = await readJsonBody(req);
-          if (requestUrl.pathname === `${API_PREFIX}vault/select`) return json(res, 200, await service.chooseVault());
-          if (requestUrl.pathname === `${API_PREFIX}vault/authorize`) return json(res, 200, await service.authorizeScopes(body.scopes));
-          if (requestUrl.pathname === `${API_PREFIX}vault/disconnect`) return json(res, 200, await service.disconnectVault());
-          if (requestUrl.pathname === `${API_PREFIX}vault/archive`) return json(res, 201, await service.createArchive(body));
-          if (requestUrl.pathname === `${API_PREFIX}codex/new-thread`) return json(res, 201, await service.createCodexThread(body));
-          return json(res, 404, { error: '没有这个本机功能。' });
-        } catch (error) {
-          const status = Number(error?.statusCode) || 400;
-          const message = safeText(error?.message || '本机操作失败。', 300);
-          return json(res, status, { error: message });
-        }
-      });
+      server.middlewares.use(handleRequest);
     },
   };
 }

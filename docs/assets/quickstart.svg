@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" role="img" aria-labelledby="title desc">
   <title id="title">龚博士，工作台这样用</title>
-  <desc id="desc">从选择任务到生成启动语、连接 Obsidian、进入 Codex 并恢复未完成草稿的六步说明。</desc>
+  <desc id="desc">通过桌面图标启动工作台，从整理任务到进入 Codex、连接 Obsidian 并恢复未完成草稿的六步说明。</desc>
   <defs>
     <linearGradient id="wash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EAF1FA"/><stop offset="1" stop-color="#EEF7F3"/></linearGradient>
     <style>
@@ -12,7 +12,7 @@
   </defs>
   <rect width="1600" height="1200" fill="#F8F9FB"/><rect width="1600" height="155" fill="url(#wash)"/>
   <text x="70" y="82" class="title">龚博士，工作台这样用</text>
-  <text x="70" y="127" class="sub">从一个具体问题开始；网页整理任务，Codex 接续执行。</text>
+  <text x="70" y="127" class="sub">双击桌面图标打开；工作台整理任务，Codex 接续执行。</text>
 
   <g fill="#FFFFFF" stroke="#DDE4EC" stroke-width="1.5">
     <rect x="70" y="190" width="710" height="255" rx="20"/>
@@ -49,9 +49,9 @@
 
   <text x="848" y="794" class="n">06</text><text x="902" y="794" class="head">完成后保存，随时接着做</text>
   <text x="850" y="844" class="body">重要研究状态经核对后再写入知识库。</text>
-  <text x="850" y="882" class="body">浏览器会保存未完成草稿，刷新后可恢复。</text>
-  <text x="850" y="920" class="body">本机服务重启后，重新选择知识库并授予范围。</text>
+  <text x="850" y="882" class="body">桌面应用会保存未完成草稿，退出后可恢复。</text>
+  <text x="850" y="920" class="body">重新打开后，再选择知识库并授予范围。</text>
 
-  <text x="70" y="1082" class="sub">工作台不读取 Codex 历史；浏览器范围与 Codex 本机文件权限分别管理。</text>
+  <text x="70" y="1082" class="sub">工作台不读取 Codex 历史；本机桥接范围与 Codex 文件权限分别管理。</text>
   <text x="70" y="1136" class="sub">龚博士科研工作台　·　思维优先，决定在人　·　2026.09</text>
 </svg>

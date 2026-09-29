@@ -143,7 +143,11 @@ def main():
     print(call(ROOT / 'tests/test_research_vault.py', []).strip())
     print('PASS: installers, staging integrity, conflict protection, bounded/idempotent copy, empty target, source symlink, integrity rejection')
     checked = 0
-    for file in ROOT.rglob('*.md'):
+    tracked_files = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')
+    for relative_path in tracked_files:
+        if not relative_path.endswith('.md'):
+            continue
+        file = ROOT / relative_path
         if any(part in file.parts for part in ('.git', '.local', 'vendor', 'node_modules', '__pycache__')):
             continue
         for target in re.findall(r'\]\(([^)]+)\)', file.read_text(encoding='utf-8')):

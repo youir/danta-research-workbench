@@ -1,6 +1,6 @@
-# 本机应用
+# 桌面应用
 
-- [龚博士科研工作台前端](danta-workbench-ui/README.md)：Windows 双击 `启动工作台.bat`，或在该目录执行 `npm install`、`npm run start`。
-- [给 Codex 的更新与启动指令](danta-workbench-ui/给Codex的更新与启动指令.md)：复制一句话，让 Codex 检查 Git 更新、配置并打开她电脑上的前端。
+- [龚博士科研工作台](danta-workbench-ui/README.md)：Windows x64 安装版，创建桌面与开始菜单图标，在独立窗口运行。
+- [桌面版安装与维护说明](danta-workbench-ui/桌面版安装与维护说明.md)：龚博士可复制给本机 Codex 的安装指令，以及 Obsidian 路径确认、权限、更新和数据说明。
 
-该前端是本机任务入口：可进入独立科研工作区、整理启动语、查看制作方法和检查 GitHub 更新。Codex 对话、GY 知识库、RSS 和实际 agent 尚未连接。完整能力边界和部署要求见其 README。
+工作台支持本机 Codex 工作区交接和按范围授权的 Obsidian 读取；Codex CLI 负责本机新建对话，Codex 登录及文件权限仍由 Codex 管理。维护者开发时可在应用目录运行 `npm run start`；日常使用者从 GitHub Releases 下载桌面安装包。

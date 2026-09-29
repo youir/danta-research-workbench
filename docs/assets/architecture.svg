@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1280" viewBox="0 0 1600 1280" role="img" aria-labelledby="title desc">
   <title id="title">龚博士科研工作台完整架构</title>
-  <desc id="desc">本机网页工作台、本地桥接服务、Codex 职责协作与私有 Obsidian 知识库之间的数据和授权关系。</desc>
+  <desc id="desc">可安装的桌面工作台、本机桥接服务、Codex 职责协作与私有 Obsidian 知识库之间的数据和授权关系。</desc>
   <defs>
     <linearGradient id="header" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8F0FA"/><stop offset="1" stop-color="#E9F5F1"/></linearGradient>
     <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#24364B" flood-opacity=".08"/></filter>
@@ -18,11 +18,11 @@
   </defs>
   <rect width="1600" height="1280" fill="#F5F7FA"/><rect width="1600" height="138" fill="url(#header)"/>
   <text x="60" y="61" class="title">龚博士科研工作台｜完整架构</text>
-  <text x="60" y="101" class="subtitle">本机网页整理任务 → Codex 接续执行 → 核对结果 → Obsidian 持续留存</text>
+  <text x="60" y="101" class="subtitle">桌面图标打开工作台 → Codex 接续执行 → 核对结果 → Obsidian 持续留存</text>
   <rect x="1190" y="38" width="350" height="46" rx="23" fill="#FFFFFF" stroke="#CCD9E5"/><circle cx="1216" cy="61" r="7" fill="#16827C"/>
   <text x="1233" y="67" class="small">数据留在本机 · 权限分层授权</text>
 
-  <text x="60" y="178" class="section">01　从本机网页进入任务，并调用本地能力</text>
+  <text x="60" y="178" class="section">01　从桌面应用进入任务，并调用本地能力</text>
   <g filter="url(#shadow)">
     <rect x="60" y="200" width="230" height="196" rx="18" fill="#FFFFFF" stroke="#C9D6E4"/>
     <rect x="340" y="200" width="570" height="196" rx="18" fill="#EDF4FF" stroke="#B9D0ED"/>
@@ -31,11 +31,11 @@
   <text x="84" y="239" class="small">使用者</text><text x="84" y="277" class="cardTitle">龚博士</text>
   <text x="84" y="312" class="body">选择任务与工作区</text><text x="84" y="342" class="body">确认内容与授权范围</text>
   <text x="84" y="372" class="small">科学判断由本人和导师决定</text>
-  <text x="365" y="239" class="small">浏览器中的 React 工作台</text><text x="365" y="277" class="cardTitle">任务引导与可恢复草稿</text>
+  <text x="365" y="239" class="small">独立窗口中的 React 工作台</text><text x="365" y="277" class="cardTitle">任务引导与可恢复草稿</text>
   <text x="365" y="312" class="body">选题 · 论文 · PPT / 组会 · 科研日报 · 机制图</text>
   <text x="365" y="342" class="body">按需填空、选择模板与标识，生成可编辑启动语</text>
-  <text x="365" y="372" class="small">未完成内容保存在当前浏览器 localStorage</text>
-  <text x="985" y="239" class="small">本机 Vite 服务 · 127.0.0.1</text><text x="985" y="277" class="cardTitle">本地桥接层（Local Bridge）</text>
+  <text x="365" y="372" class="small">本机保存草稿，退出重开后可恢复</text>
+  <text x="985" y="239" class="small">随桌面程序启动 · 127.0.0.1:48921</text><text x="985" y="277" class="cardTitle">本地桥接层（Local Bridge）</text>
   <text x="985" y="312" class="body">Obsidian：选择目录后逐项授权；范围只驻留服务内存</text>
   <text x="985" y="342" class="body">Codex：读取工作区，创建并打开新对话</text>
   <text x="985" y="372" class="small">归档另行授权，只能在指定目录新建文件</text>
@@ -93,11 +93,11 @@
   <text x="90" y="1025" class="cardTitle">Obsidian vault · 研究资料的唯一长期档案</text>
   <text x="90" y="1062" class="body">课题与研究日志　·　文献证据　·　RSS 插件已有缓存　·　明确新建的归档</text>
   <text x="90" y="1097" class="body">工作台按模块授权后读取指定目录；新归档只在约定目录创建文件，不覆盖旧记录。</text>
-  <text x="90" y="1132" class="body">Codex 访问文件另受 Codex 本机运行权限与本轮任务授权约束，与网页读取范围相互独立。</text>
+  <text x="90" y="1132" class="body">Codex 访问文件另受 Codex 本机运行权限与本轮任务授权约束，与工作台读取范围相互独立。</text>
   <text x="90" y="1170" class="small">RSS 页面显示已缓存线索；外部检索只处理公开查询，不自动发送私有笔记。</text>
   <path d="M1510 390H1570V1088H1552" fill="none" stroke="#16827C" stroke-width="3" marker-end="url(#arrowTeal)"/>
   <text x="1552" y="715" text-anchor="middle" transform="rotate(90 1552 715)" class="tag" fill="#16827C">工作台 scope：逐项授权</text>
   <path d="M1050 912V972" fill="none" stroke="#6D61B2" stroke-width="3" marker-end="url(#arrowViolet)"/>
   <text x="1070" y="950" class="tag" fill="#6255A8">Codex 本机权限</text>
-  <text x="60" y="1243" class="small">网页权限只约束本地桥接层；Codex 文件权限由本机运行环境管理。新对话由本人粘贴、核对并提交。</text>
+  <text x="60" y="1243" class="small">桌面工作台权限只约束本地桥接层；Codex 文件权限由本机运行环境管理。新对话由本人粘贴、核对并提交。</text>
 </svg>

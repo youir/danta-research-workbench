@@ -20,14 +20,15 @@
 
 创建或维护 Obsidian 科研知识库时读 `09_科研知识库与Obsidian.md`。新库用 create_research_vault.py 初始化，进入新库后遵循其AGENTS及Path-Map，不再创建旧版研究副本。只发布空白模板，禁止把真实库、个人记忆或hwm内容一并提交。
 
-## Windows 本机前端更新与启动
+## Windows 桌面工作台安装与更新
 
-当龚博士在 Codex 里说“查看 Git 仓库更新，并配置、打开网页前端”或意思相同：
+龚博士日常使用正式安装版，不克隆源码仓库，不安装 Node.js，也不通过浏览器或终端启动。她在 Codex 中提出安装、打开或更新工作台时：
 
-1. 这是要在龚博士自己的 Windows 电脑上启动工作台，不要把当前 Codex 执行环境的 localhost 当成她电脑的地址。
-2. 先确认当前目录是不是 `https://github.com/youir/danta-research-workbench.git` 的克隆。若不是，克隆到用户 Documents 下的 `Danta-Research-Workbench` 文件夹；若目录已存在，先检查远端和状态。
-3. 更新前先检查 Git 状态并获取远端更新。只在可安全快进时更新 `main`；禁止 `reset --hard`、清理未跟踪文件或覆盖用户改动。更新会覆盖本地改动时，保留现场并说明阻塞，不擅自 stash、删除或重置。
-4. 只配置和启动 `apps/danta-workbench-ui`，不要扫描 GY 或其他研究目录。按该目录 README 检查 Node.js 20.19+、安装 npm 依赖，然后运行 `启动工作台.bat`；它会绑定 `127.0.0.1` 并打开 Windows 默认浏览器。
-5. 亲自确认浏览器显示“龚博士科研工作台”后再完成。服务需要保持运行；若 Node.js 缺失或过旧，清楚告诉她安装要求和官方地址，不要假装已启动。
+1. 只在龚博士自己的 Windows 电脑上操作；报告 Windows 版本、x64 架构、用户目录和安装位置。工作台绑定 `127.0.0.1:48921`，这是她电脑内部的本机地址，不是当前 Codex 执行环境或局域网地址。
+2. 从 GitHub Releases 中筛选 tag 以 `workbench-v` 开头的桌面版，选择最高版本号，下载 Windows x64 安装包与 `SHA256SUMS.txt` 并核对 SHA-256。校验不匹配或文件缺少时停止安装并说明。
+3. 以当前用户权限安装，保留既有应用数据，确认桌面 / 开始菜单图标，并从图标启动独立窗口。不要克隆或修改 Git 仓库。
+4. 为帮助找到 Obsidian vault，可只查看 `%APPDATA%\obsidian\obsidian.json` 中的 vault 名称和路径元数据，不读 vault 笔记、附件或其他目录。把完整候选路径展示给龚博士，由她选定后，再让她通过工作台文件夹选择器确认路径。
+5. 解释研究记录、文献、RSS、查看归档、新建归档的授权范围；由龚博士逐项选择和确认。禁止替她批准范围、自动读取笔记、创建归档或扫描 GY。
+6. 确认窗口打开，并仅报告安装路径、桌面图标状态、经她确认的 Obsidian 路径和本人逐项授权的范围。Codex 工作区交接还需本机 Codex CLI 可用；若未找到，说明缺少的组件并协助其按 Codex 官方流程配置。
 
-可直接复制：`请检查并安全更新 https://github.com/youir/danta-research-workbench.git，然后在我的 Windows 电脑上配置并打开 apps/danta-workbench-ui 网页前端；若本机还没有仓库，就克隆到 Documents\Danta-Research-Workbench。保留本地改动，有覆盖风险就先停下问我；不要扫描 GY。`
+可复制的完整引导语保存在 [`apps/danta-workbench-ui/桌面版安装与维护说明.md`](apps/danta-workbench-ui/桌面版安装与维护说明.md)。

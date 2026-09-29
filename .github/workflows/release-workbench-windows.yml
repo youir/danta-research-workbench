@@ -1,0 +1,47 @@
+name: Release Windows desktop workbench
+
+on:
+  push:
+    tags:
+      - "workbench-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/danta-workbench-ui/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/danta-workbench-ui
+        run: npm ci
+
+      - name: Build Windows installer
+        working-directory: apps/danta-workbench-ui
+        run: npm run dist:win
+
+      - name: Create installer checksum
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem "apps/danta-workbench-ui/release/*.exe" | Select-Object -First 1
+          if (-not $installer) { throw "Windows installer was not created." }
+          $hash = Get-FileHash $installer.FullName -Algorithm SHA256
+          "$($hash.Hash)  $($installer.Name)" | Set-Content "apps/danta-workbench-ui/release/SHA256SUMS.txt"
+
+      - name: Publish installer and checksum
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $installer = Get-ChildItem "apps/danta-workbench-ui/release/*.exe" | Select-Object -First 1
+          gh release create "$env:GITHUB_REF_NAME" $installer.FullName "apps/danta-workbench-ui/release/SHA256SUMS.txt" --title "龚博士科研工作台 $env:GITHUB_REF_NAME" --generate-notes

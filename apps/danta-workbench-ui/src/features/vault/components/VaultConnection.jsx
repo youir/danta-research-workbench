@@ -46,7 +46,7 @@ export const VaultConnection = memo(({ status, onSelect, onAuthorize, onDisconne
           <div><span className="panel-kicker">本机 Obsidian</span><h2 id="vault-connection-status">{status?.connected ? '已授权连接' : status?.selected ? '已选择知识库' : '尚未选择知识库'}</h2></div>
           <span className="vault-status-pill">{status?.name || '需要你选择'}</span>
         </div>
-        <p>文件夹路径只保存在本机 Vite 服务的内存中，不会写进 Git、浏览器存储或云端。工作台服务重启后，需要重新选择一次。</p>
+        <p>文件夹路径和授权只保存在本机桥接进程内存中，不会写进 Git、浏览器存储或云端。工作台退出后，需要重新选择并授权。</p>
 
         <div className="vault-actions">
           <button className="primary-button compact" type="button" onClick={async () => { setLocalMessage(''); try { await onSelect(); setConfirmed(false); } catch (error) { setLocalMessage(error?.message || '选择知识库失败。'); } }} disabled={busy}>

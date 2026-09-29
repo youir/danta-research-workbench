@@ -34,6 +34,8 @@ export default defineConfig({
   define: {
     __APP_COMMIT__: JSON.stringify(appCommit),
     __APP_HAS_LOCAL_CHANGES__: JSON.stringify(appHasLocalChanges),
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '0.2.0'),
+    __IS_DESKTOP_BUILD__: JSON.stringify(process.env.DANTA_DESKTOP === '1'),
   },
   server: {
     host: '127.0.0.1',
@@ -44,7 +46,7 @@ export default defineConfig({
   },
   build: {
     target: 'es2020',
-    sourcemap: true,
+    sourcemap: process.env.DANTA_DESKTOP !== '1',
     rollupOptions: {
       output: {
         manualChunks: {
