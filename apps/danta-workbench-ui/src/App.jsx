@@ -26,6 +26,7 @@ export function App() {
   const [taskFocus, setTaskFocus] = useState('自由讨论');
   const [mechanismBrief, setMechanismBrief] = useState(MECHANISM_SEED);
   const [selectedPptTemplate, setSelectedPptTemplate] = useState(null);
+  const [selectedPptLogo, setSelectedPptLogo] = useState(null);
   const [mechanismReturnTo, setMechanismReturnTo] = useState('start');
   const [filesByWorkflow, setFilesByWorkflow] = useState({});
   const [showMechanismProcess, setShowMechanismProcess] = useState(false);
@@ -63,13 +64,13 @@ export function App() {
     setActivePage(item.id);
   }
 
-  function beginDiscussion(text, focus, template = null) {
+  function beginDiscussion(text, focus, template = null, logo = null) {
     if (!text.trim()) {
       showNotice('先写下一件观察、困惑或正在处理的任务。', 'info');
       return;
     }
     setTaskFocus(focus);
-    setKickoff(makeKickoffPrompt(text, focus, template));
+    setKickoff(makeKickoffPrompt(text, focus, template, logo));
     setCopied(false);
     setModalOpen(true);
   }
@@ -122,7 +123,9 @@ export function App() {
         setThought={value => setDrafts(current => ({ ...current, [workflow.id]: value }))}
         files={filesByWorkflow[workflow.id] || []}
         selectedPptTemplate={workflow.id === 'ppt' ? selectedPptTemplate : null}
+        selectedPptLogo={workflow.id === 'ppt' ? selectedPptLogo : null}
         onSelectPptTemplate={setSelectedPptTemplate}
+        onSelectPptLogo={setSelectedPptLogo}
         onBack={() => navigate('start')}
         onBegin={beginDiscussion}
         onFilesAdded={event => addFiles(workflow.id, event)}

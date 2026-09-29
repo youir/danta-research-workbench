@@ -1,10 +1,11 @@
 import { memo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle, DownloadSimple, FilePlus, ShareNetwork, X } from '@phosphor-icons/react';
 import { PPT_TEMPLATES } from '../../../shared/constants/pptTemplates.js';
+import { PptLogoSelector } from './PptLogoSelector.jsx';
 
 const MEETING_REVIEW_SEED = '我想复盘一次组会：……请根据实际讨论记录整理导师/同门反馈、已决定事项、尚未决定的问题和行动项，不要补写没有发生的内容。';
 
-export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], selectedPptTemplate = null, onSelectPptTemplate, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism }) => {
+export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], selectedPptTemplate = null, selectedPptLogo = null, onSelectPptTemplate, onSelectPptLogo, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism }) => {
   const fileInputRef = useRef(null);
   const [meetingMode, setMeetingMode] = useState('prepare');
 
@@ -49,6 +50,7 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
             </div>
             <div className="ppt-template-status" aria-live="polite"><span>{selectedPptTemplate ? `已选择：${selectedPptTemplate.title}。整理启动语时会附上模板文件路径。` : '暂未选择模板。可以先比较四种风格，也可以直接整理启动语。'}</span>{selectedPptTemplate && <button type="button" onClick={() => onSelectPptTemplate(null)}>清除选择</button>}</div>
           </section>
+          <PptLogoSelector selectedLogo={selectedPptLogo} onSelectLogo={onSelectPptLogo} />
         </>
       )}
 
@@ -68,7 +70,7 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
           <textarea id={`${workflow.id}-thought`} className="discussion-textarea" value={thought} onChange={event => setThought(event.target.value)} rows={7} />
           <div className="workspace-form-footer">
             <span>生成后由你检查启动语，再复制到 Codex；本页不会启动对话。</span>
-            <button className="primary-button compact" type="button" onClick={() => onBegin(thought, workflow.focus, workflow.id === 'ppt' ? selectedPptTemplate : null)}>整理启动语 <ArrowRight size={16} aria-hidden="true" /></button>
+            <button className="primary-button compact" type="button" onClick={() => onBegin(thought, workflow.focus, workflow.id === 'ppt' ? selectedPptTemplate : null, workflow.id === 'ppt' ? selectedPptLogo : null)}>整理启动语 <ArrowRight size={16} aria-hidden="true" /></button>
           </div>
         </section>
 
