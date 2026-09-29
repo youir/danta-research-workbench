@@ -1,1 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200"><rect width="1600" height="1200" fill="#FAF9F6"/><style>text{font-family:PingFang SC,Hiragino Sans GB,sans-serif;fill:#28364D}.title{font-size:46px;font-weight:700}.sub{font-size:23px;fill:#748096}.head{font-size:27px;font-weight:600}.body{font-size:23px;fill:#536077}.n{font-size:24px;fill:#7864C8;font-weight:600}</style><text x="70" y="85" class="title">龚博士，工作台这样用</text><text x="70" y="130" class="sub">从一个短问题开始；网页整理任务，Codex 负责接续执行。</text><rect x="70" y="175" width="710" height="255" rx="20" fill="white" stroke="#E4E0EF"/><text x="96" y="219" class="n">01</text><text x="150" y="219" class="head">先让 Codex 配置本机工作台</text><text x="98" y="267" class="body">把仓库链接发给 Codex，告诉它：</text><text x="98" y="304" class="body">“检查更新，在我的 Windows 电脑上</text><text x="98" y="341" class="body">配置并打开网页前端，保留本地改动。”</text><text x="98" y="378" class="body">仓库：github.com/youir/danta-research-workbench</text><rect x="820" y="175" width="710" height="255" rx="20" fill="white" stroke="#E4E0EF"/><text x="846" y="219" class="n">02</text><text x="900" y="219" class="head">选一项工作，只写眼前的需要</text><text x="848" y="267" class="body">开始页：选题 / 论文 / PPT / 组会 / 日报。</text><text x="848" y="304" class="body">例如：“帮我复盘这次组会，整理下一步。”</text><text x="848" y="341" class="body">点击“整理启动语”，确认后复制到 Codex。</text><text x="848" y="378" class="body">研究记录、机制图、文献、知识库在主导航。</text><rect x="70" y="460" width="710" height="255" rx="20" fill="white" stroke="#E4E0EF"/><text x="96" y="504" class="n">03</text><text x="150" y="504" class="head">机制图：先证据，再绘制</text><text x="98" y="552" class="body">点击主导航“机制图”，或从 PPT 工作区进入。</text><text x="98" y="589" class="body">填主题、已有证据和使用场景即可。</text><text x="98" y="626" class="body">“查看制作过程”可展开五步方法说明。</text><text x="98" y="663" class="body">生成专用启动语 → 复制到 Codex 继续。</text><rect x="820" y="460" width="710" height="255" rx="20" fill="white" stroke="#E4E0EF"/><text x="846" y="504" class="n">04</text><text x="900" y="504" class="head">绘图资源就在机制图工作区里</text><text x="848" y="552" class="body">内置工作流：danta-research-ppt + PPT Master。</text><text x="848" y="589" class="body">BioTender：查找生物科研技能。</text><text x="848" y="626" class="body">BioRender：打开外部绘图平台。</text><text x="848" y="663" class="body">进入网站后，自行选择是否粘贴或上传材料。</text><rect x="70" y="745" width="710" height="255" rx="20" fill="white" stroke="#E4E0EF"/><text x="96" y="789" class="n">05</text><text x="150" y="789" class="head">在 Codex 确认逻辑并完成交付</text><text x="98" y="837" class="body">先核对节点、关系方向、来源和证据状态。</text><text x="98" y="874" class="body">确认草图后，继续制作可编辑 PPT / SVG。</text><text x="98" y="911" class="body">让 Codex 展示产物与科学、版面检查结果。</text><text x="98" y="948" class="body">最终研究主张由你和导师确认。</text><rect x="820" y="745" width="710" height="255" rx="20" fill="white" stroke="#E4E0EF"/><text x="846" y="789" class="n">06</text><text x="900" y="789" class="head">知道当前哪些已经接通</text><text x="848" y="837" class="body">网页可整理启动语、检查 GitHub 并复制更新指令。</text><text x="848" y="874" class="body">流程按钮展示方法步骤，不是实时生成进度。</text><text x="848" y="911" class="body">GY、对话历史和产物预览目前尚未接入。</text><text x="848" y="948" class="body">网页文件区只暂存文件名，刷新即清空。</text><text x="70" y="1100" class="sub">配套阅读：工作台框架图。首次读取研究资料前，先在 Codex 确认 GY 的路径和范围。</text><text x="70" y="1150" class="sub">龚博士科研工作台  ·  思维优先，决定在人  ·  2026.09</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" role="img" aria-labelledby="title desc">
+  <title id="title">龚博士，工作台这样用</title>
+  <desc id="desc">从选择任务到生成启动语、连接 Obsidian、进入 Codex 并恢复未完成草稿的六步说明。</desc>
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EAF1FA"/><stop offset="1" stop-color="#EEF7F3"/></linearGradient>
+    <style>
+      text{font-family:"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC",sans-serif;fill:#28364D}
+      .title{font-size:46px;font-weight:700}.sub{font-size:23px;fill:#66778D}
+      .head{font-size:27px;font-weight:700}.body{font-size:22px;fill:#536077}
+      .n{font-size:24px;fill:#16827C;font-weight:700}
+    </style>
+  </defs>
+  <rect width="1600" height="1200" fill="#F8F9FB"/><rect width="1600" height="155" fill="url(#wash)"/>
+  <text x="70" y="82" class="title">龚博士，工作台这样用</text>
+  <text x="70" y="127" class="sub">从一个具体问题开始；网页整理任务，Codex 接续执行。</text>
+
+  <g fill="#FFFFFF" stroke="#DDE4EC" stroke-width="1.5">
+    <rect x="70" y="190" width="710" height="255" rx="20"/>
+    <rect x="820" y="190" width="710" height="255" rx="20"/>
+    <rect x="70" y="470" width="710" height="255" rx="20"/>
+    <rect x="820" y="470" width="710" height="255" rx="20"/>
+    <rect x="70" y="750" width="710" height="255" rx="20"/>
+    <rect x="820" y="750" width="710" height="255" rx="20"/>
+  </g>
+  <text x="98" y="234" class="n">01</text><text x="152" y="234" class="head">选一个工作入口</text>
+  <text x="100" y="284" class="body">开始页可选选题、论文、PPT、组会或科研日报。</text>
+  <text x="100" y="322" class="body">研究记录、文献、归档、机制图和知识库在主导航。</text>
+  <text x="100" y="360" class="body">页面的返回按钮可回到刚才的工作区。</text>
+
+  <text x="848" y="234" class="n">02</text><text x="902" y="234" class="head">按提示补充这次的目标</text>
+  <text x="850" y="284" class="body">填主题、听众、时长、已有材料和希望讨论的问题。</text>
+  <text x="850" y="322" class="body">可选填空、选择项或提示词框架；不需要的项可跳过。</text>
+  <text x="850" y="360" class="body">缺失信息标为待确认，避免推测研究结果。</text>
+
+  <text x="98" y="514" class="n">03</text><text x="152" y="514" class="head">PPT 只使用真实研究材料</text>
+  <text x="100" y="564" class="body">选择汇报结构与四套科研视觉模板之一。</text>
+  <text x="100" y="602" class="body">可选海军军医大学或复旦大学上海医学院标识。</text>
+  <text x="100" y="640" class="body">补充文献、图表、待讨论点；未知内容保留空缺。</text>
+
+  <text x="848" y="514" class="n">04</text><text x="902" y="514" class="head">连接需要的 Obsidian 资料</text>
+  <text x="850" y="564" class="body">选择本机知识库文件夹，并逐项授予页面范围。</text>
+  <text x="850" y="602" class="body">按需查看研究记录、文献笔记或 RSS 已有缓存。</text>
+  <text x="850" y="640" class="body">归档写入单独授权，只能新建文件。</text>
+
+  <text x="98" y="794" class="n">05</text><text x="152" y="794" class="head">进入目标 Codex 工作区</text>
+  <text x="100" y="844" class="body">选择工作区后，工作台创建并尝试打开新对话。</text>
+  <text x="100" y="882" class="body">启动语已复制；在新对话中手动粘贴并检查。</text>
+  <text x="100" y="920" class="body">确认后由你提交，工作台不会代替你发送。</text>
+
+  <text x="848" y="794" class="n">06</text><text x="902" y="794" class="head">完成后保存，随时接着做</text>
+  <text x="850" y="844" class="body">重要研究状态经核对后再写入知识库。</text>
+  <text x="850" y="882" class="body">浏览器会保存未完成草稿，刷新后可恢复。</text>
+  <text x="850" y="920" class="body">本机服务重启后，重新选择知识库并授予范围。</text>
+
+  <text x="70" y="1082" class="sub">工作台不读取 Codex 历史；浏览器范围与 Codex 本机文件权限分别管理。</text>
+  <text x="70" y="1136" class="sub">龚博士科研工作台　·　思维优先，决定在人　·　2026.09</text>
+</svg>

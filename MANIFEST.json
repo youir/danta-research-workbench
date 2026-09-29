@@ -6,20 +6,21 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "fc051e8cd7254bc1339cbde21a826fde8bb00c7de090bb2d105ede735cd1fefc",
+        "SKILL.md": "c20730f0bc081d3222036ca86c0989b2e4b1b0edbb30d44f5b16110ca3e171eb",
         "agents/openai.yaml": "945dc0eb8e27f0478b0da327f54b2c7967a382455b1247c2274c913ea8396d60",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
         "references/expert-distillation.md": "5b5b80aebc307bb985fa5d35d8fb32a631e054eaa7aefea955b561c9f5a44b8f",
         "references/intake.md": "93c039351cfe75280459ef37ac42588efcbdfc83ca9f68a2b33feb40c5518387",
+        "references/jev-search-integration.md": "631e332c4621440a53c3239f124d84134d52cceba5bb87cdde420fd1340166e9",
         "references/knowledge-vault.md": "2e1c0595777efa241bed24b532ba911d3754c8c8153d4d1cb922aea7979f0e04",
         "references/lab-meeting.md": "2585b206c2dc588c3c53cd574f52b67a0d0f0a7585df240e524d3cebc269c5d4",
-        "references/literature-search.md": "1aabe19cfce78a981abc7193399f3351331bd25bb0360d36510ba7978dbf827a",
+        "references/literature-search.md": "3eb2a6dc99ce89abd730036e96e0629e2c63978138fb91d7f46eece85a8f1965",
         "references/literature-update.md": "af3311534df17e5229b81b641a04330667a9aeeddb01a8f65ecbeb818c5333b6",
         "references/multi-agent.md": "427404cc231d00a6442598714995216b14f0e119242dd297b156ccbbd6532e27",
         "references/ogsm.md": "63b46980beb443aaa303205ae6e00d7738dfb0cb8e229274f1e5474746cb472c",
         "references/research-assistant.md": "bf028f4acadad910027e2e6c07fbcf53fe09f7ac74633143d3b9fb4420f651ab",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
-        "references/skill-routing.md": "9fe811648603c5267fe5f98b58e2713ce31a0f38df9ff1d3f8534af22df6b1dc",
+        "references/skill-routing.md": "dbffb31be4a9edaac217ad2d1e664df31f5f40a3b869db77ac9199891871010f",
         "references/thinking-dialogue.md": "0081bb8cdba78f7447bc627b788f1881b895d248893457b70b69bcd0e5d00b28",
         "references/writing-review-cards.md": "ffaa70e8ebb858a28d6144e8b6e34bb03eee5308d69e926adbae318818adbc9b",
         "scripts/search_literature.py": "c0182e19b2bc2c2d539ae06621fc904b9e4e3fec84f3358e74cae3969d083303"
@@ -34,10 +35,10 @@
     "danta-bio-daily-briefing": {
       "source": "skills/danta-bio-daily-briefing",
       "files": {
-        "SKILL.md": "176416e15d7c384234ef2a35108775c285d01d8d23fd7ca8dde338701be94992",
+        "SKILL.md": "f517e9eabdc1001de8b897840952f7240a6f024e3398bc05e4e292570ca86839",
         "assets/content.schema.json": "709a693117b17402a1bbb7f42e963611109ba4da6d6ce349cf586a895fdecc6e",
         "examples/no-sources.json": "c236351d8fa3a1ee484ac9f6dfa938c76fc79c8b03902c46a23c126af63b8d68",
-        "references/briefing-workflow.md": "e442c2e989ef9cc9417da064c09de2609b156c33cd24bac35e3ab01393c3e877",
+        "references/briefing-workflow.md": "a98829e5d6bddafcb76d21a34924a3df1d58330e8609987b276ca76808ab3fc6",
         "scripts/render_brief.py": "270576f4c8789d1996d7ef455bd22714f49371fb75a5432f44f1384683d7a365",
         "tests/test_render_brief.py": "7bae0eba8db12826614cee305e8c82b8775b93a39ba68c779de15a1a01cf2470"
       },

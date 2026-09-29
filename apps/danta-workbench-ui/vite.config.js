@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { createLocalBridgePlugin } from './server/localBridge.js';
 
 const appDirectory = path.dirname(fileURLToPath(import.meta.url));
 let appCommit = '';
@@ -29,7 +30,7 @@ try {
 }
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), createLocalBridgePlugin()],
   define: {
     __APP_COMMIT__: JSON.stringify(appCommit),
     __APP_HAS_LOCAL_CHANGES__: JSON.stringify(appHasLocalChanges),

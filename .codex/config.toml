@@ -2,3 +2,11 @@
 [agents]
 enabled = true
 max_concurrent_threads_per_session = 3
+
+# Optional Jev MCP. The launcher reads TYPESAFE_API_KEY from this Mac's login
+# Keychain at process start; the secret is never stored in this project config.
+[mcp_servers.jev]
+command = "/usr/bin/swift"
+args = ["scripts/jev_mcp_launcher.swift", "run"]
+startup_timeout_sec = 45
+tool_timeout_sec = 90

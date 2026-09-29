@@ -37,7 +37,7 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 - 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
 - 龚博士要起草/修改生物医学或生信论文、润色/翻译、回复审稿意见或准备投稿材料时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-paper-writing`；简单编辑直接处理，长篇任务才先核对提纲和证据缺口。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
-- 需要快速检索学术论文、并行查看 Consensus 与 Semantic Scholar 时：按 [literature-search.md](references/literature-search.md) 调用内置检索脚本；只发送本轮明确给出的公开或获准查询词，不上传本地材料。
+- 任何科研咨询需要搜索公开网页、数据库或论文时：按 [literature-search.md](references/literature-search.md) 使用现有来源检索；找到关键 PubMed 论文后，可用 Linked Discoveries 扩展其前后引文、主题和出版更新，再回到原文核查。当前客户端提供 Jev MCP 时，主引导或文献负责人自动用 Jev 对不少于 4 条候选结果做相关性重排，再挑选要读的来源；少量候选或单一权威来源无需额外调用。可安全外发的日报公开线索和关键来源主张也按 [jev-search-integration.md](references/jev-search-integration.md) 自动筛选/核验。龚博士无需点名 Jev、选工具或确认常规公开结果调用。私有 vault、未发表方向、病历及论文草稿不发送给 Jev；无法安全泛化时跳过并照常完成本地/原检索流程。Jev 不负责搜索、写结论或替人决定。
 - 用户要蒸馏专家、建立/更新人物顾问或主题框架：先读 [expert-distillation.md](references/expert-distillation.md)，再按原始 huashu-nuwa 流程执行。
 - 需要专业工具：读 [skill-routing.md](references/skill-routing.md)，再读实际可用技能。缺失能力如实报告，能做的部分继续。
 - 需要为研究问题选择分析软件或平台时，查看工作台 `我的开题/02_盘点/科研工具地图.md`；若处于 Obsidian vault，按 [knowledge-vault.md](references/knowledge-vault.md) 的 Path-Map 找到 vault 内对应地图。只将适配当前问题和数据形态的候选项带入讨论，并到资源与约束中记录来源核验及实际能力检查。地图不是个人技能画像，不默认要求安装。

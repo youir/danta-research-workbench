@@ -1,12 +1,12 @@
 import { memo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle, DownloadSimple, FilePlus, ShareNetwork, X } from '@phosphor-icons/react';
+import { ArrowLeft, ArrowRight, CheckCircle, DownloadSimple, FilePlus, ShareNetwork, Newspaper, X } from '@phosphor-icons/react';
 import { PPT_TEMPLATES } from '../../../shared/constants/pptTemplates.js';
 import { PptLogoSelector } from './PptLogoSelector.jsx';
 
 const MEETING_REVIEW_SEED = '我想复盘一次组会：……请根据实际讨论记录整理导师/同门反馈、已决定事项、尚未决定的问题和行动项，不要补写没有发生的内容。';
 const PPT_GUIDE_MARKER = '【汇报信息填空框架】';
 
-export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], selectedPptTemplate = null, selectedPptLogo = null, pptPromptChoices = {}, onPptPromptChoicesChange, onSelectPptTemplate, onSelectPptLogo, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism }) => {
+export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], selectedPptTemplate = null, selectedPptLogo = null, pptPromptChoices = {}, onPptPromptChoicesChange, onSelectPptTemplate, onSelectPptLogo, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism, onViewDailyBriefs }) => {
   const fileInputRef = useRef(null);
   const [meetingMode, setMeetingMode] = useState('prepare');
 
@@ -63,6 +63,7 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
         <div className="home-eyebrow">龚博士的研究工作台</div>
         <h1 id="workflow-title">{workflow.label}</h1>
         <p>{workflow.workspaceDescription}</p>
+        {workflow.id === 'briefing' && <button className="secondary-button daily-workflow-link" type="button" onClick={onViewDailyBriefs}><Newspaper size={16} aria-hidden="true" />查看定时任务已生成的日报</button>}
       </div>
 
       {workflow.id === 'ppt' && (
