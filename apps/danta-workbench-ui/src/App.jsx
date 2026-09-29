@@ -18,22 +18,44 @@ import frameworkImage from '../../../docs/assets/workbench-map.png';
 
 const INITIAL_DRAFTS = Object.fromEntries(PROMPT_STARTERS.map(workflow => [workflow.id, workflow.seed]));
 const MECHANISM_SEED = '研究主题 / 核心发现：……\n已有证据或参考文献：……\n使用场景：PPT 汇报 / 论文插图';
+const SESSION_PREFIX = 'danta-workbench:v1:';
+
+function useSessionState(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    try {
+      const saved = window.sessionStorage.getItem(`${SESSION_PREFIX}${key}`);
+      return saved === null ? initialValue : JSON.parse(saved);
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.sessionStorage.setItem(`${SESSION_PREFIX}${key}`, JSON.stringify(value));
+    } catch {
+      // Keep the in-memory experience available when browser storage is unavailable.
+    }
+  }, [key, value]);
+
+  return [value, setValue];
+}
 
 export function App() {
   const [activePage, setActivePage] = useState('start');
-  const [homeThought, setHomeThought] = useState('');
-  const [drafts, setDrafts] = useState(INITIAL_DRAFTS);
-  const [taskFocus, setTaskFocus] = useState('自由讨论');
-  const [mechanismBrief, setMechanismBrief] = useState(MECHANISM_SEED);
-  const [selectedPptTemplate, setSelectedPptTemplate] = useState(null);
-  const [selectedPptLogo, setSelectedPptLogo] = useState(null);
+  const [homeThought, setHomeThought] = useSessionState('homeThought', '');
+  const [drafts, setDrafts] = useSessionState('workflowDrafts', INITIAL_DRAFTS);
+  const [taskFocus, setTaskFocus] = useSessionState('taskFocus', '自由讨论');
+  const [mechanismBrief, setMechanismBrief] = useSessionState('mechanismBrief', MECHANISM_SEED);
+  const [selectedPptTemplate, setSelectedPptTemplate] = useSessionState('selectedPptTemplate', null);
+  const [selectedPptLogo, setSelectedPptLogo] = useSessionState('selectedPptLogo', null);
   const [mechanismReturnTo, setMechanismReturnTo] = useState('start');
-  const [filesByWorkflow, setFilesByWorkflow] = useState({});
+  const [filesByWorkflow, setFilesByWorkflow] = useSessionState('filesByWorkflow', {});
   const [showMechanismProcess, setShowMechanismProcess] = useState(false);
   const [kickoff, setKickoff] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [vaultName, setVaultName] = useState('');
+  const [vaultName, setVaultName] = useSessionState('vaultName', '');
 
   const [notice, showNotice, hideNotice] = useNotice();
   const pickerRef = useRef(null);
@@ -114,7 +136,7 @@ export function App() {
 
   function renderContent() {
     if (activePage === 'start') {
-      return <HomePage thought={homeThought} setThought={setHomeThought} taskFocus={taskFocus} onBegin={beginDiscussion} onOpenWorkflow={openWorkflow} onOpenRecords={() => navigate('records')} />;
+      return <HomePage thought={homeThought} setThought={setHomeThought} taskFocus={taskFocus} onBegin={beginDiscussion} onOpenWorkflow={openWorkflow} onOpenVault={() => navigate('vault')} />;
     }
     if (workflow) {
       return <WorkflowWorkspace

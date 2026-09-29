@@ -1,8 +1,8 @@
 import { memo, useRef } from 'react';
-import { ArrowRight, ClockCounterClockwise } from '@phosphor-icons/react';
+import { ArrowRight, FolderOpen } from '@phosphor-icons/react';
 import { PROMPT_STARTERS, getStartActionLabel } from '../../../shared/constants/workflows.js';
 
-export const HomePage = memo(({ thought, setThought, taskFocus, onBegin, onOpenWorkflow, onOpenRecords }) => {
+export const HomePage = memo(({ thought, setThought, taskFocus, onBegin, onOpenWorkflow, onOpenVault }) => {
   const textareaRef = useRef(null);
 
   return (
@@ -39,14 +39,14 @@ export const HomePage = memo(({ thought, setThought, taskFocus, onBegin, onOpenW
         ))}
       </div>
 
-      <button className="resume-row" type="button" onClick={onOpenRecords}>
-        <ClockCounterClockwise size={20} aria-hidden="true" />
-        <span className="resume-label">最近研究记录</span>
+      <button className="resume-row" type="button" onClick={onOpenVault}>
+        <FolderOpen size={20} aria-hidden="true" />
+        <span className="resume-label">知识库连接状态</span>
         <span className="resume-divider" aria-hidden="true" />
-        <span className="resume-summary">研究记录尚未连接；进入后查看真实连接状态</span>
-        <span className="inline-link">查看 <ArrowRight size={15} aria-hidden="true" /></span>
+        <span className="resume-summary">网页尚未连接 GY；研究资料仍由 Obsidian 知识库维护</span>
+        <span className="inline-link">查看说明 <ArrowRight size={15} aria-hidden="true" /></span>
       </button>
-      <p className="local-note">本机界面 · 不读取 GY · 研究判断由龚博士和导师作出</p>
+      <p className="local-note">当前标签页自动暂存草稿 · 不读取 GY · 研究判断由龚博士和导师作出</p>
     </section>
   );
 });

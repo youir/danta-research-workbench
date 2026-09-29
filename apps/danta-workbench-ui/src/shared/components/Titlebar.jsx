@@ -6,8 +6,8 @@ export const Titlebar = memo(({ guideUrl, frameworkUrl }) => (
   <header className="titlebar">
     <div className="titlebar-brand"><Atom size={25} weight="light" aria-hidden="true" /><div><strong>龚博士科研工作台</strong><small>思维优先 · 决策在人</small></div></div>
     <div className="titlebar-actions">
-      <a className="titlebar-link" href={guideUrl} target="_blank" rel="noreferrer">使用说明 <ArrowSquareOut size={14} aria-hidden="true" /></a>
-      <a className="titlebar-link" href={frameworkUrl} target="_blank" rel="noreferrer">框架图 <ArrowSquareOut size={14} aria-hidden="true" /></a>
+      <a className="titlebar-link" href={guideUrl} title="打开使用说明" target="_blank" rel="noreferrer">使用说明 <ArrowSquareOut size={14} aria-hidden="true" /></a>
+      <a className="titlebar-link" href={frameworkUrl} title="打开工作台框架图" target="_blank" rel="noreferrer">框架图 <ArrowSquareOut size={14} aria-hidden="true" /></a>
       <UpdateControl />
     </div>
   </header>

@@ -10,9 +10,21 @@ export const KickoffModal = memo(({
   copyButtonRef,
   dialogRef
 }) => {
-  useEffect(() => {
-    if (!isOpen) return undefined;
+  const previouslyFocusedRef = useRef(null);
+  const wasOpenRef = useRef(false);
 
+  useEffect(() => {
+    if (!isOpen) {
+      if (wasOpenRef.current && previouslyFocusedRef.current instanceof HTMLElement) {
+        previouslyFocusedRef.current.focus();
+      }
+      wasOpenRef.current = false;
+      previouslyFocusedRef.current = null;
+      return undefined;
+    }
+
+    if (!wasOpenRef.current) previouslyFocusedRef.current = document.activeElement;
+    wasOpenRef.current = true;
     const dialog = dialogRef.current;
     const focusable = () => [...(dialog?.querySelectorAll('button:not([disabled])') || [])];
     copyButtonRef.current?.focus();
@@ -55,9 +67,11 @@ export const KickoffModal = memo(({
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
+        aria-describedby="kickoff-description"
       >
         <h2 id="modal-title">启动语已生成</h2>
-        <p>复制下面的启动语,粘贴到 Codex 对话框开始工作:</p>
+        <p id="kickoff-description">检查内容后复制启动语，再到目标 Codex 项目的新对话中粘贴。</p>
+        <p className="kickoff-connection-note">当前工作台不会自动跳转或创建 Codex 对话。</p>
         <pre className="kickoff-prompt">{kickoffPrompt}</pre>
         <div className="modal-actions">
           <button
@@ -65,12 +79,11 @@ export const KickoffModal = memo(({
             className="primary-button"
             type="button"
             onClick={onCopy}
-            disabled={copied}
           >
             {copied ? (
               <>
                 <Check size={18} aria-hidden="true" />
-                已复制
+                已复制 · 再复制
               </>
             ) : (
               <>

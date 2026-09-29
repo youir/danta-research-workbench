@@ -5,10 +5,10 @@ export const MechanismWorkspace = memo(({ brief, setBrief, showProcess, setShowP
   <section className="mechanism-page" aria-labelledby="mechanism-title">
     <div className="workspace-topline">
       <button className="back-link" type="button" onClick={onBack}><ArrowLeft size={16} aria-hidden="true" />返回</button>
-      <span>科研图示 · 证据先行</span>
+      <span>科研绘图任务整理区 · 证据先行</span>
     </div>
     <div className="workspace-heading mechanism-heading">
-      <div><div className="home-eyebrow">独立科研绘图工作区</div><h1 id="mechanism-title">把生物学逻辑变成可核对的图</h1><p>先核实节点关系与证据，再确认逻辑草图和绘图方式。</p></div>
+      <div><div className="home-eyebrow">网页任务整理区</div><h1 id="mechanism-title">把生物学逻辑变成可核对的图</h1><p>先核实节点关系与证据，再确认逻辑草图和绘图方式。</p></div>
       <button className="secondary-button" type="button" aria-expanded={showProcess} aria-controls="mechanism-process" onClick={() => setShowProcess(value => !value)}>{showProcess ? '收起制作过程' : '查看制作过程'} <ArrowRight size={16} aria-hidden="true" /></button>
     </div>
 
