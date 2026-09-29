@@ -18,6 +18,7 @@ import frameworkImage from '../../../docs/assets/workbench-map.png';
 
 const INITIAL_DRAFTS = Object.fromEntries(PROMPT_STARTERS.map(workflow => [workflow.id, workflow.seed]));
 const MECHANISM_SEED = '研究主题 / 核心发现：……\n已有证据或参考文献：……\n使用场景：PPT 汇报 / 论文插图';
+const PPT_PROMPT_CHOICES = { format: '', purpose: '', audience: '', duration: '' };
 const SESSION_PREFIX = 'danta-workbench:v1:';
 
 function useSessionState(key, initialValue) {
@@ -49,6 +50,7 @@ export function App() {
   const [mechanismBrief, setMechanismBrief] = useSessionState('mechanismBrief', MECHANISM_SEED);
   const [selectedPptTemplate, setSelectedPptTemplate] = useSessionState('selectedPptTemplate', null);
   const [selectedPptLogo, setSelectedPptLogo] = useSessionState('selectedPptLogo', null);
+  const [pptPromptChoices, setPptPromptChoices] = useSessionState('pptPromptChoices', PPT_PROMPT_CHOICES);
   const [mechanismReturnTo, setMechanismReturnTo] = useState('start');
   const [filesByWorkflow, setFilesByWorkflow] = useSessionState('filesByWorkflow', {});
   const [showMechanismProcess, setShowMechanismProcess] = useState(false);
@@ -146,6 +148,8 @@ export function App() {
         files={filesByWorkflow[workflow.id] || []}
         selectedPptTemplate={workflow.id === 'ppt' ? selectedPptTemplate : null}
         selectedPptLogo={workflow.id === 'ppt' ? selectedPptLogo : null}
+        pptPromptChoices={pptPromptChoices}
+        onPptPromptChoicesChange={setPptPromptChoices}
         onSelectPptTemplate={setSelectedPptTemplate}
         onSelectPptLogo={setSelectedPptLogo}
         onBack={() => navigate('start')}

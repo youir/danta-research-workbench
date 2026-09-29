@@ -4,8 +4,9 @@ import { PPT_TEMPLATES } from '../../../shared/constants/pptTemplates.js';
 import { PptLogoSelector } from './PptLogoSelector.jsx';
 
 const MEETING_REVIEW_SEED = '我想复盘一次组会：……请根据实际讨论记录整理导师/同门反馈、已决定事项、尚未决定的问题和行动项，不要补写没有发生的内容。';
+const PPT_GUIDE_MARKER = '【汇报信息填空框架】';
 
-export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], selectedPptTemplate = null, selectedPptLogo = null, onSelectPptTemplate, onSelectPptLogo, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism }) => {
+export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], selectedPptTemplate = null, selectedPptLogo = null, pptPromptChoices = {}, onPptPromptChoicesChange, onSelectPptTemplate, onSelectPptLogo, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism }) => {
   const fileInputRef = useRef(null);
   const [meetingMode, setMeetingMode] = useState('prepare');
 
@@ -13,6 +14,24 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
     setMeetingMode(mode);
     if (mode === 'review' && thought === workflow.seed) setThought(MEETING_REVIEW_SEED);
     if (mode === 'prepare' && thought === MEETING_REVIEW_SEED) setThought(workflow.seed);
+  }
+
+  function insertPptPromptFrame() {
+    if (thought.includes(PPT_GUIDE_MARKER)) return;
+    const frame = [
+      PPT_GUIDE_MARKER,
+      `汇报形式：${pptPromptChoices.format || '……'}`,
+      '主题 / 论文 / 核心问题：……',
+      `本次目标：${pptPromptChoices.purpose || '……'}`,
+      `面向听众：${pptPromptChoices.audience || '……'}`,
+      `预计时长：${pptPromptChoices.duration || '……'}`,
+      '已有真实材料（只列实际已获得的内容，如文献、病理图像、实验数据或分析结果）：……',
+      '希望讨论 / 请大家帮助判断的问题：……',
+      '目前不确定或缺少的信息：……',
+      '请根据我提供的材料梳理汇报主线、证据和未决问题；没有提供的信息标为待补充，不推测或补造。',
+    ].join('\n');
+    const existingText = thought === workflow.seed ? '' : thought.trim();
+    setThought([existingText, frame].filter(Boolean).join('\n\n'));
   }
 
   const sidePanels = (
@@ -66,7 +85,37 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
               <button type="button" className={meetingMode === 'review' ? 'is-selected' : ''} aria-pressed={meetingMode === 'review'} onClick={() => changeMeetingMode('review')}>复盘组会</button>
             </div>
           )}
-          <label className="visually-hidden" htmlFor={`${workflow.id}-thought`}>描述本次{workflow.label}任务</label>
+          {workflow.id === 'ppt' && (
+            <section className="ppt-guidance" aria-labelledby="ppt-guidance-title">
+              <div className="ppt-guidance-heading">
+                <div><h3 id="ppt-guidance-title">先选几项汇报信息（可跳过）</h3><p>不确定的内容可以留空；已有文字会保留，框架只会追加在后面。</p></div>
+                <button className="text-button" type="button" onClick={insertPptPromptFrame} disabled={thought.includes(PPT_GUIDE_MARKER)}>{thought.includes(PPT_GUIDE_MARKER) ? '框架已插入，可直接编辑' : '插入填空框架'}</button>
+              </div>
+              <div className="ppt-guidance-grid">
+                <label>汇报形式
+                  <select value={pptPromptChoices.format || ''} onChange={event => onPptPromptChoicesChange(current => ({ ...current, format: event.target.value }))}>
+                    <option value="">暂不选择</option><option>组会文献汇报</option><option>研究进展汇报</option><option>结果讨论</option><option>开题 / 研究方案讨论</option><option>其他科研汇报</option>
+                  </select>
+                </label>
+                <label>本次目标
+                  <select value={pptPromptChoices.purpose || ''} onChange={event => onPptPromptChoicesChange(current => ({ ...current, purpose: event.target.value }))}>
+                    <option value="">暂不选择</option><option>介绍并讨论文献</option><option>同步研究进展</option><option>解释已有结果</option><option>讨论实验或分析方案</option><option>请导师和同门帮助判断问题</option><option>其他</option>
+                  </select>
+                </label>
+                <label>主要听众
+                  <select value={pptPromptChoices.audience || ''} onChange={event => onPptPromptChoicesChange(current => ({ ...current, audience: event.target.value }))}>
+                    <option value="">暂不选择</option><option>导师与课题组成员</option><option>同领域研究者</option><option>跨专业听众</option><option>答辩或评审专家</option><option>其他</option>
+                  </select>
+                </label>
+                <label>预计时长
+                  <select value={pptPromptChoices.duration || ''} onChange={event => onPptPromptChoicesChange(current => ({ ...current, duration: event.target.value }))}>
+                    <option value="">暂不选择</option><option>5–10 分钟</option><option>10–15 分钟</option><option>15–20 分钟</option><option>20 分钟以上</option><option>暂未确定</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+          )}
+          <label className={workflow.id === 'ppt' ? 'field-label' : 'visually-hidden'} htmlFor={`${workflow.id}-thought`}>{workflow.id === 'ppt' ? '本次汇报内容与已有材料' : `描述本次${workflow.label}任务`}</label>
           <textarea id={`${workflow.id}-thought`} className="discussion-textarea" value={thought} onChange={event => setThought(event.target.value)} rows={7} />
           <div className="workspace-form-footer">
             {workflow.id === 'ppt' ? (

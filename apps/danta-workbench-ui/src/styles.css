@@ -817,6 +817,18 @@ button:focus-visible, textarea:focus-visible {
 .connection-pill,
 .vault-status-pill { padding: 5px 8px; border-radius: 999px; background: var(--surface-hover); color: var(--ink-muted); font-size: 10px; white-space: nowrap; }
 .discussion-panel .discussion-textarea { min-height: 190px; }
+.field-label { display: block; margin: 0 0 7px; color: var(--ink-secondary); font-size: 11px; font-weight: 600; }
+.ppt-guidance { margin: 0 0 14px; padding: 14px; border: 1px solid var(--line-subtle); border-radius: 12px; background: var(--surface-base); }
+.ppt-guidance-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.ppt-guidance-heading h3 { margin: 0; color: var(--ink-secondary); font-size: 12px; font-weight: 650; }
+.ppt-guidance-heading p { margin: 4px 0 0; color: var(--ink-muted); font-size: 10px; line-height: 1.55; }
+.ppt-guidance-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ppt-guidance-grid label { display: grid; gap: 5px; color: var(--ink-secondary); font-size: 10px; font-weight: 600; }
+.ppt-guidance-grid select { width: 100%; min-height: 36px; border: 1px solid var(--line-default); border-radius: 8px; padding: 7px 9px; background: var(--surface-raised); color: var(--ink-primary); font: inherit; font-size: 11px; }
+.ppt-guidance-grid select:focus-visible { outline: 2px solid var(--accent-border); outline-offset: 1px; }
+.ppt-guidance .text-button { flex: 0 0 auto; padding: 5px 0; border: 0; background: transparent; color: var(--accent-strong); font-size: 10px; font-weight: 600; }
+.ppt-guidance .text-button:hover:not(:disabled) { text-decoration: underline; }
+.ppt-guidance .text-button:disabled { color: var(--ink-light); cursor: default; }
 .workspace-form-footer { justify-content: space-between; align-items: center; gap: 12px; margin-top: 13px; }
 .workspace-form-footer > span { color: var(--ink-light); font-size: 10px; line-height: 1.5; }
 .workspace-empty { min-height: 86px; padding: 12px; border-radius: 11px; background: var(--surface-base); }
@@ -998,6 +1010,9 @@ button:focus-visible, textarea:focus-visible {
   .resume-summary { flex-basis: calc(100% - 45px); }
   .resume-divider { display: none; }
   .workspace-form-footer { align-items: flex-start; flex-direction: column; }
+  .ppt-guidance-heading { flex-direction: column; }
+  .ppt-guidance .text-button { padding: 3px 0; }
+  .ppt-guidance-grid { grid-template-columns: 1fr; }
   .mechanism-launcher, .mechanism-heading { align-items: flex-start; flex-direction: column; }
   .ppt-template-heading { align-items: flex-start; flex-direction: column; }
   .ppt-template-heading .secondary-button { width: 100%; justify-content: center; }
