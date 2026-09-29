@@ -13,11 +13,12 @@
 - 新增手动 GitHub `main` 提交检查与 Codex 更新指令复制入口；浏览器只检查并引导，不执行 Git 更新。
 - 同步前端说明、体系架构文档、框架图和知识库发行清单；本机 Codex 交接与 Obsidian 读取按授权连接，工作台不读取 Codex 历史对话。
 
-# 未发布 · Windows 桌面版分发
+# v0.2.0 · Windows 桌面版分发
 
 - 将 React 工作台与本机 Codex / Obsidian 桥接打包为 Windows x64 独立窗口应用；NSIS 安装程序建立桌面与开始菜单图标。
 - 固定本机服务来源与地址，任务草稿可跨重启恢复；Obsidian 目录和范围在退出时清空。
 - 增加 GitHub Release 版本检查、Windows runner 自动构建、安装包 SHA-256 校验，以及 Codex 协助安装和确认 Obsidian vault 路径的引导语。
+- 增加科研知识库目录结构检查与安全补齐：只读目录名，逐项确认后创建缺少的空目录；不移动、改名、删除或读取现有资料。
 
 # v1.21.0 — 2026-09-28
 

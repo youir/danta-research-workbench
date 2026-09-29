@@ -1,16 +1,19 @@
 import { memo, useEffect, useMemo, useState } from 'react';
-import { CheckCircle, FolderOpen, Info, LockKey, ShieldCheck, XCircle } from '@phosphor-icons/react';
+import { ArrowClockwise, CheckCircle, FolderOpen, Info, LockKey, ShieldCheck, Wrench, XCircle } from '@phosphor-icons/react';
 import { PageBack } from '../../../shared/components/PageBack.jsx';
 
-export const VaultConnection = memo(({ status, onSelect, onAuthorize, onDisconnect, onBack, busy = false, notice = '' }) => {
+export const VaultConnection = memo(({ status, structure, onSelect, onAuthorize, onDisconnect, onInspectStructure, onRepairStructure, onBack, busy = false, notice = '' }) => {
   const options = status?.scopeOptions || [];
   const [selectedScopes, setSelectedScopes] = useState(status?.scopes || []);
   const [confirmed, setConfirmed] = useState(false);
   const [localMessage, setLocalMessage] = useState('');
+  const [confirmStructureRepair, setConfirmStructureRepair] = useState(false);
 
   useEffect(() => {
     setSelectedScopes(status?.scopes || []);
   }, [status?.name, status?.scopes?.join(',')]);
+
+  useEffect(() => setConfirmStructureRepair(false), [structure]);
 
   const availableOptions = useMemo(() => options.filter(option => option.available), [options]);
   const availableIds = new Set(availableOptions.map(option => option.id));
@@ -34,6 +37,28 @@ export const VaultConnection = memo(({ status, onSelect, onAuthorize, onDisconne
     }
   }
 
+  async function inspectStructure() {
+    setLocalMessage('');
+    try {
+      await onInspectStructure();
+      setConfirmStructureRepair(false);
+    } catch (error) {
+      setLocalMessage(error?.message || '检查知识库结构失败。');
+    }
+  }
+
+  async function repairStructure() {
+    if (!confirmStructureRepair) return;
+    setLocalMessage('');
+    try {
+      const report = await onRepairStructure();
+      setConfirmStructureRepair(false);
+      setLocalMessage(`已补齐 ${report.created || 0} 个标准空文件夹；现有笔记和文件没有被移动或修改。`);
+    } catch (error) {
+      setLocalMessage(error?.message || '补齐标准文件夹失败。');
+    }
+  }
+
   return (
     <section className="subpage-view vault-page" aria-labelledby="vault-connection-title">
       <PageBack onBack={onBack} />
@@ -54,6 +79,44 @@ export const VaultConnection = memo(({ status, onSelect, onAuthorize, onDisconne
           </button>
           {status?.selected && <button className="text-button vault-disconnect" type="button" onClick={async () => { setSelectedScopes([]); setConfirmed(false); setLocalMessage(''); try { await onDisconnect(); } catch (error) { setLocalMessage(error?.message || '清除本机授权失败。'); } }} disabled={busy}><XCircle size={16} aria-hidden="true" />断开并清除本机授权</button>}
         </div>
+
+        {status?.selected && <section className="vault-structure-panel" aria-labelledby="vault-structure-title">
+          <div className="vault-structure-heading">
+            <div><strong id="vault-structure-title">检查科研知识库目录</strong><span>只读取目录名称，不打开笔记或附件。</span></div>
+            <button className="text-button" type="button" onClick={inspectStructure} disabled={busy}>
+              <ArrowClockwise size={15} aria-hidden="true" />{busy ? '正在检查…' : structure ? '重新检查' : '检查结构'}
+            </button>
+          </div>
+
+          {structure && <div className="vault-structure-report" aria-live="polite">
+            {!structure.isLikelyVault && <p className="vault-structure-warning">当前选中的文件夹未识别为已有 Obsidian 科研知识库。为避免在错误位置批量建目录，请先检查并重新选择 vault。</p>}
+            {structure.isLikelyVault && <p className="vault-structure-summary">标准目录：{structure.present}/{structure.total} 个匹配{structure.missing.length ? `，缺少 ${structure.missing.length} 个` : '，结构完整'}。</p>}
+
+            {structure.mismatches?.length > 0 && <div className="vault-structure-list">
+              <strong>发现名称可能不匹配</strong>
+              <ul>{structure.mismatches.map(item => <li key={item.expected}><code>{item.actual}</code><span aria-hidden="true">→</span><code>{item.expected}</code></li>)}</ul>
+              <p>工作台不会自动改名或搬动这些目录，以免影响笔记链接。它会跳过名称不匹配的目录及其子级；请在 Obsidian 中手动调整并检查链接后，再次检查结构。</p>
+            </div>}
+
+            {structure.conflicts?.length > 0 && <div className="vault-structure-list is-warning">
+              <strong>这些位置有同名文件，无法创建目录</strong>
+              <ul>{structure.conflicts.map(item => <li key={item}><code>{item}</code></li>)}</ul>
+            </div>}
+
+            {structure.missing.length > 0 && <details className="vault-structure-missing">
+              <summary>查看缺少的标准目录（{structure.missing.length}）</summary>
+              <ul>{structure.missing.map(item => <li key={item}><code>{item}</code></li>)}</ul>
+            </details>}
+
+            {structure.isLikelyVault && structure.repairableCount > 0 && <div className="vault-structure-repair">
+              <p><Wrench size={15} aria-hidden="true" />可补齐 {structure.repairableCount} 个缺失的标准空文件夹。不会覆盖、删除或移动已有内容。</p>
+              <label className="vault-consent"><input type="checkbox" checked={confirmStructureRepair} disabled={busy} onChange={event => setConfirmStructureRepair(event.target.checked)} /><span>我已核对当前知识库路径，确认在“{status.name}”中创建缺失的标准空文件夹。</span></label>
+              <button className="primary-button compact" type="button" onClick={repairStructure} disabled={busy || !confirmStructureRepair}>
+                <Wrench size={16} aria-hidden="true" />{busy ? '正在补齐…' : `确认并补齐 ${structure.repairableCount} 个目录`}
+              </button>
+            </div>}
+          </div>}
+        </section>}
 
         {status?.selected && <>
           <div className="vault-scope-heading"><ShieldCheck size={18} aria-hidden="true" /><div><strong>选择允许工作台访问的范围</strong><span>未勾选的目录不会读取。</span></div></div>

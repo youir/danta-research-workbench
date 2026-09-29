@@ -15,7 +15,7 @@ import { useNotice } from './shared/hooks/useNotice.js';
 import { usePersistentState } from './shared/hooks/usePersistentState.js';
 import { PROMPT_STARTERS } from './shared/constants/workflows.js';
 import { makeKickoffPrompt } from './shared/utils/promptBuilder.js';
-import { authorizeVaultScopes, chooseVault, createCodexThread, disconnectVault, getVaultStatus } from './shared/utils/localApi.js';
+import { authorizeVaultScopes, chooseVault, createCodexThread, disconnectVault, getVaultStatus, inspectVaultStructure, repairVaultStructure } from './shared/utils/localApi.js';
 
 import quickstartImage from '../../../docs/assets/quickstart.png';
 import frameworkImage from '../../../docs/assets/workbench-map.png';
@@ -54,6 +54,7 @@ export function App() {
   const [copied, setCopied] = useState(false);
   const [vaultStatus, setVaultStatus] = useState({ selected: false, connected: false, name: '', scopes: [], scopeOptions: [] });
   const [vaultBusy, setVaultBusy] = useState(false);
+  const [vaultStructure, setVaultStructure] = useState(null);
 
   const [notice, showNotice, hideNotice] = useNotice();
   const dialogRef = useRef(null);
@@ -160,6 +161,7 @@ export function App() {
     try {
       const selected = await chooseVault();
       if (selected.cancelled) return;
+      setVaultStructure(null);
       setVaultStatus({ selected: true, connected: false, name: selected.name, scopes: [], scopeOptions: selected.scopes || [] });
       showNotice(`已选择“${selected.name}”。尚未读取内容，请勾选范围并确认授权。`, 'info');
     } finally {
@@ -184,7 +186,33 @@ export function App() {
     try {
       const status = await disconnectVault();
       setVaultStatus(status);
+      setVaultStructure(null);
       showNotice('知识库路径和读取授权已从本机服务内存中清除。', 'success');
+    } finally {
+      setVaultBusy(false);
+    }
+  }
+
+  async function checkVaultStructure() {
+    setVaultBusy(true);
+    try {
+      const report = await inspectVaultStructure();
+      setVaultStructure(report);
+      return report;
+    } finally {
+      setVaultBusy(false);
+    }
+  }
+
+  async function completeVaultStructure() {
+    setVaultBusy(true);
+    try {
+      const report = await repairVaultStructure();
+      setVaultStructure(report);
+      const status = await getVaultStatus();
+      setVaultStatus(status);
+      showNotice(`已补齐 ${report.created || 0} 个标准空文件夹；原有文件和笔记未移动或修改。`, 'success');
+      return report;
     } finally {
       setVaultBusy(false);
     }
@@ -256,7 +284,7 @@ export function App() {
     if (activePage === 'literature') return <LiteraturePage canReadRss={vaultStatus.scopes.includes('rss')} canReadLiterature={vaultStatus.scopes.includes('literature')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
     if (activePage === 'daily-briefs') return <DailyBriefsPage onBack={goBack} />;
     if (activePage === 'archive') return <ArchivePage canRead={vaultStatus.scopes.includes('archive-read')} canWrite={vaultStatus.scopes.includes('archive-write')} onOpenVault={() => navigate('vault')} onBack={goBack} onCheckpoint={() => markCheckpoint('archive', '历史归档')} />;
-    return <VaultConnection status={vaultStatus} busy={vaultBusy} onSelect={selectVault} onAuthorize={authorizeScopes} onDisconnect={clearVault} onBack={goBack} />;
+    return <VaultConnection status={vaultStatus} structure={vaultStructure} busy={vaultBusy} onSelect={selectVault} onAuthorize={authorizeScopes} onDisconnect={clearVault} onInspectStructure={checkVaultStructure} onRepairStructure={completeVaultStructure} onBack={goBack} />;
   }
 
   return (

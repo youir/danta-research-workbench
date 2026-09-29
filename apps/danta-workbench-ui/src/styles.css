@@ -1128,6 +1128,27 @@ button:focus-visible, textarea:focus-visible {
 .vault-connection > p { line-height: 1.65; }
 .vault-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0 21px; }
 .vault-disconnect { margin-top: 0; }
+.vault-structure-panel { margin: 2px 0 21px; padding: 14px; border: 1px solid var(--line-default); border-radius: 12px; background: var(--surface-base); }
+.vault-structure-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.vault-structure-heading > div { display: grid; gap: 4px; }
+.vault-structure-heading strong, .vault-structure-list > strong { color: var(--ink-secondary); font-size: 11px; }
+.vault-structure-heading span { color: var(--ink-muted); font-size: 10px; }
+.vault-structure-heading .text-button { display: inline-flex; align-items: center; gap: 5px; }
+.vault-structure-report { margin-top: 10px; }
+.vault-structure-summary, .vault-structure-warning { margin: 0 0 9px !important; font-size: 11px !important; }
+.vault-structure-warning { color: #9b5a32 !important; }
+.vault-structure-list { margin-top: 10px; }
+.vault-structure-list ul, .vault-structure-missing ul { display: grid; gap: 5px; margin: 7px 0 0; padding-left: 18px; }
+.vault-structure-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--ink-muted); font-size: 10px; }
+.vault-structure-list li code, .vault-structure-missing code { overflow-wrap: anywhere; color: var(--ink-secondary); font-size: 10px; }
+.vault-structure-list > p { margin: 7px 0 0 !important; color: var(--ink-muted) !important; font-size: 10px !important; }
+.vault-structure-list.is-warning > strong { color: #9b5a32; }
+.vault-structure-missing { margin-top: 10px; color: var(--ink-muted); font-size: 10px; }
+.vault-structure-missing summary { cursor: pointer; }
+.vault-structure-repair { margin-top: 12px; }
+.vault-structure-repair > p { display: flex; align-items: center; gap: 6px; margin: 0; color: var(--ink-muted); font-size: 10px; }
+.vault-structure-repair .vault-consent { margin-top: 9px; }
+.vault-structure-repair .primary-button { margin-top: 10px; }
 .vault-scope-heading { display: flex; align-items: center; gap: 10px; margin: 4px 0 10px; color: var(--accent-strong); }
 .vault-scope-heading div { display: grid; gap: 3px; }
 .vault-scope-heading strong { color: var(--ink-secondary); font-size: 12px; }

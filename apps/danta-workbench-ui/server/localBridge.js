@@ -46,6 +46,24 @@ const SCOPE_INFO = {
 };
 
 const KNOWN_HIDDEN_DIRECTORIES = new Set(['.git', '.trash', '.obsidian']);
+// Kept in sync with the research-vault template. This check reads names only.
+const VAULT_STRUCTURE_DIRECTORIES = [
+  '00_系统_System',
+  '01_收件箱_Inbox', '01_收件箱_Inbox/02_RSS_动态线索',
+  '02_原始资料_Sources', '02_原始资料_Sources/00_来源登记_Source-Register',
+  '03_文献证据_Literature-Evidence', '03_文献证据_Literature-Evidence/00_阅读笔记_Reading-Notes', '03_文献证据_Literature-Evidence/01_检索与证据_Registers',
+  '04_知识百科_Wiki', '04_知识百科_Wiki/00_概念_Concepts', '04_知识百科_Wiki/01_实体_Entities', '04_知识百科_Wiki/02_主题_Topics',
+  '05_课题项目_Projects', '05_课题项目_Projects/00_主课题_Main-Project', '05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context', '05_课题项目_Projects/00_主课题_Main-Project/01_思考过程_Thinking', '05_课题项目_Projects/00_主课题_Main-Project/02_候选课题_Candidates', '05_课题项目_Projects/00_主课题_Main-Project/03_研究方案_Design', '05_课题项目_Projects/00_主课题_Main-Project/04_开题答辩_Proposal-Defense', '05_课题项目_Projects/00_主课题_Main-Project/05_决策记录_Decisions', '05_课题项目_Projects/00_主课题_Main-Project/06_协作记录_Collaboration',
+  '06_方法流程_Methods', '06_方法流程_Methods/00_标准流程_SOPs', '06_方法流程_Methods/01_分析计划_Analysis-Plans',
+  '07_数据分析_Data-Analysis', '07_数据分析_Data-Analysis/00_数据登记_Data-Registry', '07_数据分析_Data-Analysis/01_实验记录_Experiments', '07_数据分析_Data-Analysis/02_分析运行_Analysis-Runs', '07_数据分析_Data-Analysis/03_质量检查_Quality-Control',
+  '08_成果输出_Outputs', '08_成果输出_Outputs/00_开题_Proposal', '08_成果输出_Outputs/01_论文_Manuscripts', '08_成果输出_Outputs/02_报告_Reports', '08_成果输出_Outputs/03_图表_Figures', '08_成果输出_Outputs/04_科研汇报与答辩_Presentations', '08_成果输出_Outputs/05_科研日报_Research-Digest',
+  '09_专家顾问_Advisors', '09_专家顾问_Advisors/00_顾问登记_Registry', '09_专家顾问_Advisors/01_顾问包_Profiles',
+  '10_日志复盘_Journal', '10_日志复盘_Journal/00_日常_Daily', '10_日志复盘_Journal/01_会议_Meetings', '10_日志复盘_Journal/02_复盘_Reviews', '10_日志复盘_Journal/03_组会_Lab-Meetings',
+  '11_长期记忆_Memory',
+  '12_笔记模板_Templates',
+  '13_附件资源_Attachments', '13_附件资源_Attachments/00_文献_Papers', '13_附件资源_Attachments/01_图片_Images', '13_附件资源_Attachments/02_补充材料_Supplements',
+  '14_历史归档_Archive',
+].sort((left, right) => left.split('/').length - right.split('/').length || left.localeCompare(right, 'zh-CN'));
 
 function resolveCodexBinary() {
   if (process.platform === 'win32') {
@@ -307,6 +325,95 @@ async function pathExists(root, relativePath, expectFile = false) {
   }
 }
 
+async function inspectVaultStructure(root) {
+  const listings = new Map();
+  async function listDirectories(relativeParent) {
+    if (listings.has(relativeParent)) return listings.get(relativeParent);
+    const absoluteParent = relativeParent ? path.join(root, ...relativeParent.split('/')) : root;
+    if (relativeParent && !await pathExists(root, relativeParent)) return [];
+    let entries = [];
+    try { entries = await fs.readdir(absoluteParent, { withFileTypes: true }); } catch { /* Report inaccessible expected paths as missing. */ }
+    const directories = entries.filter(entry => entry.isDirectory() && !entry.isSymbolicLink()).map(entry => entry.name);
+    listings.set(relativeParent, directories);
+    return directories;
+  }
+
+  const missing = [];
+  const conflicts = [];
+  const mismatchMap = new Map();
+  let present = 0;
+  for (const expectedPath of VAULT_STRUCTURE_DIRECTORIES) {
+    const expectedParts = expectedPath.split('/');
+    let actualParent = '';
+    let exact = true;
+    let blocked = false;
+    for (let index = 0; index < expectedParts.length; index += 1) {
+      const expectedName = expectedParts[index];
+      const expectedPrefix = expectedParts.slice(0, index + 1).join('/');
+      const directories = await listDirectories(actualParent);
+      if (directories.includes(expectedName)) {
+        actualParent = actualParent ? `${actualParent}/${expectedName}` : expectedName;
+        continue;
+      }
+
+      exact = false;
+      const expectedAbsolute = path.join(root, ...expectedPrefix.split('/'));
+      const entry = await fs.lstat(expectedAbsolute).catch(() => null);
+      if (entry && !entry.isDirectory()) {
+        conflicts.push(expectedPrefix);
+        blocked = true;
+        break;
+      }
+
+      const ordinal = expectedName.match(/^(\d{2})[_\s-]/)?.[1];
+      const similar = ordinal
+        ? directories.filter(name => name !== expectedName && name.match(/^(\d{2})[_\s-]/)?.[1] === ordinal)
+        : [];
+      if (similar.length === 1) {
+        const actualPrefix = actualParent ? `${actualParent}/${similar[0]}` : similar[0];
+        const ancestorMismatch = [...mismatchMap.keys()].some(target => expectedPrefix.startsWith(`${target}/`));
+        if (!ancestorMismatch) mismatchMap.set(expectedPrefix, actualPrefix);
+        actualParent = actualPrefix;
+      } else {
+        blocked = true;
+        break;
+      }
+    }
+    if (exact && !blocked) present += 1;
+    else missing.push(expectedPath);
+  }
+
+  const hasObsidianConfig = await pathExists(root, '.obsidian');
+  const hasVaultMarker = await pathExists(root, '.danta-vault.json', true);
+  const isLikelyVault = hasObsidianConfig || hasVaultMarker || present > 0 || mismatchMap.size > 0;
+  const blockedRoots = [...conflicts, ...mismatchMap.keys()];
+  const repairableCount = missing.filter(directory => !blockedRoots.some(blocked => directory === blocked || directory.startsWith(`${blocked}/`))).length;
+  return {
+    total: VAULT_STRUCTURE_DIRECTORIES.length,
+    present,
+    missing,
+    conflicts: [...new Set(conflicts)],
+    mismatches: [...mismatchMap].map(([expected, actual]) => ({ expected, actual })),
+    isLikelyVault,
+    repairableCount,
+  };
+}
+
+async function createExpectedDirectory(root, relativePath) {
+  const rootStat = await fs.lstat(root);
+  if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) throw new Error('所选知识库路径不安全或已不可用。');
+  let current = root;
+  for (const part of relativePath.split('/')) {
+    current = path.join(current, part);
+    let stat = await fs.lstat(current).catch(() => null);
+    if (!stat) {
+      try { await fs.mkdir(current); } catch (error) { if (error.code !== 'EEXIST') throw error; }
+      stat = await fs.lstat(current);
+    }
+    if (stat.isSymbolicLink() || !stat.isDirectory()) throw new Error(`目标路径中存在同名文件或链接：${relativePath}`);
+  }
+}
+
 async function availableScopes(root) {
   const entries = await Promise.all(Object.entries(SCOPE_INFO).map(async ([id, scope]) => {
     const paths = scope.paths;
@@ -513,6 +620,27 @@ export function createLocalBridgeService({
       };
     },
 
+    async inspectVaultStructure() {
+      if (!vaultRoot) throw new Error('请先选择一个 Obsidian 知识库文件夹。');
+      return inspectVaultStructure(vaultRoot);
+    },
+
+    async repairVaultStructure({ confirm } = {}) {
+      if (!vaultRoot) throw new Error('请先选择一个 Obsidian 知识库文件夹。');
+      if (confirm !== true) throw new Error('请先明确确认创建缺失的标准空文件夹。');
+      const before = await inspectVaultStructure(vaultRoot);
+      if (!before.isLikelyVault) throw new Error('所选文件夹不像 Obsidian 知识库。请先重新选择正确的 vault，不要在这里创建标准目录。');
+      const blockedRoots = [...before.conflicts, ...before.mismatches.map(item => item.expected)];
+      let created = 0;
+      for (const directory of VAULT_STRUCTURE_DIRECTORIES) {
+        if (blockedRoots.some(conflict => directory === conflict || directory.startsWith(`${conflict}/`))) continue;
+        if (await pathExists(vaultRoot, directory)) continue;
+        await createExpectedDirectory(vaultRoot, directory);
+        created += 1;
+      }
+      return { ...(await inspectVaultStructure(vaultRoot)), created };
+    },
+
     async authorizeScopes(scopeIds) {
       if (!vaultRoot) throw new Error('请先选择 Obsidian 知识库文件夹。');
       if (!Array.isArray(scopeIds) || scopeIds.length === 0) throw new Error('至少选择一个读取或归档范围。');
@@ -630,12 +758,14 @@ export function createLocalBridgeRequestHandler(service) {
     try {
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}codex/status`) return json(res, 200, await service.codexStatus());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/status`) return json(res, 200, await service.vaultStatus());
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/structure`) return json(res, 200, await service.inspectVaultStructure());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/data`) return json(res, 200, await service.vaultData(requestUrl.searchParams.get('section')));
       if (req.method !== 'POST') return json(res, 405, { error: '不支持此请求。' });
       if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return json(res, 415, { error: '请求格式无效。' });
       const body = await readJsonBody(req);
       if (requestUrl.pathname === `${API_PREFIX}vault/select`) return json(res, 200, await service.chooseVault());
       if (requestUrl.pathname === `${API_PREFIX}vault/authorize`) return json(res, 200, await service.authorizeScopes(body.scopes));
+      if (requestUrl.pathname === `${API_PREFIX}vault/structure/repair`) return json(res, 200, await service.repairVaultStructure(body));
       if (requestUrl.pathname === `${API_PREFIX}vault/disconnect`) return json(res, 200, await service.disconnectVault());
       if (requestUrl.pathname === `${API_PREFIX}vault/archive`) return json(res, 201, await service.createArchive(body));
       if (requestUrl.pathname === `${API_PREFIX}codex/new-thread`) return json(res, 201, await service.createCodexThread(body));

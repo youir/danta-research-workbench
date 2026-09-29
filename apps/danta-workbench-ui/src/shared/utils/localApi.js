@@ -32,6 +32,14 @@ export function disconnectVault() {
   return requestLocal('/vault/disconnect', { method: 'POST', body: '{}' });
 }
 
+export function inspectVaultStructure() {
+  return requestLocal('/vault/structure');
+}
+
+export function repairVaultStructure() {
+  return requestLocal('/vault/structure/repair', { method: 'POST', body: JSON.stringify({ confirm: true }) });
+}
+
 export function getVaultData(section) {
   return requestLocal(`/vault/data?section=${encodeURIComponent(section)}`);
 }
