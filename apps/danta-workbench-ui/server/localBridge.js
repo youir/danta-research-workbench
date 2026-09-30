@@ -260,21 +260,23 @@ async function withCodexClient(callback, binary) {
   }
 }
 
-async function chooseVaultFolder() {
+async function chooseVaultFolder({ scopeLabel = '', initialPath = '' } = {}) {
+  const prompt = scopeLabel ? `选择“${scopeLabel}”现有笔记所在的文件夹` : '选择要连接的 Obsidian 知识库';
   if (process.platform === 'darwin') {
-    const { stdout } = await execFileAsync('osascript', ['-e', 'POSIX path of (choose folder with prompt "选择要连接的 Obsidian 知识库")'], { timeout: 300_000 });
+    const { stdout } = await execFileAsync('osascript', ['-e', `POSIX path of (choose folder with prompt "${prompt}")`], { timeout: 300_000 });
     return stdout.trim();
   }
   if (process.platform === 'win32') {
-    const script = 'Add-Type -AssemblyName System.Windows.Forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog; $dialog.Description = "选择要连接的 Obsidian 知识库"; if ($dialog.ShowDialog() -eq "OK") { $dialog.SelectedPath }';
+    const initial = initialPath ? `$dialog.SelectedPath = '${initialPath.replace(/'/g, "''")}'; ` : '';
+    const script = `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Add-Type -AssemblyName System.Windows.Forms; $dialog = New-Object System.Windows.Forms.FolderBrowserDialog; $dialog.Description = "${prompt}"; $dialog.ShowNewFolderButton = $false; ${initial}if ($dialog.ShowDialog() -eq "OK") { $dialog.SelectedPath }`;
     const { stdout } = await execFileAsync('powershell.exe', ['-NoProfile', '-STA', '-Command', script], { timeout: 300_000 });
     return stdout.trim();
   }
   try {
-    const { stdout } = await execFileAsync('zenity', ['--file-selection', '--directory', '--title=选择要连接的 Obsidian 知识库'], { timeout: 300_000 });
+    const { stdout } = await execFileAsync('zenity', ['--file-selection', '--directory', `--title=${prompt}`], { timeout: 300_000 });
     return stdout.trim();
   } catch {
-    const { stdout } = await execFileAsync('kdialog', ['--getexistingdirectory', '.', '选择要连接的 Obsidian 知识库'], { timeout: 300_000 });
+    const { stdout } = await execFileAsync('kdialog', ['--getexistingdirectory', '.', prompt], { timeout: 300_000 });
     return stdout.trim();
   }
 }
@@ -394,6 +396,9 @@ async function inspectVaultStructure(root) {
     missing,
     conflicts: [...new Set(conflicts)],
     mismatches: [...mismatchMap].map(([expected, actual]) => ({ expected, actual })),
+    otherTopLevelDirectories: (await listDirectories(''))
+      .filter(name => !name.startsWith('.') && !VAULT_STRUCTURE_DIRECTORIES.includes(name))
+      .slice(0, 60),
     isLikelyVault,
     repairableCount,
   };
@@ -414,16 +419,19 @@ async function createExpectedDirectory(root, relativePath) {
   }
 }
 
-async function availableScopes(root) {
+function scopePaths(id, mappings = {}) {
+  const paths = SCOPE_INFO[id].paths;
+  return SCOPE_INFO[id].mode === 'read' ? [...new Set([...paths, ...(mappings[id] || [])])] : paths;
+}
+
+async function availableScopes(root, mappings = {}) {
   const entries = await Promise.all(Object.entries(SCOPE_INFO).map(async ([id, scope]) => {
-    const paths = scope.paths;
+    const paths = scopePaths(id, mappings);
     const exists = await Promise.all(paths.map(item => pathExists(root, item, item.endsWith('.json'))));
     const available = scope.mode === 'write'
       ? true
-      : id === 'rss' || id === 'records'
-        ? exists.some(Boolean)
-        : exists.every(Boolean);
-    return { id, label: scope.label, description: scope.description, paths, mode: scope.mode, available };
+      : exists.some(Boolean);
+    return { id, label: scope.label, description: scope.description, paths, fullPaths: paths.map(item => path.join(root, item)), mappedPaths: mappings[id] || [], mode: scope.mode, available };
   }));
   return entries;
 }
@@ -465,6 +473,7 @@ function parseMarkdown(markdown, relativePath, mtime) {
 
 async function collectMarkdown(root, prefixes, { maxFiles = MAX_MARKDOWN_FILES, maxBytes = MAX_TOTAL_MARKDOWN_BYTES, maxDepth = MAX_SCAN_DEPTH } = {}) {
   const found = [];
+  const seenFiles = new Set();
   let bytesRead = 0;
   let truncated = false;
 
@@ -482,6 +491,7 @@ async function collectMarkdown(root, prefixes, { maxFiles = MAX_MARKDOWN_FILES, 
         if (KNOWN_HIDDEN_DIRECTORIES.has(entry.name) || entry.name.startsWith('.')) continue;
         await visit(relativePath, depth + 1);
       } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.md')) {
+        if (seenFiles.has(relativePath)) continue;
         if (!await pathExists(root, relativePath, true)) continue;
         let fileStat;
         try { fileStat = await fs.lstat(path.join(root, relativePath)); } catch { continue; }
@@ -490,6 +500,7 @@ async function collectMarkdown(root, prefixes, { maxFiles = MAX_MARKDOWN_FILES, 
         let text;
         try { text = await fs.readFile(path.join(root, relativePath), 'utf8'); } catch { continue; }
         bytesRead += fileStat.size;
+        seenFiles.add(relativePath);
         found.push({ ...parseMarkdown(text, relativePath, fileStat.mtime), path: relativePath.split(path.sep).join('/'), mtime: fileStat.mtime.getTime() });
       }
     }
@@ -512,7 +523,7 @@ function normalizeHttpUrl(value) {
   } catch { return ''; }
 }
 
-async function readRssData(root) {
+async function readRssData(root, notePaths = ['01_收件箱_Inbox/02_RSS_动态线索']) {
   const dataPath = path.join(root, '.obsidian/plugins/danta-rss-collector/data.json');
   let data = {};
   try {
@@ -544,7 +555,7 @@ async function readRssData(root) {
       savedPath: typeof item.savedPath === 'string' && item.savedPath.startsWith('01_收件箱_Inbox/02_RSS_动态线索/') ? safeText(item.savedPath, 300) : '',
     }];
   }).sort((a, b) => Date.parse(b.publishedAt || '') - Date.parse(a.publishedAt || '')).slice(0, 120) : [];
-  const notes = await collectMarkdown(root, ['01_收件箱_Inbox/02_RSS_动态线索'], { maxFiles: 300, maxBytes: 3 * 1024 * 1024, maxDepth: 3 });
+  const notes = await collectMarkdown(root, notePaths.filter(item => !item.endsWith('.json')), { maxFiles: 300, maxBytes: 3 * 1024 * 1024, maxDepth: 3 });
   return { feeds, items, savedNotes: notes.files, truncated: notes.truncated, lastFetchedAt: safeText(data.lastFetchedAt || '', 60) };
 }
 
@@ -581,10 +592,23 @@ export function createLocalBridgeService({
   projectFetcher,
   openThread = openCodexThread,
   copyText = selectClipboardTarget,
+  vaultMemoryPath = '',
 } = {}) {
   let vaultRoot = '';
   let vaultName = '';
   let scopes = new Set();
+  let scopeMappings = {};
+
+  async function readVaultMemory() {
+    if (!vaultMemoryPath) return null;
+    try {
+      const stat = await fs.stat(vaultMemoryPath);
+      if (!stat.isFile() || stat.size > 16_384) return null;
+      const saved = JSON.parse(await fs.readFile(vaultMemoryPath, 'utf8'));
+      if (saved?.version !== 1 || typeof saved.path !== 'string' || !path.isAbsolute(saved.path)) return null;
+      return { name: path.basename(saved.path) || 'Obsidian 知识库', path: saved.path, mappings: saved.mappings || {} };
+    } catch { return null; }
+  }
 
   const service = {
     async codexStatus() {
@@ -607,7 +631,8 @@ export function createLocalBridgeService({
       vaultRoot = realPath;
       vaultName = path.basename(realPath) || 'Obsidian 知识库';
       scopes = new Set();
-      return { cancelled: false, name: vaultName, scopes: await availableScopes(vaultRoot) };
+      scopeMappings = {};
+      return { cancelled: false, name: vaultName, path: vaultRoot, scopes: await availableScopes(vaultRoot, scopeMappings) };
     },
 
     async vaultStatus() {
@@ -615,9 +640,77 @@ export function createLocalBridgeService({
         selected: Boolean(vaultRoot),
         connected: Boolean(vaultRoot && scopes.size),
         name: vaultName,
+        path: vaultRoot,
         scopes: [...scopes],
-        scopeOptions: vaultRoot ? await availableScopes(vaultRoot) : [],
+        scopeOptions: vaultRoot ? await availableScopes(vaultRoot, scopeMappings) : [],
+        memoryAvailable: Boolean(vaultMemoryPath),
+        remembered: await readVaultMemory(),
       };
+    },
+
+    async rememberVault() {
+      if (!vaultRoot || !vaultMemoryPath) throw new Error('本机桌面版尚未提供知识库位置记忆。');
+      const snapshot = JSON.stringify({ version: 1, path: vaultRoot, mappings: scopeMappings });
+      await fs.mkdir(path.dirname(vaultMemoryPath), { recursive: true });
+      await fs.writeFile(vaultMemoryPath, snapshot, { flag: 'w', mode: 0o600 });
+      return service.vaultStatus();
+    },
+
+    async restoreRememberedVault() {
+      const remembered = await readVaultMemory();
+      if (!remembered) throw new Error('没有找到已保存的知识库路径，请重新选择文件夹。');
+      const realPath = await fs.realpath(remembered.path).catch(() => null);
+      const stat = realPath ? await fs.stat(realPath).catch(() => null) : null;
+      if (!stat?.isDirectory()) throw new Error('上次使用的知识库路径已不可用，请重新选择。');
+      const restoredMappings = {};
+      for (const id of ['records', 'literature', 'rss', 'archive-read']) {
+        const candidates = Array.isArray(remembered.mappings[id]) ? remembered.mappings[id].slice(0, 5) : [];
+        restoredMappings[id] = [];
+        for (const candidate of candidates) {
+          if (typeof candidate !== 'string' || !candidate || path.isAbsolute(candidate) || candidate.split(/[\\/]/).some(part => !part || part === '..' || part.startsWith('.'))) continue;
+          if (await pathExists(realPath, candidate)) restoredMappings[id].push(candidate);
+        }
+      }
+      vaultRoot = realPath;
+      vaultName = path.basename(realPath) || 'Obsidian 知识库';
+      scopeMappings = restoredMappings;
+      scopes = new Set();
+      return service.vaultStatus();
+    },
+
+    async forgetRememberedVault() {
+      if (vaultMemoryPath) await fs.rm(vaultMemoryPath, { force: true });
+      return service.vaultStatus();
+    },
+
+    async addScopeFolder({ scopeId } = {}) {
+      if (!vaultRoot) throw new Error('请先选择 Obsidian 知识库。');
+      if (!['records', 'literature', 'rss', 'archive-read'].includes(scopeId)) throw new Error('该范围不支持映射现有文件夹。');
+      const chosen = await folderPicker({ scopeLabel: SCOPE_INFO[scopeId].label, initialPath: vaultRoot });
+      if (!chosen) return { cancelled: true, status: await service.vaultStatus() };
+      const actual = await fs.realpath(chosen);
+      const relative = path.relative(vaultRoot, actual);
+      if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+        throw new Error('请选择当前知识库里面的一个具体笔记文件夹，不能选知识库根目录或库外目录。');
+      }
+      const relativePath = relative.split(path.sep).join('/');
+      if (relativePath.split('/').some(part => part.startsWith('.')) || !await pathExists(vaultRoot, relativePath)) {
+        throw new Error('请选择知识库内的普通文件夹，不能使用隐藏目录或链接。');
+      }
+      const current = scopeMappings[scopeId] || [];
+      if (current.includes(relativePath)) return { cancelled: false, status: await service.vaultStatus() };
+      if (current.length >= 5) throw new Error('每个范围最多添加五个已有文件夹。');
+      scopeMappings = { ...scopeMappings, [scopeId]: [...current, relativePath] };
+      scopes.delete(scopeId);
+      return { cancelled: false, status: await service.vaultStatus() };
+    },
+
+    async removeScopeFolder({ scopeId, relativePath } = {}) {
+      if (!vaultRoot || !['records', 'literature', 'rss', 'archive-read'].includes(scopeId)) throw new Error('映射范围无效。');
+      if (typeof relativePath !== 'string' || !(scopeMappings[scopeId] || []).includes(relativePath)) throw new Error('未找到这项文件夹映射。');
+      scopeMappings = { ...scopeMappings, [scopeId]: scopeMappings[scopeId].filter(item => item !== relativePath) };
+      scopes.delete(scopeId);
+      return service.vaultStatus();
     },
 
     async inspectVaultStructure() {
@@ -646,7 +739,7 @@ export function createLocalBridgeService({
       if (!Array.isArray(scopeIds) || scopeIds.length === 0) throw new Error('至少选择一个读取或归档范围。');
       const allowed = new Set(Object.keys(SCOPE_INFO));
       if (scopeIds.some(id => typeof id !== 'string' || !allowed.has(id))) throw new Error('授权范围无效。');
-      const options = await availableScopes(vaultRoot);
+      const options = await availableScopes(vaultRoot, scopeMappings);
       const optionById = new Map(options.map(option => [option.id, option]));
       const unavailable = scopeIds.find(id => !optionById.get(id)?.available);
       if (unavailable) throw new Error(`所选范围“${SCOPE_INFO[unavailable].label}”在此知识库中不可用。`);
@@ -658,6 +751,7 @@ export function createLocalBridgeService({
       vaultRoot = '';
       vaultName = '';
       scopes = new Set();
+      scopeMappings = {};
       return service.vaultStatus();
     },
 
@@ -665,19 +759,19 @@ export function createLocalBridgeService({
       if (!vaultRoot) throw new Error('请先选择并授权一个知识库。');
       if (section === 'records') {
         if (!scopes.has('records')) throw new Error('当前没有“研究记录”读取授权。');
-        return collectMarkdown(vaultRoot, SCOPE_INFO.records.paths);
+        return collectMarkdown(vaultRoot, scopePaths('records', scopeMappings));
       }
       if (section === 'literature') {
         if (!scopes.has('literature')) throw new Error('当前没有“文献证据”读取授权。');
-        return collectMarkdown(vaultRoot, SCOPE_INFO.literature.paths);
+        return collectMarkdown(vaultRoot, scopePaths('literature', scopeMappings));
       }
       if (section === 'rss') {
         if (!scopes.has('rss')) throw new Error('当前没有“RSS 线索”读取授权。');
-        return readRssData(vaultRoot);
+        return readRssData(vaultRoot, scopePaths('rss', scopeMappings));
       }
       if (section === 'archive') {
         if (!scopes.has('archive-read')) throw new Error('当前没有“查看历史归档”读取授权。');
-        return collectMarkdown(vaultRoot, SCOPE_INFO['archive-read'].paths, { maxFiles: 400, maxBytes: 4 * 1024 * 1024, maxDepth: 4 });
+        return collectMarkdown(vaultRoot, scopePaths('archive-read', scopeMappings), { maxFiles: 400, maxBytes: 4 * 1024 * 1024, maxDepth: 4 });
       }
       throw new Error('数据类别无效。');
     },
@@ -772,6 +866,11 @@ export function createLocalBridgeRequestHandler(service) {
       if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return json(res, 415, { error: '请求格式无效。' });
       const body = await readJsonBody(req);
       if (requestUrl.pathname === `${API_PREFIX}vault/select`) return json(res, 200, await service.chooseVault());
+      if (requestUrl.pathname === `${API_PREFIX}vault/remember`) return json(res, 200, await service.rememberVault());
+      if (requestUrl.pathname === `${API_PREFIX}vault/restore`) return json(res, 200, await service.restoreRememberedVault());
+      if (requestUrl.pathname === `${API_PREFIX}vault/forget`) return json(res, 200, await service.forgetRememberedVault());
+      if (requestUrl.pathname === `${API_PREFIX}vault/scope-folder/add`) return json(res, 200, await service.addScopeFolder(body));
+      if (requestUrl.pathname === `${API_PREFIX}vault/scope-folder/remove`) return json(res, 200, await service.removeScopeFolder(body));
       if (requestUrl.pathname === `${API_PREFIX}vault/authorize`) return json(res, 200, await service.authorizeScopes(body.scopes));
       if (requestUrl.pathname === `${API_PREFIX}vault/structure/repair`) return json(res, 200, await service.repairVaultStructure(body));
       if (requestUrl.pathname === `${API_PREFIX}vault/disconnect`) return json(res, 200, await service.disconnectVault());

@@ -786,6 +786,14 @@ button:focus-visible, textarea:focus-visible {
 .workflow-entry > svg { color: var(--ink-light); }
 .workflow-entry:hover > svg { color: var(--accent-strong); }
 .research-task-list-section { margin: 26px 0 20px; }
+.task-backup-panel { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; margin: 10px 0 24px; padding: 13px 16px; border: 1px solid var(--line-default); border-radius: 12px; background: var(--surface-raised); }
+.task-backup-panel strong { color: var(--ink-secondary); font-size: 12px; }
+.task-backup-panel p { margin: 4px 0 0; color: var(--ink-muted); font-size: 10px; line-height: 1.55; }
+.task-backup-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.task-backup-actions .text-button { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 11px; }
+.task-backup-panel .task-backup-message { flex-basis: 100%; color: var(--ink-secondary); }
+.storage-warning { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 18px; background: #fff0e7; color: #8f3e28; font-size: 12px; }
+.storage-warning button { flex: 0 0 auto; border: 1px solid #bd6b4e; border-radius: 7px; padding: 5px 9px; background: white; color: #8f3e28; cursor: pointer; }
 .research-task-list-section .quick-start-heading { margin-top: 0; }
 .research-task-list { display: grid; gap: 8px; }
 .research-task-card { display: flex; align-items: center; gap: 12px; width: 100%; min-width: 0; padding: 12px 14px; border: 1px solid var(--line-default); border-radius: 13px; background: var(--surface-raised); }
@@ -998,6 +1006,7 @@ button:focus-visible, textarea:focus-visible {
 .update-backdrop { position: fixed; inset: 0; z-index: 9998; display: grid; place-items: center; padding: 20px; background: rgba(24, 32, 44, .38); backdrop-filter: blur(4px); }
 .modal-dialog,
 .update-dialog { position: relative; top: auto; left: auto; transform: none; width: min(100%, 620px); max-height: min(82vh, 720px); overflow: auto; padding: 24px; border: 1px solid var(--line-default); border-radius: 18px; background: var(--surface-raised); box-shadow: var(--shadow-lg); }
+.modal-dialog { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; }
 .modal-dialog h2,
 .update-dialog h2 { color: var(--ink-primary); }
 .modal-dialog p { font-size: 12px; }
@@ -1202,6 +1211,14 @@ button:focus-visible, textarea:focus-visible {
 .vault-page .subpage-lede, .data-page .subpage-lede { margin-bottom: 22px; }
 .vault-connection { max-width: 920px; }
 .vault-connection > p { line-height: 1.65; }
+.vault-selected-path { display: grid; gap: 5px; padding: 10px 12px; border: 1px solid var(--line-default); border-radius: 10px; background: var(--surface-base); }
+.vault-selected-path strong { color: var(--ink-secondary); font-size: 11px; }
+.vault-selected-path code { overflow-wrap: anywhere; color: var(--ink-primary); font-size: 12px; }
+.vault-memory-panel { margin: 12px 0 18px; padding: 11px 12px; border: 1px solid var(--line-default); border-radius: 10px; background: var(--surface-base); }
+.vault-memory-panel p { margin: 0 0 8px; color: var(--ink-muted); font-size: 11px; }
+.vault-memory-panel code { overflow-wrap: anywhere; color: var(--ink-secondary); }
+.vault-memory-panel .vault-actions { margin: 0; gap: 12px; }
+.vault-memory-panel .text-button { font-size: 11px; }
 .vault-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0 21px; }
 .vault-disconnect { margin-top: 0; }
 .vault-structure-panel { margin: 2px 0 21px; padding: 14px; border: 1px solid var(--line-default); border-radius: 12px; background: var(--surface-base); }
@@ -1230,7 +1247,19 @@ button:focus-visible, textarea:focus-visible {
 .vault-scope-heading strong { color: var(--ink-secondary); font-size: 12px; }
 .vault-scope-heading span { color: var(--ink-muted); font-size: 10px; }
 .vault-scope-list { display: grid; gap: 8px; margin: 0; padding: 0; border: 0; }
+.vault-mapping-intro { margin: 0 0 12px !important; color: var(--ink-muted); font-size: 11px !important; line-height: 1.6; }
+.vault-scope-entry { overflow: hidden; border: 1px solid var(--line-subtle); border-radius: 11px; background: var(--surface-base); }
 .vault-scope-option { display: flex; align-items: flex-start; gap: 11px; padding: 12px; border: 1px solid var(--line-subtle); border-radius: 11px; background: var(--surface-base); cursor: pointer; }
+.vault-scope-entry .vault-scope-option { border: 0; border-radius: 0; }
+.vault-mapping-controls { display: grid; gap: 7px; padding: 0 12px 10px 38px; }
+.vault-mapping-controls > .text-button { justify-self: start; display: inline-flex; align-items: center; gap: 5px; font-size: 11px; }
+.vault-mapped-path { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: center; padding: 6px 8px; border-radius: 7px; background: var(--surface-raised); }
+.vault-mapped-path code { overflow-wrap: anywhere; color: var(--ink-secondary); font-size: 10px; }
+.vault-mapped-path .text-button { flex: 0 0 auto; font-size: 10px; }
+.vault-scope-paths { padding: 0 12px 10px 38px; color: var(--ink-muted); font-size: 10px; }
+.vault-scope-paths summary { cursor: pointer; }
+.vault-scope-paths ul { display: grid; gap: 4px; margin: 7px 0 0; padding-left: 16px; }
+.vault-scope-paths code { overflow-wrap: anywhere; color: var(--ink-secondary); }
 .vault-scope-option:hover { border-color: var(--accent-border); }
 .vault-scope-option input, .vault-consent input { flex: 0 0 auto; width: 16px; height: 16px; margin: 2px 0 0; accent-color: var(--accent-strong); }
 .vault-scope-option.is-disabled { opacity: .55; cursor: default; }

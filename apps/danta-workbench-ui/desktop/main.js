@@ -58,7 +58,7 @@ if (!appLock) {
 }
 
 async function startLocalServer() {
-  const bridgeService = createLocalBridgeService();
+  const bridgeService = createLocalBridgeService({ vaultMemoryPath: path.join(app.getPath('userData'), 'vault-location.json') });
   const handleBridge = createLocalBridgeRequestHandler(bridgeService);
   localServer = createServer(async (req, res) => {
     await handleBridge(req, res);

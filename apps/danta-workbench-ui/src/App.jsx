@@ -12,12 +12,13 @@ import { VaultConnection } from './features/vault/components/VaultConnection.jsx
 import { KickoffModal } from './shared/components/KickoffModal.jsx';
 import { Notice } from './shared/components/Notice.jsx';
 import { useNotice } from './shared/hooks/useNotice.js';
-import { usePersistentState } from './shared/hooks/usePersistentState.js';
+import { usePersistentState, useStorageHealth } from './shared/hooks/usePersistentState.js';
 import { MECHANISM_WORKFLOW, PROMPT_STARTERS } from './shared/constants/workflows.js';
 import { useResearchTasks } from './features/research-tasks/hooks/useResearchTasks.js';
 import { buildTaskArchiveDraft, makeRelatedTaskContext } from './shared/utils/taskRecords.js';
 import { makeKickoffPrompt } from './shared/utils/promptBuilder.js';
-import { authorizeVaultScopes, chooseVault, createCodexThread, createVaultArchive, disconnectVault, getVaultStatus, inspectVaultStructure, openCodexThread, repairVaultStructure } from './shared/utils/localApi.js';
+import { makeTaskBackup, MAX_BACKUP_BYTES, parseTaskBackup } from './shared/utils/taskBackup.js';
+import { addVaultScopeFolder, authorizeVaultScopes, chooseVault, createCodexThread, createVaultArchive, disconnectVault, forgetVaultLocation, getVaultStatus, inspectVaultStructure, openCodexThread, rememberVaultLocation, removeVaultScopeFolder, repairVaultStructure, restoreVaultLocation } from './shared/utils/localApi.js';
 
 import quickstartImage from '../../../docs/assets/quickstart.png';
 import frameworkImage from '../../../docs/assets/workbench-map.png';
@@ -51,6 +52,7 @@ export function App() {
   const [filesByWorkflow] = usePersistentState('filesByWorkflow', {});
   const [pendingKickoff, setPendingKickoff] = usePersistentState('pendingKickoff', null);
   const [lastCheckpoint, setLastCheckpoint] = usePersistentState('lastCheckpoint', null);
+  const storageError = useStorageHealth();
   const [showMechanismProcess, setShowMechanismProcess] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -80,7 +82,36 @@ export function App() {
     updateTaskRecord,
     removeTaskRecord,
     recordTaskArchive,
+    mergeTaskCards,
   } = useResearchTasks({ drafts, filesByWorkflow, selectedPptTemplate, selectedPptLogo, pptPromptChoices, mechanismBrief, lastCheckpoint });
+
+  function exportTaskBackup() {
+    const backup = makeTaskBackup({ tasks: researchTasks, activeTaskId, pendingKickoff, homeThought });
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `龚博士科研任务备份-${new Date().toLocaleDateString('sv-SE')}.json`;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showNotice(`已导出 ${researchTasks.length} 张任务卡的本机备份。请把文件保存在自己掌控的位置。`, 'success');
+  }
+
+  async function importTaskBackup(file) {
+    if (!file || file.size > MAX_BACKUP_BYTES) throw new Error('请选择不超过 12 MB 的工作台任务备份。');
+    const backup = parseTaskBackup(await file.text());
+    const existing = new Set(researchTasks.map(task => task.id));
+    const incoming = backup.tasks.filter(task => !existing.has(task.id));
+    if (incoming.length) mergeTaskCards(incoming);
+    if (!activeTaskId && incoming.some(task => task.id === backup.activeTaskId)) setActiveTaskId(backup.activeTaskId);
+    if (!pendingKickoff && backup.pendingKickoff && (!backup.pendingKickoff.taskId || incoming.some(task => task.id === backup.pendingKickoff.taskId))) setPendingKickoff(backup.pendingKickoff);
+    if (!homeThought && backup.homeThought) setHomeThought(backup.homeThought);
+    const message = `已合并 ${incoming.length} 张任务卡；${backup.tasks.length - incoming.length} 张同编号任务保留本机现有版本。`;
+    showNotice(message, 'success');
+    return message;
+  }
 
   useEffect(() => {
     let active = true;
@@ -202,13 +233,14 @@ export function App() {
     let browserCopied = false;
     try { await navigator.clipboard.writeText(kickoffPrompt); browserCopied = true; } catch { /* The local bridge also tries the system clipboard. */ }
     const result = await createCodexThread({ projectId, prompt: kickoffPrompt, workflowLabel: pendingKickoff?.taskTitle || taskFocus });
-    setCopied(browserCopied || result.copied);
+    const copiedPrompt = browserCopied || result.copied;
+    setCopied(copiedPrompt);
     setPendingKickoff(current => current ? { ...current, handoffThreadId: result.threadId, handoffAt: Date.now() } : current);
     if (pendingKickoff?.taskId) {
       linkCodexThread(pendingKickoff.taskId, result.threadId);
     }
-    showNotice(result.opened ? '已创建并打开 Codex 新对话，启动语已复制。' : '新对话已创建，启动语已复制；可在 Codex 最近记录中打开。', 'success');
-    return result;
+    showNotice(`Codex 新对话已创建；${result.opened ? '已尝试打开' : '打开未成功，请从 Codex 最近记录进入'}；${copiedPrompt ? '启动语已复制，需自行粘贴并提交' : '剪贴板未复制成功，请在弹窗中手动复制启动语'}。`, copiedPrompt && result.opened ? 'success' : 'info');
+    return { ...result, copied: copiedPrompt };
   }
 
   async function reopenCodexThread(task) {
@@ -254,7 +286,7 @@ export function App() {
       const selected = await chooseVault();
       if (selected.cancelled) return;
       setVaultStructure(null);
-      setVaultStatus({ selected: true, connected: false, name: selected.name, scopes: [], scopeOptions: selected.scopes || [] });
+      setVaultStatus(await getVaultStatus());
       showNotice(`已选择“${selected.name}”。尚未读取内容，请勾选范围并确认授权。`, 'info');
     } finally {
       setVaultBusy(false);
@@ -271,6 +303,63 @@ export function App() {
     } finally {
       setVaultBusy(false);
     }
+  }
+
+  async function addScopeFolder(scopeId) {
+    setVaultBusy(true);
+    try {
+      const result = await addVaultScopeFolder(scopeId);
+      if (!result.cancelled) {
+        setVaultStatus(result.status);
+        showNotice('已关联现有文件夹。请检查范围并重新确认该项读取授权。', 'info');
+      }
+      return result;
+    } finally {
+      setVaultBusy(false);
+    }
+  }
+
+  async function removeScopeFolder(scopeId, relativePath) {
+    setVaultBusy(true);
+    try {
+      const status = await removeVaultScopeFolder(scopeId, relativePath);
+      setVaultStatus(status);
+      showNotice('已移除文件夹关联，请重新确认该项读取授权。', 'info');
+      return status;
+    } finally {
+      setVaultBusy(false);
+    }
+  }
+
+  async function rememberVault() {
+    setVaultBusy(true);
+    try {
+      const status = await rememberVaultLocation();
+      setVaultStatus(status);
+      showNotice('已在本机保存知识库路径和目录关联；读取权限不会随软件重启保留。', 'success');
+      return status;
+    } finally { setVaultBusy(false); }
+  }
+
+  async function restoreVault() {
+    setVaultBusy(true);
+    try {
+      const status = await restoreVaultLocation();
+      setVaultStatus(status);
+      setVaultStructure(null);
+      showNotice('已找回上次的知识库位置。请核对完整路径并重新授权需要的读取范围。', 'info');
+      return status;
+    } finally { setVaultBusy(false); }
+  }
+
+  async function forgetVault() {
+    setVaultBusy(true);
+    try {
+      const status = await forgetVaultLocation();
+      setVaultStatus(status);
+      showNotice('已清除保存的知识库路径；本次已连接的库和授权不受影响。', 'info');
+      return status;
+    } finally { setVaultBusy(false); }
   }
 
   async function clearVault() {
@@ -346,6 +435,8 @@ export function App() {
         onOpenVault={() => navigate('vault')}
         onResume={resumeWork}
         onRestoreKickoff={restoreKickoff}
+        onExportBackup={exportTaskBackup}
+        onImportBackup={importTaskBackup}
       />;
     }
     if (workflow) {
@@ -382,12 +473,13 @@ export function App() {
     if (activePage === 'literature') return <LiteraturePage canReadRss={vaultStatus.scopes.includes('rss')} canReadLiterature={vaultStatus.scopes.includes('literature')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
     if (activePage === 'daily-briefs') return <DailyBriefsPage onBack={goBack} onBegin={beginDiscussion} />;
     if (activePage === 'archive') return <ArchivePage canRead={vaultStatus.scopes.includes('archive-read')} canWrite={vaultStatus.scopes.includes('archive-write')} onOpenVault={() => navigate('vault')} onBack={goBack} onCheckpoint={() => markCheckpoint('archive', '历史归档')} />;
-    return <VaultConnection status={vaultStatus} structure={vaultStructure} busy={vaultBusy} onSelect={selectVault} onAuthorize={authorizeScopes} onDisconnect={clearVault} onInspectStructure={checkVaultStructure} onRepairStructure={completeVaultStructure} onBack={goBack} />;
+    return <VaultConnection status={vaultStatus} structure={vaultStructure} busy={vaultBusy} onSelect={selectVault} onRemember={rememberVault} onRestore={restoreVault} onForget={forgetVault} onAddScopeFolder={addScopeFolder} onRemoveScopeFolder={removeScopeFolder} onAuthorize={authorizeScopes} onDisconnect={clearVault} onInspectStructure={checkVaultStructure} onRepairStructure={completeVaultStructure} onBack={goBack} />;
   }
 
   return (
     <div className="app-frame">
       <Titlebar guideUrl={quickstartImage} frameworkUrl={frameworkImage} />
+      {storageError && <div className="storage-warning" role="alert"><span>{storageError}</span><button type="button" onClick={exportTaskBackup}>立即导出备份</button></div>}
       <div className="app-body">
         <Sidebar activePage={activeNav} vaultName={vaultStatus.name} vaultConnected={vaultStatus.connected} onNavigate={navigateFromSidebar} />
         <main className="main-content">{renderContent()}</main>

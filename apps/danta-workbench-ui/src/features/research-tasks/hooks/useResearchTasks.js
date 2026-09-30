@@ -111,6 +111,14 @@ export function useResearchTasks({
       : task));
   }
 
+  function mergeTaskCards(importedTasks) {
+    setMigrated(true);
+    setTasks(current => {
+      const existing = new Set(current.map(task => task.id));
+      return [...current, ...importedTasks.filter(task => !existing.has(task.id))];
+    });
+  }
+
   return {
     tasks,
     recentTasks,
@@ -127,5 +135,6 @@ export function useResearchTasks({
     updateTaskRecord,
     removeTaskRecord,
     recordTaskArchive,
+    mergeTaskCards,
   };
 }

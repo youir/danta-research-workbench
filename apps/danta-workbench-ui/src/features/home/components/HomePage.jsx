@@ -1,5 +1,5 @@
-import { memo, useRef } from 'react';
-import { ArrowClockwise, ArrowRight, FolderOpen } from '@phosphor-icons/react';
+import { memo, useRef, useState } from 'react';
+import { ArrowClockwise, ArrowRight, DownloadSimple, FolderOpen, UploadSimple } from '@phosphor-icons/react';
 import { MECHANISM_WORKFLOW, PROMPT_STARTERS, getStartActionLabel } from '../../../shared/constants/workflows.js';
 import { getResearchStage, getResearchTaskStatus } from '../../../shared/constants/researchTasks.js';
 
@@ -8,8 +8,18 @@ function taskUpdatedLabel(timestamp) {
   return new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(timestamp));
 }
 
-export const HomePage = memo(({ thought, setThought, taskFocus, recovery, researchTasks = [], vaultConnected = false, vaultName = '', onBegin, onOpenWorkflow, onResume, onResumeTask, onOpenCodexThread, onOpenVault, onRestoreKickoff }) => {
+export const HomePage = memo(({ thought, setThought, taskFocus, recovery, researchTasks = [], vaultConnected = false, vaultName = '', onBegin, onOpenWorkflow, onResume, onResumeTask, onOpenCodexThread, onOpenVault, onRestoreKickoff, onExportBackup, onImportBackup }) => {
   const textareaRef = useRef(null);
+  const backupInputRef = useRef(null);
+  const [backupMessage, setBackupMessage] = useState('');
+
+  async function importBackup(event) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    try { setBackupMessage(await onImportBackup(file)); }
+    catch (error) { setBackupMessage(error?.message || '读取任务备份失败。'); }
+  }
 
   return (
     <section className="home-view" aria-labelledby="home-title">
@@ -53,6 +63,16 @@ export const HomePage = memo(({ thought, setThought, taskFocus, recovery, resear
           })}
         </div>
       </section>}
+
+      <section className="task-backup-panel" aria-label="本机任务备份">
+        <div><strong>本机任务备份</strong><p>导出任务卡与未完成启动语；导入时只合并新任务，同编号保留本机版本。备份文件由你自己保管，不上传。</p></div>
+        <div className="task-backup-actions">
+          <button className="text-button" type="button" onClick={onExportBackup}><DownloadSimple size={16} aria-hidden="true" />导出备份</button>
+          <button className="text-button" type="button" onClick={() => backupInputRef.current?.click()}><UploadSimple size={16} aria-hidden="true" />导入备份</button>
+          <input ref={backupInputRef} type="file" accept=".json,application/json" className="visually-hidden" aria-label="选择工作台任务备份 JSON 文件" onChange={importBackup} />
+        </div>
+        {backupMessage && <p className="task-backup-message" role="status">{backupMessage}</p>}
+      </section>
 
       <form className="thought-form" onSubmit={event => { event.preventDefault(); onBegin(thought, taskFocus); }}>
         <label className="visually-hidden" htmlFor="research-thought">写下研究观察、困惑或决定</label>

@@ -92,7 +92,9 @@ export const KickoffModal = memo(({
     setProjectError('');
     try {
       const result = await onCreateThread(projectId);
-      setHandoffResult(`已创建并打开「${result.workspaceName}」中的新对话；启动语已复制。若输入框没有自动出现，请按 ${navigator.platform?.includes('Mac') ? '⌘V' : 'Ctrl+V'} 粘贴。工作台不会替你提交或运行这段启动语。`);
+      const openStatus = result.opened ? '已尝试打开新对话' : '未能打开窗口，请在 Codex 最近记录中进入新对话';
+      const copyStatus = result.copied ? `启动语已复制，进入后按 ${navigator.platform?.includes('Mac') ? '⌘V' : 'Ctrl+V'} 粘贴` : '启动语未复制成功，请用下方按钮手动复制';
+      setHandoffResult(`已在「${result.workspaceName}」创建新对话。${openStatus}；${copyStatus}。粘贴后仍需你自行提交。`);
     } catch (error) {
       setProjectError(error?.message || '创建 Codex 新对话失败。');
     } finally {

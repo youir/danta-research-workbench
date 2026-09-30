@@ -27,6 +27,26 @@ export function chooseVault() {
   return requestLocal('/vault/select', { method: 'POST', body: '{}' });
 }
 
+export function rememberVaultLocation() {
+  return requestLocal('/vault/remember', { method: 'POST', body: '{}' });
+}
+
+export function restoreVaultLocation() {
+  return requestLocal('/vault/restore', { method: 'POST', body: '{}' });
+}
+
+export function forgetVaultLocation() {
+  return requestLocal('/vault/forget', { method: 'POST', body: '{}' });
+}
+
+export function addVaultScopeFolder(scopeId) {
+  return requestLocal('/vault/scope-folder/add', { method: 'POST', body: JSON.stringify({ scopeId }) });
+}
+
+export function removeVaultScopeFolder(scopeId, relativePath) {
+  return requestLocal('/vault/scope-folder/remove', { method: 'POST', body: JSON.stringify({ scopeId, relativePath }) });
+}
+
 export function authorizeVaultScopes(scopes) {
   return requestLocal('/vault/authorize', { method: 'POST', body: JSON.stringify({ scopes }) });
 }
