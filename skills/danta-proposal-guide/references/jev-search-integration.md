@@ -1,4 +1,4 @@
-# Jev 与科研检索的接入方式
+# Jev 与科研检索、文献整理的接入方式
 
 Jev 在工作台中只做检索后的窄判断。Consensus、Semantic Scholar 和当前可用的网页/数据库工具负责召回资料；主引导负责补充检索词、阅读全文、综合证据和写作。Jev 的概率与排序不能成为科学质量分或研究方向排名。Jev 是内部工具路由：相关工作流自动调用，不要求龚博士知道名称或主动提出。
 
@@ -16,7 +16,7 @@ Jev 在工作台中只做检索后的窄判断。Consensus、Semantic Scholar �
 ## 启用条件
 
 - 仅在当前客户端工具清单里确实能调用 Jev MCP 工具时运行。仅安装了 Jev skill、模型密钥或项目配置，不代表工具已连通；不可用时自然回退，不让龚博士排障或补说工具名。
-- 当前工作台项目级 MCP 配置使用 [`@jkudish/jev-mcp`](https://github.com/jkudish/jev-mcp)，由 TypeSafe API key 驱动，提供 `jev_find`、`jev_rerank`、`jev_screen`、`jev_compare` 和 `jev_verify` 等工具。它是社区维护的 MCP 服务，运行依赖 Node.js 22+。
+- 当前工作台项目级 MCP 配置使用 [`@jkudish/jev-mcp`](https://github.com/jkudish/jev-mcp)，由 TypeSafe API key 驱动。上游还提供 `jev_classify`、`jev_audit` 等工具；这表示可供按需试用，不表示本工作台已接入 Zotero 或已验证分类质量。它是社区维护的 MCP 服务，运行依赖 Node.js 22+。
 - 在 macOS Codex 中首次配置时，在工作台根目录运行 `swift scripts/jev_mcp_launcher.swift setup`，通过隐藏输入把 key 保存到当前 Mac 登录钥匙串；`swift scripts/jev_mcp_launcher.swift check` 只报告是否已配置，不回显 key。之后重新启动 Codex 或新开会话，使项目级 MCP 配置生效。Windows/其他客户端需按该客户端方式单独接入，不能沿用本机钥匙串脚本。
 - MCP 启动器只在内存中读取钥匙串凭据并传给 Jev 子进程；key 不写入项目配置、仓库、检索结果、提示词或研究库。缺少 key 时 MCP 无法启动，原有检索继续运行。不要把 key 粘贴进聊天或工作台网页。
 - 不得为让流程“可用”而把私有查询自动送往 Jev 服务。仍按下文的公开资料最小化规则控制 Jev 输入。
@@ -30,6 +30,18 @@ Jev 在工作台中只做检索后的窄判断。Consensus、Semantic Scholar �
 4. 如果需要新一轮，主引导自己写出 2–5 条可区分的检索词，Jev 只选择其中一条。补搜最多一轮；需要系统综述时按系统综述的数据库、检索式和筛选规范执行，不以 Jev 的停止判断代替协议。
 5. 对关键结果打开来源原文，检查研究设计、样本、终点、局限和出版状态。可将明确的主张及原文短片段给 `jev_verify` 辅助查错；证据矩阵仍只记录原文核查结果。
 6. 保留相关的反例、阴性结果、不同研究设计和方法限制。低相关度只表示与当前问题匹配度较低，不能用来证明研究质量差或排除相反证据。
+
+## 已有文献的归类建议
+
+此流程只在龚博士明确要整理已有文献时启动，不作为检索或日报的后台步骤。先确认她实际使用 Zotero、本轮选中的条目和候选收藏夹；已有明确的第三方处理授权时沿用其范围，未记录该范围时再核对是否可外发这些元数据。Obsidian 的研究记录、工作区目录和 Zotero 收藏夹是不同对象；不能把截图里的单细胞目录复制成她的生物病理学分类体系，也不能把 Obsidian 路径当作 Zotero 目录。
+
+1. 优先评估现成的 [Jadense in Zotero](https://github.com/jadense-ai/jadense-in-zotero) 分类窗口：它支持在 Zotero 中选中文献和候选目录、生成推荐预览、核对后应用及撤销。是否安装取决于她的 Zotero 版本、许可证、Windows 实机兼容性及数据处理选择；没有明确的本机安装任务时不自动安装，不代填或展示密钥。插件的 TypeSafe 配置与本工作台项目级 MCP 是两套连接。
+2. 若在当前会话中使用 `jev_classify` 做辅助预览，目录只能来自她已有的 Zotero 收藏夹或她明确给出的分类表。每个类别写清包含、排除和与相邻类别的边界；加入“待人工判断/无匹配”选项。单篇可能跨类别时保留多标签候选供她判断，不能强迫单选结果覆盖真实研究用途。
+3. 请求仅使用本轮同意处理的公开或获准外发的题名、短摘要、必要标签和候选类别定义，并用本机临时 ID 对应 Zotero 条目。不要传 PDF、全文、私人笔记、未发表研究内容、患者资料或整个库目录。已有的 Obsidian 读取授权不自动覆盖 Zotero 或 Jev 外发。
+4. 把原收藏夹、建议收藏夹、无匹配状态和不确定项并列展示，模型输出仅是预览。`jev_classify` 的 `auto` 或置信度是工具判定状态，不是医学分类准确率，也不构成自动移动许可。未经龚博士确认，不新增、移动、删除或覆盖文献及收藏夹。应用时保留原位置与可撤销记录；预览后目录或条目变动则重算。
+5. 先用少量已人工归类的代表性文献评估错放、漏放、无匹配和交叉主题；抽查高分错误与低分正确案例。没有这个基线时只做建议，不设全自动归档阈值。若未装 Zotero、插件或 Jev，仍可在当前授权材料内给出手工分类表，不声称已经写入库。
+
+Jev 的 `Choice` 会在候选类别中选出一个；没有合适类别时需要显式的无匹配选项。候选目录没覆盖真实主题，模型无法凭空补齐。分类回答也不判断论文质量、病理机制是否成立或研究方向是否值得做。[TypeSafe 分类说明](https://docs.typesafe.ai/cookbooks/hierarchical_classification)和 [`jev_classify` 接口说明](https://github.com/jkudish/jev-mcp#jev_classify)只提供实现模式，领域阈值仍需本地样本校准。
 
 ## 直接调用 TypeSafe API 时
 
@@ -55,5 +67,8 @@ Jev 的主要训练语言是英语；官方说明中文等 CJK 输入可用，�
 
 - [`jev-mcp`](https://github.com/jkudish/jev-mcp)：将 Jev 的相关性判断、筛查和核验封装为 MCP；已接入工作台的自动后处理流程，未连接时原检索仍可用。
 - [`jev-browser`](https://github.com/jkudish/jev-browser)：让 Jev 从页面已有的交互控件中选择下一步操作。它补充浏览器动作选择，不替代文献检索 API，也不应自动登录或绕过访问控制。
+- [`jev-skill`](https://github.com/wuyoscar/jev-skill)：可借鉴文献筛选、主张核对的判定问题；其中相关配方标为尚未逐项评估，不整包加入科研默认流程。
+- [`tenbin`](https://github.com/simota/tenbin)：开发阶段可用来设计问题、检查问题定义并在标注样本上评估阈值；不作为龚博士日常运行依赖。
+- [`jev-reviewer`](https://github.com/choxos/jev-reviewer)：以后若有正式系统综述的数据提取任务，可单独评估。文件留在浏览器不等于离线处理：其说明称提取文本与问题会发送给 TypeSafe，不适合默认读取私有或未发表材料。
 
 上游接口、服务状态和开源项目实现会变化。正式配置前以项目当前说明为准；本工作台只约定调用边界，不将社区服务器代码复制进发行包。

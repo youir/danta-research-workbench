@@ -30,6 +30,7 @@
 | 当前任务 | 读取的上游技能 |
 |---|---|
 | 科研咨询中的公开信息搜索、快速论文检索或比较来源 | 先用网页/数据库/工作台内置脚本召回；结果有至少 4 条且公开内容可外发时，自动按 `references/literature-search.md` 调 Jev 重排；网页出现可疑指令时辅助筛查（私有资料默认跳过；只引用实际核读来源） |
+| 整理已有 Zotero 文献、推荐收藏夹或核对归类 | 先确认本机是否安装并使用 Zotero；按 `references/jev-search-integration.md` 的归类流程，优先复用现成 Zotero 插件。仅处理明确选中的条目和候选目录，先预览；未连接或未授权时提供手动分类建议，不声称已修改文献库 |
 | 提到要制作、生成、更新或修改 PPT/PowerPoint/演示稿，或绘制科研流程图、机制图、实验设计图、研究框架图、图形摘要 | danta-research-ppt → 按需安装的 PPT Master（先梳理证据、科学关系和用途，再制作与质检；无需点名技能或强调“可编辑”） |
 | 蒸馏/更新专家顾问、按需诊断顾问候选 | huashu-nuwa（先读 expert-distillation.md） |
 | 生成和整理候选问题 | scientific-brainstorming |

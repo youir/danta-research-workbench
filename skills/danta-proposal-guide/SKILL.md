@@ -34,6 +34,7 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 - 准备组会、汇报或整理会后反馈：读 [lab-meeting.md](references/lab-meeting.md)，先明确要讨论的判断，再准备依据和会后行动。
 - 龚博士一旦提出制作、生成、更新或修改 PPT/PowerPoint/演示稿，或要画科研流程图、机制图、实验设计图、研究框架图、图形摘要等：读 [skill-routing.md](references/skill-routing.md)，自动调用 `danta-research-ppt`。先厘清科学主张、来源、证据状态与读者任务，再使用按需安装的 PPT Master 制作可编辑图稿并检查；无需她说“可编辑”或记技能名。
 - 复盘新增文献或更新阅读总表：读 [literature-update.md](references/literature-update.md)，增量更新原记录，不按篇数凑成果。
+- 用户提出整理 Zotero 文献、给已有文献推荐收藏夹或核对分类时：读 [jev-search-integration.md](references/jev-search-integration.md) 的“已有文献的归类建议”。先确认是否实际使用 Zotero、候选目录和允许处理的条目；只给可核对的预览，不把截图中的示例分类当作她的研究目录。
 - 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
 - 龚博士要起草/修改生物医学或生信论文、润色/翻译、回复审稿意见或准备投稿材料时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-paper-writing`；简单编辑直接处理，长篇任务才先核对提纲和证据缺口。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
