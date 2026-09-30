@@ -282,7 +282,7 @@ export function App() {
     }
     if (activePage === 'records') return <ResearchRecordsPage canRead={vaultStatus.scopes.includes('records')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
     if (activePage === 'literature') return <LiteraturePage canReadRss={vaultStatus.scopes.includes('rss')} canReadLiterature={vaultStatus.scopes.includes('literature')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
-    if (activePage === 'daily-briefs') return <DailyBriefsPage onBack={goBack} />;
+    if (activePage === 'daily-briefs') return <DailyBriefsPage onBack={goBack} onBegin={beginDiscussion} />;
     if (activePage === 'archive') return <ArchivePage canRead={vaultStatus.scopes.includes('archive-read')} canWrite={vaultStatus.scopes.includes('archive-write')} onOpenVault={() => navigate('vault')} onBack={goBack} onCheckpoint={() => markCheckpoint('archive', '历史归档')} />;
     return <VaultConnection status={vaultStatus} structure={vaultStructure} busy={vaultBusy} onSelect={selectVault} onAuthorize={authorizeScopes} onDisconnect={clearVault} onInspectStructure={checkVaultStructure} onRepairStructure={completeVaultStructure} onBack={goBack} />;
   }

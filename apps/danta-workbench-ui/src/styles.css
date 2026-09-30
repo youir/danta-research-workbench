@@ -982,6 +982,23 @@ button:focus-visible, textarea:focus-visible {
 .daily-briefs-heading p { max-width: 660px; margin: 0; color: var(--ink-muted); font-size: 12px; line-height: 1.7; }
 .daily-local-pill { display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto; padding: 7px 10px; border: 1px solid var(--line-default); border-radius: 999px; color: var(--ink-secondary); background: var(--surface-raised); font-size: 10px; }
 .daily-local-pill .status-dot { width: 7px; height: 7px; }
+.daily-actions-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; margin: 0 0 14px; }
+.daily-action-card { display: grid; align-content: start; gap: 11px; min-width: 0; padding: 18px 20px; border: 1px solid var(--line-default); border-radius: 16px; background: var(--surface-raised); box-shadow: var(--shadow-sm); }
+.daily-action-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.daily-action-heading h2 { margin: 2px 0 0; color: var(--ink-primary); font-size: 15px; font-weight: 650; }
+.daily-action-card > p { min-height: 36px; margin: 0; color: var(--ink-muted); font-size: 11px; line-height: 1.65; }
+.daily-state-pill { flex: 0 0 auto; padding: 5px 8px; border-radius: 999px; background: var(--surface-hover); color: var(--ink-muted); font-size: 9px; }
+.daily-state-pill.is-ready { background: #edf6f0; color: #477d68; }
+.daily-state-pill.is-managed { max-width: 130px; white-space: normal; text-align: center; }
+.daily-automation-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+.daily-time-field { display: grid; gap: 5px; color: var(--ink-secondary); font-size: 10px; font-weight: 600; }
+.daily-time-input { display: flex; align-items: center; gap: 6px; width: fit-content; min-height: 34px; padding: 0 9px; border: 1px solid var(--line-default); border-radius: 8px; color: var(--accent-strong); background: var(--surface-base); }
+.daily-time-input input { width: 96px; border: 0; outline: 0; color: var(--ink-primary); background: transparent; font: inherit; font-size: 12px; }
+.daily-time-input:focus-within { outline: 2px solid var(--accent-border); outline-offset: 1px; }
+.daily-timezone { padding-bottom: 9px; color: var(--ink-light); font-size: 9px; }
+.daily-automation-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.daily-automation-actions .compact { min-height: 34px; padding: 7px 11px; font-size: 10px; }
+.daily-automation-note { padding-top: 9px; border-top: 1px solid var(--line-subtle); color: var(--ink-light); font-size: 9px; line-height: 1.6; }
 .daily-connect-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px 24px; align-items: center; padding: 19px 21px 14px; border: 1px solid var(--line-default); border-radius: 16px; background: var(--surface-raised); }
 .daily-connect-copy h2 { margin: 4px 0 6px; color: var(--ink-primary); font-size: 15px; }
 .daily-connect-copy p { max-width: 720px; margin: 0; color: var(--ink-muted); font-size: 11px; line-height: 1.65; }
@@ -1088,6 +1105,8 @@ button:focus-visible, textarea:focus-visible {
   .process-list li { min-height: auto; border-right: 0; border-bottom: 1px solid var(--line-subtle); padding: 0 0 8px; }
   .modal-dialog, .update-dialog { padding: 19px; }
   .daily-briefs-heading { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .daily-actions-grid { grid-template-columns: 1fr; }
+  .daily-action-card > p { min-height: 0; }
   .daily-connect-panel { grid-template-columns: 1fr; }
   .daily-connect-actions { justify-content: flex-start; }
   .daily-report-choice { width: 100%; }
