@@ -11,7 +11,7 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
 
   useEffect(() => {
     setSelectedScopes(status?.scopes || []);
-  }, [status?.name, status?.scopes?.join(',')]);
+  }, [status?.path, status?.scopes?.join(',')]);
 
   useEffect(() => setConfirmStructureRepair(false), [structure]);
 
@@ -19,6 +19,8 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
   const availableIds = new Set(availableOptions.map(option => option.id));
   const selectedScopeIds = selectedScopes.filter(id => availableIds.has(id));
   const selectedCount = selectedScopeIds.length;
+  const scopeChanged = [...selectedScopeIds].sort().join(',') !== [...(status?.scopes || [])].sort().join(',');
+  const needsAuthorization = !status?.connected || scopeChanged;
 
   function toggleScope(id, checked) {
     setSelectedScopes(current => checked ? [...new Set([...current, id])] : current.filter(item => item !== id));
@@ -31,7 +33,7 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
       const nextStatus = await onAuthorize(selectedScopeIds);
       setSelectedScopes(nextStatus.scopes || selectedScopeIds);
       setConfirmed(false);
-      setLocalMessage('授权范围已保存在本机工作台内存中。打开研究记录、文献或归档页时，才会读取对应内容。');
+      setLocalMessage(nextStatus.memoryAvailable ? '授权范围已保存在这台电脑。下次核对知识库后可直接恢复；打开相应页面时才读取内容。' : '本次运行的授权范围已更新；打开相应页面时才读取内容。');
     } catch (error) {
       setLocalMessage(error?.message || '保存授权范围失败。');
     }
@@ -74,9 +76,9 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
   async function runMemoryAction(action, success) {
     setLocalMessage('');
     try {
-      await action();
+      const nextStatus = await action();
       setConfirmed(false);
-      setLocalMessage(success);
+      setLocalMessage(nextStatus?.restoreMessage || success);
     } catch (error) { setLocalMessage(error?.message || '保存知识库位置失败。'); }
   }
 
@@ -105,7 +107,7 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
           <span className="vault-status-pill">{status?.name || '需要你选择'}</span>
         </div>
         {status?.selected && <p className="vault-selected-path"><strong>已选择的完整路径：</strong><code>{status.path}</code></p>}
-        <p>请核对完整路径。读取授权只在本次运行期间有效。若主动保存位置，桌面版会在本机应用数据中记住路径及目录关联；不会写进 Git 或云端，也不会在重启后自动读取笔记。</p>
+        <p>请核对完整路径。桌面版会在本机保存本人确认的授权范围；下次打开时先核对知识库和关联目录，再恢复相同范围。不会写进 Git 或云端，也不会在重启后自动读取笔记。</p>
 
         <div className="vault-actions">
           <button className="primary-button compact" type="button" onClick={async () => { setLocalMessage(''); try { await onSelect(); setConfirmed(false); } catch (error) { setLocalMessage(error?.message || '选择知识库失败。'); } }} disabled={busy}>
@@ -115,10 +117,11 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
         </div>
 
         {status?.memoryAvailable && <div className="vault-memory-panel">
-          {status.remembered && <p>上次保存的位置：<code>{status.remembered.path}</code></p>}
+          {status.remembered && <p>上次保存的位置：<code>{status.remembered.path}</code>；已记录 {Object.keys(status.remembered.grants || {}).length} 项授权范围。</p>}
+          {status.remembered?.version === 1 && <p>旧版只保存了位置，没有保存授权范围。升级后首次需核对并确认一次，以后无需重复勾选。</p>}
           <div className="vault-actions">
-            {!status.selected && status.remembered && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onRestore, '已找回上次的知识库位置。请核对路径并重新勾选读取范围。')}>使用上次知识库</button>}
-            {status.selected && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onRemember, '已保存当前路径和目录关联；重启后仍须重新授权读取。')}>{status.remembered?.path === status.path ? '更新保存的位置与关联' : '记住当前路径与关联'}</button>}
+            {!status.selected && status.remembered && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onRestore, '已恢复上次的知识库，请核对实际路径。')}>核对并继续使用上次知识库</button>}
+            {status.selected && !status.connected && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onRemember, '已保存当前路径与关联；确认授权后会一并记住范围。')}>{status.remembered?.path === status.path ? '更新保存的位置与关联' : '记住当前路径与关联'}</button>}
             {status.remembered && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onForget, '已忘记上次保存的位置；没有删除知识库内容。')}>忘记上次路径</button>}
           </div>
         </div>}
@@ -188,15 +191,18 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
             ))}
           </fieldset> : <div className="vault-empty-scopes">当前文件夹中没有找到工作台支持的科研目录。不会自动改动或创建你的知识库结构。</div>}
 
-          {selectedCount > 0 && <label className="vault-consent"><input type="checkbox" checked={confirmed} disabled={busy} onChange={event => setConfirmed(event.target.checked)} /><span>我已确认以上目录属于本次授权范围，允许工作台按所选权限在本机读取或新建文件。所选范围将显示在上方。</span></label>}
-          <button className="primary-button vault-authorize" type="button" onClick={connect} disabled={busy || selectedCount === 0 || !confirmed}>
-            <CheckCircle size={17} aria-hidden="true" />{busy ? '正在保存…' : status?.connected ? '更新授权范围' : '授权所选范围并连接'}
-          </button>
+          {!scopeChanged && status?.connected && <p className="vault-structure-summary">已恢复并核对 {status.scopes.length} 项原有授权，可直接使用。只有更换知识库或修改关联目录时，才需确认变化的范围。</p>}
+          {needsAuthorization && <>
+            {selectedCount > 0 && <label className="vault-consent"><input type="checkbox" checked={confirmed} disabled={busy} onChange={event => setConfirmed(event.target.checked)} /><span>我已核对以上实际路径，同意将所选范围保存在这台电脑，供下次核对后继续使用。</span></label>}
+            <button className="primary-button vault-authorize" type="button" onClick={connect} disabled={busy || selectedCount === 0 || !confirmed}>
+              <CheckCircle size={17} aria-hidden="true" />{busy ? '正在保存…' : status?.connected ? '更新授权范围' : '确认授权并连接'}
+            </button>
+          </>}
         </>}
 
         {(notice || localMessage) && <p className={`vault-feedback${/失败|无效|不可用/.test(localMessage) ? ' is-error' : ''}`} role="status">{localMessage || notice}</p>}
         <div className="connection-explainer"><Info size={18} aria-hidden="true" /><div><strong>每项范围的边界</strong><p>只读取已授权标准目录、明确关联的文件夹及列出的 RSS 缓存；不会读取其他目录、图片附件或其他插件数据。归档范围只会在“历史归档”中创建新笔记，不覆盖、不删除已有内容。</p></div></div>
-        <div className="vault-local-note"><LockKey size={15} aria-hidden="true" />授权仅在当前本机工作台服务运行期间有效；断开会立即清除本次连接和授权。保存过的位置可另行“忘记”。</div>
+        <div className="vault-local-note"><LockKey size={15} aria-hidden="true" />桌面版将已确认的授权保存在本机应用数据中。断开会清除本次连接及保存记录；“忘记上次路径”只删除保存记录，不影响本次连接。</div>
       </section>
     </section>
   );

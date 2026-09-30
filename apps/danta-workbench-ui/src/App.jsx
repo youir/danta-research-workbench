@@ -286,8 +286,9 @@ export function App() {
       const selected = await chooseVault();
       if (selected.cancelled) return;
       setVaultStructure(null);
-      setVaultStatus(await getVaultStatus());
-      showNotice(`已选择“${selected.name}”。尚未读取内容，请勾选范围并确认授权。`, 'info');
+      const status = await getVaultStatus();
+      setVaultStatus(status);
+      showNotice(status.restoreMessage || `已选择“${selected.name}”。尚未读取内容，请勾选范围并确认授权。`, status.connected ? 'success' : 'info');
     } finally {
       setVaultBusy(false);
     }
@@ -298,7 +299,7 @@ export function App() {
     try {
       const status = await authorizeVaultScopes(scopes);
       setVaultStatus(status);
-      showNotice('本机读取范围已更新。', 'success');
+      showNotice(status.memoryAvailable ? '已在本机保存授权范围。下次核对知识库后可继续使用。' : '本次运行的读取范围已更新。', 'success');
       return status;
     } finally {
       setVaultBusy(false);
@@ -336,7 +337,7 @@ export function App() {
     try {
       const status = await rememberVaultLocation();
       setVaultStatus(status);
-      showNotice('已在本机保存知识库路径和目录关联；读取权限不会随软件重启保留。', 'success');
+      showNotice('已在本机保存知识库路径、目录关联及当前授权范围。', 'success');
       return status;
     } finally { setVaultBusy(false); }
   }
@@ -347,7 +348,7 @@ export function App() {
       const status = await restoreVaultLocation();
       setVaultStatus(status);
       setVaultStructure(null);
-      showNotice('已找回上次的知识库位置。请核对完整路径并重新授权需要的读取范围。', 'info');
+      showNotice(status.restoreMessage || '已找回上次的知识库位置，请核对完整路径。', status.connected ? 'success' : 'info');
       return status;
     } finally { setVaultBusy(false); }
   }
@@ -368,7 +369,7 @@ export function App() {
       const status = await disconnectVault();
       setVaultStatus(status);
       setVaultStructure(null);
-      showNotice('知识库路径和读取授权已从本机服务内存中清除。', 'success');
+      showNotice('已断开知识库，并清除本机保存的位置及授权记录。', 'success');
     } finally {
       setVaultBusy(false);
     }

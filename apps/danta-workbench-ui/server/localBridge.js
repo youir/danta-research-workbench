@@ -598,6 +598,41 @@ export function createLocalBridgeService({
   let vaultName = '';
   let scopes = new Set();
   let scopeMappings = {};
+  let restoreMessage = '';
+
+  async function vaultIdentity(root) {
+    const stat = await fs.stat(root);
+    return { dev: stat.dev, ino: stat.ino, birthtimeMs: stat.birthtimeMs };
+  }
+
+  function sameVaultIdentity(saved, current) {
+    if (!saved || !current) return false;
+    if (saved.dev !== current.dev || saved.ino !== current.ino) return false;
+    return Math.abs(saved.birthtimeMs - current.birthtimeMs) < 1000;
+  }
+
+  async function targetIdentity(root, relativePath) {
+    if (!await pathExists(root, relativePath, relativePath.endsWith('.json'))) return null;
+    return vaultIdentity(path.join(root, relativePath));
+  }
+
+  async function saveVaultMemory(root = vaultRoot, mappings = scopeMappings, granted = scopes) {
+    if (!vaultMemoryPath) return;
+    const grants = Object.fromEntries(await Promise.all([...granted].map(async id => {
+      const paths = scopePaths(id, mappings);
+      const targets = SCOPE_INFO[id].mode === 'read' ? await Promise.all(paths.map(item => targetIdentity(root, item))) : null;
+      return [id, { paths, targets }];
+    })));
+    const snapshot = JSON.stringify({ version: 2, path: root, identity: await vaultIdentity(root), mappings, grants });
+    await fs.mkdir(path.dirname(vaultMemoryPath), { recursive: true });
+    const temporary = `${vaultMemoryPath}.${process.pid}.tmp`;
+    try {
+      await fs.writeFile(temporary, snapshot, { flag: 'w', mode: 0o600 });
+      await fs.rename(temporary, vaultMemoryPath);
+    } finally {
+      await fs.rm(temporary, { force: true }).catch(() => {});
+    }
+  }
 
   async function readVaultMemory() {
     if (!vaultMemoryPath) return null;
@@ -605,8 +640,15 @@ export function createLocalBridgeService({
       const stat = await fs.stat(vaultMemoryPath);
       if (!stat.isFile() || stat.size > 16_384) return null;
       const saved = JSON.parse(await fs.readFile(vaultMemoryPath, 'utf8'));
-      if (saved?.version !== 1 || typeof saved.path !== 'string' || !path.isAbsolute(saved.path)) return null;
-      return { name: path.basename(saved.path) || 'Obsidian 知识库', path: saved.path, mappings: saved.mappings || {} };
+      if (![1, 2].includes(saved?.version) || typeof saved.path !== 'string' || !path.isAbsolute(saved.path)) return null;
+      return {
+        version: saved.version,
+        name: path.basename(saved.path) || 'Obsidian 知识库',
+        path: saved.path,
+        mappings: saved.mappings && typeof saved.mappings === 'object' ? saved.mappings : {},
+        identity: saved.version === 2 ? saved.identity : null,
+        grants: saved.version === 2 && saved.grants && typeof saved.grants === 'object' ? saved.grants : {},
+      };
     } catch { return null; }
   }
 
@@ -628,10 +670,18 @@ export function createLocalBridgeService({
       const realPath = await fs.realpath(chosen);
       const stat = await fs.stat(realPath);
       if (!stat.isDirectory()) throw new Error('请选择一个 Obsidian 知识库文件夹。');
+      const remembered = await readVaultMemory();
+      if (remembered?.path === realPath) {
+        try {
+          const restored = await service.restoreRememberedVault();
+          return { cancelled: false, name: restored.name, path: restored.path, scopes: restored.scopeOptions };
+        } catch { /* A changed folder requires fresh confirmation below. */ }
+      }
       vaultRoot = realPath;
       vaultName = path.basename(realPath) || 'Obsidian 知识库';
       scopes = new Set();
       scopeMappings = {};
+      restoreMessage = '';
       return { cancelled: false, name: vaultName, path: vaultRoot, scopes: await availableScopes(vaultRoot, scopeMappings) };
     },
 
@@ -645,14 +695,13 @@ export function createLocalBridgeService({
         scopeOptions: vaultRoot ? await availableScopes(vaultRoot, scopeMappings) : [],
         memoryAvailable: Boolean(vaultMemoryPath),
         remembered: await readVaultMemory(),
+        restoreMessage,
       };
     },
 
     async rememberVault() {
       if (!vaultRoot || !vaultMemoryPath) throw new Error('本机桌面版尚未提供知识库位置记忆。');
-      const snapshot = JSON.stringify({ version: 1, path: vaultRoot, mappings: scopeMappings });
-      await fs.mkdir(path.dirname(vaultMemoryPath), { recursive: true });
-      await fs.writeFile(vaultMemoryPath, snapshot, { flag: 'w', mode: 0o600 });
+      await saveVaultMemory();
       return service.vaultStatus();
     },
 
@@ -662,19 +711,44 @@ export function createLocalBridgeService({
       const realPath = await fs.realpath(remembered.path).catch(() => null);
       const stat = realPath ? await fs.stat(realPath).catch(() => null) : null;
       if (!stat?.isDirectory()) throw new Error('上次使用的知识库路径已不可用，请重新选择。');
+      if (realPath !== remembered.path) throw new Error('上次知识库的实际路径已变化，请重新选择并核对。');
+      if (remembered.version === 2 && !sameVaultIdentity(remembered.identity, await vaultIdentity(realPath))) {
+        throw new Error('知识库文件夹已被替换或移动，请重新选择并核对授权范围。');
+      }
       const restoredMappings = {};
+      const invalidMappings = new Set();
       for (const id of ['records', 'literature', 'rss', 'archive-read']) {
         const candidates = Array.isArray(remembered.mappings[id]) ? remembered.mappings[id].slice(0, 5) : [];
         restoredMappings[id] = [];
         for (const candidate of candidates) {
-          if (typeof candidate !== 'string' || !candidate || path.isAbsolute(candidate) || candidate.split(/[\\/]/).some(part => !part || part === '..' || part.startsWith('.'))) continue;
+          if (typeof candidate !== 'string' || !candidate || path.isAbsolute(candidate) || candidate.split(/[\\/]/).some(part => !part || part === '..' || part.startsWith('.'))) { invalidMappings.add(id); continue; }
           if (await pathExists(realPath, candidate)) restoredMappings[id].push(candidate);
+          else invalidMappings.add(id);
         }
       }
+      const options = await availableScopes(realPath, restoredMappings);
+      const available = new Set(options.filter(option => option.available).map(option => option.id));
+      const restoredGrants = (await Promise.all(Object.entries(remembered.grants).map(async ([id, savedGrant]) => {
+        if (!Object.hasOwn(SCOPE_INFO, id) || invalidMappings.has(id) || !available.has(id)) return null;
+        const paths = scopePaths(id, restoredMappings);
+        if (!savedGrant || JSON.stringify(savedGrant.paths) !== JSON.stringify(paths)) return null;
+        if (SCOPE_INFO[id].mode === 'read') {
+          if (!Array.isArray(savedGrant.targets)) return null;
+          const targets = await Promise.all(paths.map(item => targetIdentity(realPath, item)));
+          if (JSON.stringify(savedGrant.targets) !== JSON.stringify(targets)) return null;
+        }
+        return id;
+      }))).filter(Boolean);
       vaultRoot = realPath;
       vaultName = path.basename(realPath) || 'Obsidian 知识库';
       scopeMappings = restoredMappings;
-      scopes = new Set();
+      scopes = new Set(restoredGrants);
+      const savedCount = Object.keys(remembered.grants).length;
+      restoreMessage = remembered.version === 1
+        ? '旧版仅保存了知识库位置，未保存授权范围。本次确认后，今后可直接恢复。'
+        : savedCount === restoredGrants.length
+          ? `已核对知识库路径及目录，恢复 ${restoredGrants.length} 项已授权范围。`
+          : `已恢复 ${restoredGrants.length} 项授权；${savedCount - restoredGrants.length} 项因目录变化或不可用已暂停，请核对并修复。`;
       return service.vaultStatus();
     },
 
@@ -700,16 +774,26 @@ export function createLocalBridgeService({
       const current = scopeMappings[scopeId] || [];
       if (current.includes(relativePath)) return { cancelled: false, status: await service.vaultStatus() };
       if (current.length >= 5) throw new Error('每个范围最多添加五个已有文件夹。');
-      scopeMappings = { ...scopeMappings, [scopeId]: [...current, relativePath] };
-      scopes.delete(scopeId);
+      const nextMappings = { ...scopeMappings, [scopeId]: [...current, relativePath] };
+      const nextScopes = new Set(scopes);
+      nextScopes.delete(scopeId);
+      await saveVaultMemory(vaultRoot, nextMappings, nextScopes);
+      scopeMappings = nextMappings;
+      scopes = nextScopes;
+      restoreMessage = '';
       return { cancelled: false, status: await service.vaultStatus() };
     },
 
     async removeScopeFolder({ scopeId, relativePath } = {}) {
       if (!vaultRoot || !['records', 'literature', 'rss', 'archive-read'].includes(scopeId)) throw new Error('映射范围无效。');
       if (typeof relativePath !== 'string' || !(scopeMappings[scopeId] || []).includes(relativePath)) throw new Error('未找到这项文件夹映射。');
-      scopeMappings = { ...scopeMappings, [scopeId]: scopeMappings[scopeId].filter(item => item !== relativePath) };
-      scopes.delete(scopeId);
+      const nextMappings = { ...scopeMappings, [scopeId]: scopeMappings[scopeId].filter(item => item !== relativePath) };
+      const nextScopes = new Set(scopes);
+      nextScopes.delete(scopeId);
+      await saveVaultMemory(vaultRoot, nextMappings, nextScopes);
+      scopeMappings = nextMappings;
+      scopes = nextScopes;
+      restoreMessage = '';
       return service.vaultStatus();
     },
 
@@ -743,15 +827,20 @@ export function createLocalBridgeService({
       const optionById = new Map(options.map(option => [option.id, option]));
       const unavailable = scopeIds.find(id => !optionById.get(id)?.available);
       if (unavailable) throw new Error(`所选范围“${SCOPE_INFO[unavailable].label}”在此知识库中不可用。`);
-      scopes = new Set(scopeIds);
+      const nextScopes = new Set(scopeIds);
+      await saveVaultMemory(vaultRoot, scopeMappings, nextScopes);
+      scopes = nextScopes;
+      restoreMessage = '';
       return service.vaultStatus();
     },
 
     async disconnectVault() {
+      if (vaultMemoryPath) await fs.rm(vaultMemoryPath, { force: true });
       vaultRoot = '';
       vaultName = '';
       scopes = new Set();
       scopeMappings = {};
+      restoreMessage = '';
       return service.vaultStatus();
     },
 
