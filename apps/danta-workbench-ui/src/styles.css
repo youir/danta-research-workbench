@@ -785,6 +785,21 @@ button:focus-visible, textarea:focus-visible {
 .workflow-entry-copy small { overflow: hidden; color: var(--ink-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .workflow-entry > svg { color: var(--ink-light); }
 .workflow-entry:hover > svg { color: var(--accent-strong); }
+.research-task-list-section { margin: 26px 0 20px; }
+.research-task-list-section .quick-start-heading { margin-top: 0; }
+.research-task-list { display: grid; gap: 8px; }
+.research-task-card { display: flex; align-items: center; gap: 12px; width: 100%; min-width: 0; padding: 12px 14px; border: 1px solid var(--line-default); border-radius: 13px; background: var(--surface-raised); }
+.research-task-card:hover { border-color: var(--accent-border); background: var(--accent-soft); }
+.research-task-card-open { display: flex; align-items: center; flex: 1; gap: 14px; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; }
+.research-task-card-main { display: grid; flex: 1; gap: 4px; min-width: 0; }
+.research-task-card-title { overflow: hidden; color: var(--ink-primary); font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.research-task-card-meta, .research-task-card-next, .research-task-card-updated { color: var(--ink-muted); font-size: 10px; line-height: 1.5; }
+.research-task-card-next { overflow: hidden; color: var(--ink-secondary); text-overflow: ellipsis; white-space: nowrap; }
+.research-task-card-updated { flex: 0 0 auto; color: var(--ink-light); }
+.research-task-card-open > svg { flex: 0 0 auto; color: var(--ink-light); }
+.research-task-card:hover .research-task-card-open > svg { color: var(--accent-strong); }
+.research-task-codex-button { flex: 0 0 auto; padding: 7px 9px; border: 1px solid var(--line-default); border-radius: 8px; background: var(--surface-raised); color: var(--accent-strong); font-size: 10px; }
+.research-task-codex-button:hover { border-color: var(--accent-border); background: var(--surface-base); }
 .resume-row { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 24px; padding: 13px 14px; border: 1px solid var(--line-subtle); border-radius: 12px; background: transparent; color: var(--ink-muted); text-align: left; }
 .resume-row:hover { border-color: var(--line-default); background: var(--surface-raised); }
 .resume-label { color: var(--ink-secondary); font-size: 12px; font-weight: 600; white-space: nowrap; }
@@ -808,6 +823,38 @@ button:focus-visible, textarea:focus-visible {
 .workspace-sidepanels { display: grid; gap: 14px; }
 .workspace-panel,
 .vault-connection { min-width: 0; padding: 19px; border: 1px solid var(--line-default); border-radius: 16px; background: var(--surface-raised); box-shadow: var(--shadow-sm); }
+.research-task-details { margin: 0 0 18px; padding: 16px 18px; border: 1px solid var(--line-default); border-radius: 15px; background: var(--surface-raised); box-shadow: var(--shadow-sm); }
+.research-task-details-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.research-task-details-heading h2 { margin: 0; color: var(--ink-primary); font-size: 14px; font-weight: 650; }
+.research-task-id { padding: 5px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); font-size: 9px; white-space: nowrap; }
+.research-task-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.research-task-fields label { display: grid; gap: 5px; min-width: 0; color: var(--ink-secondary); font-size: 10px; font-weight: 600; }
+.research-task-title-field, .research-task-objective-field, .research-task-next-field, .research-task-questions-field { grid-column: 1 / -1; }
+.research-task-fields input, .research-task-fields select, .research-task-fields textarea { width: 100%; min-height: 36px; border: 1px solid var(--line-default); border-radius: 8px; padding: 8px 10px; background: var(--surface-base); color: var(--ink-primary); font: inherit; font-size: 11px; }
+.research-task-fields textarea { resize: vertical; line-height: 1.6; }
+.research-task-fields input:focus-visible, .research-task-fields select:focus-visible, .research-task-fields textarea:focus-visible { outline: 2px solid var(--accent-border); outline-offset: 1px; }
+.research-task-stage-help { margin: 9px 0 0; color: var(--ink-light); font-size: 9px; line-height: 1.55; }
+.task-records { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-subtle); }
+.task-records-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.task-records-heading h3 { margin: 0; color: var(--ink-primary); font-size: 12px; }
+.task-records-heading p, .task-records-empty, .task-snapshot-actions p { margin: 6px 0 0; color: var(--ink-muted); font-size: 10px; line-height: 1.65; }
+.task-records-heading button { flex: 0 0 auto; }
+.task-record-editor { margin-top: 10px; border: 1px solid var(--line-default); border-radius: 10px; padding: 10px 12px; background: var(--surface-base); }
+.task-record-editor summary { cursor: pointer; color: var(--ink-secondary); font-size: 11px; overflow-wrap: anywhere; }
+.task-record-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
+.task-record-fields label { display: grid; gap: 5px; min-width: 0; color: var(--ink-secondary); font-size: 10px; }
+.task-record-fields input, .task-record-fields select, .task-record-fields textarea { width: 100%; min-height: 36px; padding: 8px 10px; border: 1px solid var(--line-default); border-radius: 8px; background: var(--surface-raised); color: var(--ink-primary); font: inherit; font-size: 11px; }
+.task-record-fields textarea { resize: vertical; line-height: 1.6; }
+.task-record-fields input:focus-visible, .task-record-fields select:focus-visible, .task-record-fields textarea:focus-visible { outline: 2px solid var(--accent-border); outline-offset: 1px; }
+.task-record-wide { grid-column: 1 / -1; }
+.task-record-remove { margin-top: 10px; font-size: 10px; }
+.task-snapshot-actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 14px; }
+.task-snapshot-actions p { max-width: 440px; margin: 0; }
+.task-snapshot-actions button { flex: 0 0 auto; }
+.task-archive-history { margin-top: 10px; color: var(--ink-muted); font-size: 10px; }
+.task-archive-history summary { cursor: pointer; }
+.task-archive-history ul { display: grid; gap: 8px; padding-left: 18px; }
+.task-archive-history li span, .task-archive-history li code { display: block; overflow-wrap: anywhere; line-height: 1.7; }
 .workspace-panel-heading,
 .vault-connection-header { justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .panel-kicker { display: block; margin-bottom: 4px; color: var(--ink-light); font-size: 9px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
@@ -838,6 +885,7 @@ button:focus-visible, textarea:focus-visible {
 .file-add-button:hover { color: var(--accent-strong); border-color: var(--accent-border); }
 .workflow-file-list { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
 .workflow-file-list li { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 8px 10px; border-radius: 9px; background: var(--surface-base); color: var(--ink-secondary); font-size: 11px; }
+.workflow-file-note { margin: 8px 0 0; color: var(--ink-light); font-size: 9px; line-height: 1.55; }
 .workflow-file-list li span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .workflow-file-list button { display: inline-flex; padding: 4px; border: 0; border-radius: 6px; background: transparent; color: var(--ink-light); }
 .workflow-file-list button:hover { background: var(--surface-hover); color: var(--ink-primary); }
@@ -1071,6 +1119,9 @@ button:focus-visible, textarea:focus-visible {
 }
 
 @media (max-width: 640px) {
+  .task-record-fields { grid-template-columns: 1fr; }
+  .task-snapshot-actions { align-items: flex-start; flex-direction: column; }
+  .task-snapshot-actions button { width: 100%; justify-content: center; }
   .titlebar { min-height: 58px; padding: 9px 14px; }
   .titlebar-actions { gap: 10px; }
   .titlebar-link { font-size: 0; }
@@ -1088,6 +1139,12 @@ button:focus-visible, textarea:focus-visible {
   .main-content { order: 1; padding: 24px 16px 32px; }
   .workflow-entry-grid { grid-template-columns: 1fr; }
   .quick-start-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .research-task-card { align-items: flex-start; gap: 8px; }
+  .research-task-card-open { align-items: flex-start; gap: 8px; }
+  .research-task-card-updated { display: none; }
+  .research-task-codex-button { align-self: center; }
+  .research-task-fields { grid-template-columns: 1fr; }
+  .research-task-title-field, .research-task-objective-field, .research-task-next-field, .research-task-questions-field { grid-column: auto; }
   .resume-row { flex-wrap: wrap; }
   .resume-summary { flex-basis: calc(100% - 45px); }
   .resume-divider { display: none; }

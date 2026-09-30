@@ -1,6 +1,9 @@
 const LOCAL_API = '/__danta';
 
 async function requestLocal(path, init = {}) {
+  if (init.body && new TextEncoder().encode(init.body).length > 96 * 1024) {
+    throw new Error('内容超过本机服务单次保存范围，请拆分后再提交。原内容仍保留在本机草稿中。');
+  }
   const response = await fetch(`${LOCAL_API}${path}`, {
     ...init,
     headers: {
@@ -54,4 +57,8 @@ export function getCodexStatus() {
 
 export function createCodexThread(payload) {
   return requestLocal('/codex/new-thread', { method: 'POST', body: JSON.stringify(payload) });
+}
+
+export function openCodexThread(threadId) {
+  return requestLocal('/codex/open-thread', { method: 'POST', body: JSON.stringify({ threadId }) });
 }

@@ -1,8 +1,14 @@
 import { memo, useRef } from 'react';
 import { ArrowClockwise, ArrowRight, FolderOpen } from '@phosphor-icons/react';
-import { PROMPT_STARTERS, getStartActionLabel } from '../../../shared/constants/workflows.js';
+import { MECHANISM_WORKFLOW, PROMPT_STARTERS, getStartActionLabel } from '../../../shared/constants/workflows.js';
+import { getResearchStage, getResearchTaskStatus } from '../../../shared/constants/researchTasks.js';
 
-export const HomePage = memo(({ thought, setThought, taskFocus, recovery, vaultConnected = false, vaultName = '', onBegin, onOpenWorkflow, onOpenVault, onResume, onRestoreKickoff }) => {
+function taskUpdatedLabel(timestamp) {
+  if (!timestamp) return '本机保存';
+  return new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(timestamp));
+}
+
+export const HomePage = memo(({ thought, setThought, taskFocus, recovery, researchTasks = [], vaultConnected = false, vaultName = '', onBegin, onOpenWorkflow, onResume, onResumeTask, onOpenCodexThread, onOpenVault, onRestoreKickoff }) => {
   const textareaRef = useRef(null);
 
   return (
@@ -14,6 +20,38 @@ export const HomePage = memo(({ thought, setThought, taskFocus, recovery, vaultC
       {recovery && <section className="resume-card" aria-labelledby="resume-card-title">
         <div className="resume-card-copy"><span className="panel-kicker">本机自动保存 · {recovery.timeLabel}</span><h2 id="resume-card-title">{recovery.title}</h2><p>{recovery.kind === 'kickoff' ? '启动语已保留。恢复后可继续复制，或创建并打开 Codex 新对话。' : '上次填写已保存在本机浏览器，离开页面或刷新后仍可继续。'}</p></div>
         <button className="secondary-button" type="button" onClick={recovery.kind === 'kickoff' ? onRestoreKickoff : onResume}><ArrowClockwise size={16} aria-hidden="true" />{recovery.kind === 'kickoff' ? '恢复启动语' : '继续上次工作'}</button>
+      </section>}
+
+      {researchTasks.length > 0 && <section className="research-task-list-section" aria-labelledby="research-task-list-title">
+        <div className="quick-start-heading">
+          <h2 id="research-task-list-title">继续研究任务</h2>
+          <p>任务卡保存在本机，可随时恢复到上次阶段。</p>
+        </div>
+        <div className="research-task-list">
+          {researchTasks.map(task => {
+            const stage = getResearchStage(task.stageId);
+            const status = getResearchTaskStatus(task.statusId);
+            const workflow = task.workflowId === MECHANISM_WORKFLOW.id ? MECHANISM_WORKFLOW : PROMPT_STARTERS.find(item => item.id === task.workflowId);
+            const workflowLabel = workflow?.label || task.focus || '研究任务';
+            const parentTask = researchTasks.find(item => item.id === task.parentTaskId);
+            return <article className="research-task-card" key={task.id}>
+              <button className="research-task-card-open" type="button" onClick={() => onResumeTask?.(task)}>
+                <span className="research-task-card-main">
+                  <span className="research-task-card-title">{task.title || workflowLabel}</span>
+                  <span className="research-task-card-meta">{workflowLabel} · {stage.label} · {status.label}</span>
+                  {task.nextStep && <span className="research-task-card-next">下一步：{task.nextStep}</span>}
+                  {task.records?.length > 0 && <span className="research-task-card-next">成果与来源：{task.records.length} 条{task.archiveLinks?.length > 0 ? ` · 已保存 ${task.archiveLinks.length} 份阶段记录` : ''}</span>}
+                  {!task.records?.length && task.archiveLinks?.length > 0 && <span className="research-task-card-next">已保存 {task.archiveLinks.length} 份 Obsidian 阶段记录</span>}
+                  {parentTask && <span className="research-task-card-next">关联任务：{parentTask.title || parentTask.focus}</span>}
+                  {task.linkedCodexThreadId && <span className="research-task-card-next">已关联 Codex 新对话（工作台不读取对话内容）</span>}
+                </span>
+                <span className="research-task-card-updated">{taskUpdatedLabel(task.updatedAt)}</span>
+                <ArrowRight size={17} aria-hidden="true" />
+              </button>
+              {task.linkedCodexThreadId && <button className="research-task-codex-button" type="button" aria-label={`在 Codex 中打开「${task.title || workflowLabel}」关联对话`} onClick={() => onOpenCodexThread?.(task)}>打开 Codex 对话</button>}
+            </article>;
+          })}
+        </div>
       </section>}
 
       <form className="thought-form" onSubmit={event => { event.preventDefault(); onBegin(thought, taskFocus); }}>
@@ -32,7 +70,7 @@ export const HomePage = memo(({ thought, setThought, taskFocus, recovery, vaultC
 
       <div className="quick-start-heading">
         <h2>或直接进入一项工作</h2>
-        <p>每项工作都有自己的讨论页；启动语可以继续修改。</p>
+        <p>选择类型会新建独立任务卡；创建后可在首页继续或恢复。</p>
       </div>
       <div className="workflow-entry-grid" aria-label="常用科研工作">
         {PROMPT_STARTERS.map((workflow, index) => (

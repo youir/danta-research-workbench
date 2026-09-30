@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import { ArrowLeft, ArrowRight, ArrowSquareOut, ShareNetwork } from '@phosphor-icons/react';
+import { ResearchTaskDetails } from '../../workflows/components/ResearchTaskDetails.jsx';
 
-export const MechanismWorkspace = memo(({ brief, setBrief, showProcess, setShowProcess, onBack, onBegin }) => (
+export const MechanismWorkspace = memo(({ task, onTaskChange, recordActions, brief, setBrief, showProcess, setShowProcess, onBack, onBegin }) => (
   <section className="mechanism-page" aria-labelledby="mechanism-title">
     <div className="workspace-topline">
       <button className="back-link" type="button" onClick={onBack}><ArrowLeft size={16} aria-hidden="true" />返回</button>
@@ -11,6 +12,8 @@ export const MechanismWorkspace = memo(({ brief, setBrief, showProcess, setShowP
       <div><div className="home-eyebrow">网页任务整理区</div><h1 id="mechanism-title">把生物学逻辑变成可核对的图</h1><p>先核实节点关系与证据，再确认逻辑草图和绘图方式。</p></div>
       <button className="secondary-button" type="button" aria-expanded={showProcess} aria-controls="mechanism-process" onClick={() => setShowProcess(value => !value)}>{showProcess ? '收起制作过程' : '查看制作过程'} <ArrowRight size={16} aria-hidden="true" /></button>
     </div>
+
+    <ResearchTaskDetails task={task} onChange={onTaskChange} recordActions={recordActions} />
 
     {showProcess && (
       <section id="mechanism-process" className="process-panel" aria-label="机制图制作过程">

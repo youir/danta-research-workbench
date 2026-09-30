@@ -13,15 +13,17 @@ import { KickoffModal } from './shared/components/KickoffModal.jsx';
 import { Notice } from './shared/components/Notice.jsx';
 import { useNotice } from './shared/hooks/useNotice.js';
 import { usePersistentState } from './shared/hooks/usePersistentState.js';
-import { PROMPT_STARTERS } from './shared/constants/workflows.js';
+import { MECHANISM_WORKFLOW, PROMPT_STARTERS } from './shared/constants/workflows.js';
+import { useResearchTasks } from './features/research-tasks/hooks/useResearchTasks.js';
+import { buildTaskArchiveDraft, makeRelatedTaskContext } from './shared/utils/taskRecords.js';
 import { makeKickoffPrompt } from './shared/utils/promptBuilder.js';
-import { authorizeVaultScopes, chooseVault, createCodexThread, disconnectVault, getVaultStatus, inspectVaultStructure, repairVaultStructure } from './shared/utils/localApi.js';
+import { authorizeVaultScopes, chooseVault, createCodexThread, createVaultArchive, disconnectVault, getVaultStatus, inspectVaultStructure, openCodexThread, repairVaultStructure } from './shared/utils/localApi.js';
 
 import quickstartImage from '../../../docs/assets/quickstart.png';
 import frameworkImage from '../../../docs/assets/workbench-map.png';
 
 const INITIAL_DRAFTS = Object.fromEntries(PROMPT_STARTERS.map(workflow => [workflow.id, workflow.seed]));
-const MECHANISM_SEED = '研究主题 / 核心发现：……\n已有证据或参考文献：……\n使用场景：PPT 汇报 / 论文插图';
+const MECHANISM_SEED = MECHANISM_WORKFLOW.seed;
 const PPT_PROMPT_CHOICES = { format: '', purpose: '', audience: '', duration: '' };
 
 function hasUsefulText(value, seed = '') {
@@ -40,13 +42,13 @@ export function App() {
   const [activePage, setActivePage] = useState('start');
   const [pageHistory, setPageHistory] = useState([]);
   const [homeThought, setHomeThought] = usePersistentState('homeThought', '');
-  const [drafts, setDrafts] = usePersistentState('workflowDrafts', INITIAL_DRAFTS);
+  const [drafts] = usePersistentState('workflowDrafts', INITIAL_DRAFTS);
   const [taskFocus, setTaskFocus] = usePersistentState('taskFocus', '自由讨论');
   const [mechanismBrief, setMechanismBrief] = usePersistentState('mechanismBrief', MECHANISM_SEED);
-  const [selectedPptTemplate, setSelectedPptTemplate] = usePersistentState('selectedPptTemplate', null);
-  const [selectedPptLogo, setSelectedPptLogo] = usePersistentState('selectedPptLogo', null);
-  const [pptPromptChoices, setPptPromptChoices] = usePersistentState('pptPromptChoices', PPT_PROMPT_CHOICES);
-  const [filesByWorkflow, setFilesByWorkflow] = usePersistentState('filesByWorkflow', {});
+  const [selectedPptTemplate] = usePersistentState('selectedPptTemplate', null);
+  const [selectedPptLogo] = usePersistentState('selectedPptLogo', null);
+  const [pptPromptChoices] = usePersistentState('pptPromptChoices', PPT_PROMPT_CHOICES);
+  const [filesByWorkflow] = usePersistentState('filesByWorkflow', {});
   const [pendingKickoff, setPendingKickoff] = usePersistentState('pendingKickoff', null);
   const [lastCheckpoint, setLastCheckpoint] = usePersistentState('lastCheckpoint', null);
   const [showMechanismProcess, setShowMechanismProcess] = useState(false);
@@ -55,10 +57,30 @@ export function App() {
   const [vaultStatus, setVaultStatus] = useState({ selected: false, connected: false, name: '', scopes: [], scopeOptions: [] });
   const [vaultBusy, setVaultBusy] = useState(false);
   const [vaultStructure, setVaultStructure] = useState(null);
+  const [archivingTaskId, setArchivingTaskId] = useState('');
+  const archiveLockRef = useRef(false);
 
   const [notice, showNotice, hideNotice] = useNotice();
   const dialogRef = useRef(null);
   const copyButtonRef = useRef(null);
+
+  const {
+    tasks: researchTasks,
+    recentTasks: recentResearchTasks,
+    activeTask: activeResearchTask,
+    activeTaskId,
+    setActiveTaskId,
+    createTask,
+    updateTask,
+    patchTask,
+    addTaskFiles,
+    removeTaskFile,
+    linkCodexThread,
+    addTaskRecord,
+    updateTaskRecord,
+    removeTaskRecord,
+    recordTaskArchive,
+  } = useResearchTasks({ drafts, filesByWorkflow, selectedPptTemplate, selectedPptLogo, pptPromptChoices, mechanismBrief, lastCheckpoint });
 
   useEffect(() => {
     let active = true;
@@ -72,40 +94,84 @@ export function App() {
   const workflow = useMemo(() => PROMPT_STARTERS.find(item => item.id === activePage), [activePage]);
   const activeNav = ['start', 'records', 'mechanism', 'literature', 'daily-briefs', 'archive', 'vault'].includes(activePage) ? activePage : 'start';
   const kickoffPrompt = pendingKickoff?.prompt || '';
-
+  const taskRecordActions = {
+    add: () => addTaskRecord(activeTaskId),
+    update: (recordId, field, value) => updateTaskRecord(activeTaskId, recordId, field, value),
+    remove: recordId => removeTaskRecord(activeTaskId, recordId),
+    archive: archiveActiveTask,
+    openVault: () => navigate('vault'),
+    canArchive: vaultStatus.scopes.includes('archive-write'),
+    busy: Boolean(archivingTaskId),
+  };
   const recovery = useMemo(() => {
     const candidates = [];
     if (pendingKickoff?.prompt) {
       candidates.push({ kind: 'kickoff', title: `${pendingKickoff.focus || '研究讨论'} · 未完成启动语`, updatedAt: pendingKickoff.updatedAt || pendingKickoff.handoffAt || 0 });
     }
     if (hasUsefulText(homeThought)) candidates.push({ page: 'start', title: '自由讨论 · 未完成填写', updatedAt: lastCheckpoint?.page === 'start' ? lastCheckpoint.updatedAt : 0 });
-    for (const [id, value] of Object.entries(drafts)) {
-      const item = PROMPT_STARTERS.find(candidate => candidate.id === id);
-      if (item && hasUsefulText(value, item.seed)) candidates.push({ page: id, title: `${item.label} · 未完成填写`, updatedAt: lastCheckpoint?.page === id ? lastCheckpoint.updatedAt : 0 });
-    }
-    if (hasUsefulText(mechanismBrief, MECHANISM_SEED)) candidates.push({ page: 'mechanism', title: '机制图 · 未完成填写', updatedAt: lastCheckpoint?.page === 'mechanism' ? lastCheckpoint.updatedAt : 0 });
     const latest = candidates.sort((a, b) => b.updatedAt - a.updatedAt)[0];
     return latest ? { ...latest, kind: latest.kind || 'draft', timeLabel: savedTimeLabel(latest.updatedAt) } : null;
-  }, [pendingKickoff, homeThought, drafts, mechanismBrief, lastCheckpoint]);
+  }, [pendingKickoff, homeThought, lastCheckpoint]);
 
   function markCheckpoint(page, label) {
     setLastCheckpoint({ page, label, updatedAt: Date.now() });
   }
 
-  function navigate(page) {
-    setPageHistory(current => page === activePage ? current : [...current.slice(-29), activePage]);
+  function navigate(page, targetTaskId = activeTaskId) {
+    setPageHistory(current => page === activePage && targetTaskId === activeTaskId ? current : [...current.slice(-29), { page: activePage, taskId: activeTaskId }]);
+    setActiveTaskId(targetTaskId || '');
     setActivePage(page);
   }
 
   function goBack() {
-    if (!pageHistory.length) { setActivePage('start'); return; }
-    setActivePage(pageHistory[pageHistory.length - 1]);
+    if (!pageHistory.length) { setActivePage('start'); setActiveTaskId(''); return; }
+    const previous = pageHistory[pageHistory.length - 1];
+    setActivePage(typeof previous === 'string' ? previous : previous.page);
+    setActiveTaskId(typeof previous === 'string' ? '' : previous.taskId || '');
     setPageHistory(current => current.slice(0, -1));
   }
 
   function openWorkflow(item) {
+    const task = createTask(item);
     setTaskFocus(item.focus);
-    navigate(item.id);
+    navigate(item.id, task.id);
+  }
+
+  function resumeResearchTask(task) {
+    const item = task.workflowId === MECHANISM_WORKFLOW.id ? MECHANISM_WORKFLOW : PROMPT_STARTERS.find(candidate => candidate.id === task.workflowId);
+    if (!item) return;
+    setTaskFocus(task.focus || item.focus);
+    navigate(item.id, task.id);
+  }
+
+  function updateActiveTask(field, value) {
+    updateTask(activeTaskId, field, value);
+  }
+
+  function patchActiveTask(patch) {
+    patchTask(activeTaskId, patch);
+  }
+
+  async function archiveActiveTask() {
+    if (!activeResearchTask || archiveLockRef.current) return;
+    if (!vaultStatus.scopes.includes('archive-write')) {
+      navigate('vault');
+      return;
+    }
+    const snapshot = activeResearchTask;
+    const vaultName = vaultStatus.name;
+    archiveLockRef.current = true;
+    setArchivingTaskId(snapshot.id);
+    try {
+      const result = await createVaultArchive(buildTaskArchiveDraft(snapshot));
+      recordTaskArchive(snapshot.id, { ...result, vaultName, savedAt: Date.now(), snapshotUpdatedAt: snapshot.updatedAt });
+      showNotice(`已保存阶段记录到 ${vaultName}：${result.path}`, 'success');
+    } catch (error) {
+      showNotice(error?.message || '阶段记录保存失败，本机任务仍然保留。', 'error');
+    } finally {
+      archiveLockRef.current = false;
+      setArchivingTaskId('');
+    }
   }
 
   function beginDiscussion(text, focus, template = null, logo = null) {
@@ -114,8 +180,9 @@ export function App() {
       return;
     }
     setTaskFocus(focus);
-    const prompt = makeKickoffPrompt(text, focus, template, logo);
-    setPendingKickoff({ prompt, focus, page: activePage, updatedAt: Date.now(), handoffThreadId: '' });
+    const task = activeResearchTask?.workflowId === activePage ? activeResearchTask : null;
+    const prompt = makeKickoffPrompt(text, focus, template, logo, task);
+    setPendingKickoff({ prompt, focus, page: activePage, taskId: task?.id || '', taskTitle: task?.title || '', updatedAt: Date.now(), handoffThreadId: '' });
     markCheckpoint(activePage, focus);
     setCopied(false);
     setModalOpen(true);
@@ -134,23 +201,48 @@ export function App() {
   async function createCodexHandoff(projectId) {
     let browserCopied = false;
     try { await navigator.clipboard.writeText(kickoffPrompt); browserCopied = true; } catch { /* The local bridge also tries the system clipboard. */ }
-    const result = await createCodexThread({ projectId, prompt: kickoffPrompt, workflowLabel: taskFocus });
+    const result = await createCodexThread({ projectId, prompt: kickoffPrompt, workflowLabel: pendingKickoff?.taskTitle || taskFocus });
     setCopied(browserCopied || result.copied);
     setPendingKickoff(current => current ? { ...current, handoffThreadId: result.threadId, handoffAt: Date.now() } : current);
+    if (pendingKickoff?.taskId) {
+      linkCodexThread(pendingKickoff.taskId, result.threadId);
+    }
     showNotice(result.opened ? '已创建并打开 Codex 新对话，启动语已复制。' : '新对话已创建，启动语已复制；可在 Codex 最近记录中打开。', 'success');
     return result;
+  }
+
+  async function reopenCodexThread(task) {
+    if (!task?.linkedCodexThreadId) return;
+    try {
+      await openCodexThread(task.linkedCodexThreadId);
+      showNotice('已打开这项任务关联的 Codex 对话。', 'success');
+    } catch (error) {
+      showNotice(error?.message || '无法打开关联的 Codex 对话，请在 Codex 最近记录中查找。', 'error');
+    }
   }
 
   function openMechanism(from = activePage) {
     setShowMechanismProcess(false);
     markCheckpoint(from, taskFocus);
-    navigate('mechanism');
+    const parent = from === 'ppt' && activeResearchTask?.workflowId === 'ppt' ? activeResearchTask : null;
+    const task = createTask(MECHANISM_WORKFLOW, parent ? makeRelatedTaskContext(parent, MECHANISM_WORKFLOW) : {});
+    setTaskFocus(MECHANISM_WORKFLOW.focus);
+    navigate('mechanism', task.id);
   }
 
-  function addFiles(workflowId, event) {
+  function navigateFromSidebar(page) {
+    if (page === 'mechanism') {
+      if (activePage === 'mechanism') return;
+      openMechanism('');
+      return;
+    }
+    navigate(page);
+  }
+
+  function addFiles(event) {
     const names = [...(event.target.files || [])].map(file => file.name);
-    if (names.length) {
-      setFilesByWorkflow(current => ({ ...current, [workflowId]: [...new Set([...(current[workflowId] || []), ...names])] }));
+    if (names.length && activeTaskId) {
+      addTaskFiles(activeTaskId, names);
       showNotice('已暂存所选文件名；当前页面不会读取这些文件的内容。', 'info');
     }
     event.target.value = '';
@@ -222,6 +314,7 @@ export function App() {
     if (!recovery) return;
     if (recovery.kind === 'kickoff') {
       setTaskFocus(pendingKickoff.focus || '自由讨论');
+      if (pendingKickoff.taskId) setActiveTaskId(pendingKickoff.taskId);
       setCopied(false);
       setModalOpen(true);
       return;
@@ -231,14 +324,9 @@ export function App() {
 
   function restoreKickoff() {
     setTaskFocus(pendingKickoff?.focus || '自由讨论');
+    if (pendingKickoff?.taskId) setActiveTaskId(pendingKickoff.taskId);
     setCopied(false);
     setModalOpen(true);
-  }
-
-  function updateWorkflowDraft(id, value) {
-    setDrafts(current => ({ ...current, [id]: value }));
-    const item = PROMPT_STARTERS.find(candidate => candidate.id === id);
-    markCheckpoint(id, item?.label || id);
   }
 
   function renderContent() {
@@ -246,39 +334,49 @@ export function App() {
       return <HomePage
         thought={homeThought}
         setThought={value => { setHomeThought(value); markCheckpoint('start', '自由讨论'); }}
-        taskFocus={taskFocus}
+        taskFocus="自由讨论"
         recovery={recovery}
+        researchTasks={recentResearchTasks}
         vaultConnected={vaultStatus.connected}
         vaultName={vaultStatus.name}
         onBegin={beginDiscussion}
         onOpenWorkflow={openWorkflow}
+        onResumeTask={resumeResearchTask}
+        onOpenCodexThread={reopenCodexThread}
         onOpenVault={() => navigate('vault')}
         onResume={resumeWork}
         onRestoreKickoff={restoreKickoff}
       />;
     }
     if (workflow) {
+      const task = activeResearchTask?.workflowId === workflow.id ? activeResearchTask : null;
       return <WorkflowWorkspace
         workflow={workflow}
-        thought={drafts[workflow.id] || ''}
-        setThought={value => updateWorkflowDraft(workflow.id, value)}
-        files={filesByWorkflow[workflow.id] || []}
-        selectedPptTemplate={workflow.id === 'ppt' ? selectedPptTemplate : null}
-        selectedPptLogo={workflow.id === 'ppt' ? selectedPptLogo : null}
-        pptPromptChoices={pptPromptChoices}
-        onPptPromptChoicesChange={value => { setPptPromptChoices(value); markCheckpoint('ppt', '组会 PPT 汇报'); }}
-        onSelectPptTemplate={value => { setSelectedPptTemplate(value); markCheckpoint('ppt', '组会 PPT 汇报'); }}
-        onSelectPptLogo={value => { setSelectedPptLogo(value); markCheckpoint('ppt', '组会 PPT 汇报'); }}
+        task={task}
+        onTaskChange={updateActiveTask}
+        recordActions={taskRecordActions}
+        thought={task?.content ?? workflow.seed}
+        setThought={value => updateActiveTask('content', value)}
+        files={task?.files || []}
+        selectedPptTemplate={workflow.id === 'ppt' ? task?.selectedPptTemplate || null : null}
+        selectedPptLogo={workflow.id === 'ppt' ? task?.selectedPptLogo || null : null}
+        pptPromptChoices={task?.pptPromptChoices || PPT_PROMPT_CHOICES}
+        onPptPromptChoicesChange={value => patchActiveTask({ pptPromptChoices: typeof value === 'function' ? value(task?.pptPromptChoices || PPT_PROMPT_CHOICES) : value })}
+        onSelectPptTemplate={value => patchActiveTask({ selectedPptTemplate: value })}
+        onSelectPptLogo={value => patchActiveTask({ selectedPptLogo: value })}
+        meetingMode={task?.meetingMode || 'prepare'}
+        onMeetingModeChange={value => updateActiveTask('meetingMode', value)}
         onBack={goBack}
         onBegin={beginDiscussion}
-        onFilesAdded={event => addFiles(workflow.id, event)}
-        onRemoveFile={name => setFilesByWorkflow(current => ({ ...current, [workflow.id]: (current[workflow.id] || []).filter(file => file !== name) }))}
+        onFilesAdded={addFiles}
+        onRemoveFile={name => removeTaskFile(activeTaskId, name)}
         onOpenMechanism={() => openMechanism('ppt')}
         onViewDailyBriefs={() => navigate('daily-briefs')}
       />;
     }
     if (activePage === 'mechanism') {
-      return <MechanismWorkspace brief={mechanismBrief} setBrief={value => { setMechanismBrief(value); markCheckpoint('mechanism', '机制图'); }} showProcess={showMechanismProcess} setShowProcess={setShowMechanismProcess} onBack={goBack} onBegin={beginDiscussion} />;
+      const task = activeResearchTask?.workflowId === 'mechanism' ? activeResearchTask : null;
+      return <MechanismWorkspace task={task} onTaskChange={updateActiveTask} recordActions={taskRecordActions} brief={task?.content ?? mechanismBrief} setBrief={value => task ? updateActiveTask('content', value) : setMechanismBrief(value)} showProcess={showMechanismProcess} setShowProcess={setShowMechanismProcess} onBack={goBack} onBegin={beginDiscussion} />;
     }
     if (activePage === 'records') return <ResearchRecordsPage canRead={vaultStatus.scopes.includes('records')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
     if (activePage === 'literature') return <LiteraturePage canReadRss={vaultStatus.scopes.includes('rss')} canReadLiterature={vaultStatus.scopes.includes('literature')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
@@ -291,10 +389,10 @@ export function App() {
     <div className="app-frame">
       <Titlebar guideUrl={quickstartImage} frameworkUrl={frameworkImage} />
       <div className="app-body">
-        <Sidebar activePage={activeNav} vaultName={vaultStatus.name} vaultConnected={vaultStatus.connected} onNavigate={navigate} />
+        <Sidebar activePage={activeNav} vaultName={vaultStatus.name} vaultConnected={vaultStatus.connected} onNavigate={navigateFromSidebar} />
         <main className="main-content">{renderContent()}</main>
       </div>
-      <KickoffModal isOpen={modalOpen} kickoffPrompt={kickoffPrompt} copied={copied} onCopy={copyKickoff} onCreateThread={createCodexHandoff} workflowLabel={taskFocus} onClose={() => setModalOpen(false)} copyButtonRef={copyButtonRef} dialogRef={dialogRef} />
+      <KickoffModal isOpen={modalOpen} kickoffPrompt={kickoffPrompt} copied={copied} onCopy={copyKickoff} onCreateThread={createCodexHandoff} workflowLabel={pendingKickoff?.taskTitle || taskFocus} onClose={() => setModalOpen(false)} copyButtonRef={copyButtonRef} dialogRef={dialogRef} />
       <Notice message={notice.message} type={notice.type} onClose={hideNotice} />
     </div>
   );

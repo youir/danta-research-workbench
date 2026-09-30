@@ -1,17 +1,17 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useRef } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle, DownloadSimple, FilePlus, ShareNetwork, Newspaper, X } from '@phosphor-icons/react';
 import { PPT_TEMPLATES } from '../../../shared/constants/pptTemplates.js';
 import { PptLogoSelector } from './PptLogoSelector.jsx';
+import { ResearchTaskDetails } from './ResearchTaskDetails.jsx';
 
 const MEETING_REVIEW_SEED = '我想复盘一次组会：……请根据实际讨论记录整理导师/同门反馈、已决定事项、尚未决定的问题和行动项，不要补写没有发生的内容。';
 const PPT_GUIDE_MARKER = '【汇报信息填空框架】';
 
-export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = [], selectedPptTemplate = null, selectedPptLogo = null, pptPromptChoices = {}, onPptPromptChoicesChange, onSelectPptTemplate, onSelectPptLogo, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism, onViewDailyBriefs }) => {
+export const WorkflowWorkspace = memo(({ workflow, task, onTaskChange, recordActions, thought, setThought, files = [], selectedPptTemplate = null, selectedPptLogo = null, pptPromptChoices = {}, onPptPromptChoicesChange, onSelectPptTemplate, onSelectPptLogo, meetingMode = 'prepare', onMeetingModeChange, onBack, onBegin, onFilesAdded, onRemoveFile, onOpenMechanism, onViewDailyBriefs }) => {
   const fileInputRef = useRef(null);
-  const [meetingMode, setMeetingMode] = useState('prepare');
 
   function changeMeetingMode(mode) {
-    setMeetingMode(mode);
+    onMeetingModeChange?.(mode);
     if (mode === 'review' && thought === workflow.seed) setThought(MEETING_REVIEW_SEED);
     if (mode === 'prepare' && thought === MEETING_REVIEW_SEED) setThought(workflow.seed);
   }
@@ -37,17 +37,17 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
   const sidePanels = (
     <div className="workspace-sidepanels">
       <section className="workspace-panel" aria-labelledby="conversation-title">
-        <div className="workspace-panel-heading"><div><span className="panel-kicker">下一步</span><h2 id="conversation-title">带着启动语进入 Codex</h2></div><span className="connection-pill">手动接续</span></div>
-        <div className="workspace-empty"><p>检查并复制启动语，再在目标项目的新对话中粘贴。</p><span>网页任务区与 Codex 项目暂未连接；此处不会创建或同步对话。</span></div>
+        <div className="workspace-panel-heading"><div><span className="panel-kicker">下一步</span><h2 id="conversation-title">带着启动语进入 Codex</h2></div><span className="connection-pill">本人提交</span></div>
+        <div className="workspace-empty"><p>整理好任务后，可创建并打开目标工作区的新对话。</p><span>任务卡信息会放入启动语；打开后仍需你检查、粘贴并提交。工作台不读取 Codex 历史对话。</span></div>
       </section>
 
       <section className="workspace-panel" aria-labelledby="files-title">
         <div className="workspace-panel-heading"><div><span className="panel-kicker">本次任务</span><h2 id="files-title">工作文件</h2></div><button className="file-add-button" type="button" onClick={() => fileInputRef.current?.click()}><FilePlus size={16} aria-hidden="true" />添加</button></div>
         <input ref={fileInputRef} className="visually-hidden" type="file" multiple onChange={onFilesAdded} aria-label="选择本次工作文件" />
         {files.length ? (
-          <ul className="workflow-file-list">{files.map(name => <li key={name}><span title={name}>{name}</span><button type="button" aria-label={`移除 ${name}`} onClick={() => onRemoveFile(name)}><X size={15} aria-hidden="true" /></button></li>)}</ul>
+          <><ul className="workflow-file-list">{files.map(name => <li key={name}><span title={name}>{name}</span><button type="button" aria-label={`移除 ${name}`} onClick={() => onRemoveFile(name)}><X size={15} aria-hidden="true" /></button></li>)}</ul><p className="workflow-file-note">工作台不读取文件内容；启动语会带上文件名供你检查，只有手动提交后才会发送给 Codex。</p></>
         ) : (
-          <div className="workspace-empty"><p>尚未添加工作文件。</p><span>当前仅记录文件名，不读取或上传内容；关闭此标签页后清空。需要使用文件时，请在 Codex 对话中提供。</span></div>
+          <div className="workspace-empty"><p>尚未添加工作文件。</p><span>只记录文件名并保存在本机任务卡，不读取文件内容。启动语会带上文件名供你检查；只有你手动提交后才会发送给 Codex。</span></div>
         )}
       </section>
     </div>
@@ -65,6 +65,8 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
         <p>{workflow.workspaceDescription}</p>
         {workflow.id === 'briefing' && <button className="secondary-button daily-workflow-link" type="button" onClick={onViewDailyBriefs}><Newspaper size={16} aria-hidden="true" />查看定时任务已生成的日报</button>}
       </div>
+
+      <ResearchTaskDetails task={task} onChange={onTaskChange} recordActions={recordActions} />
 
       {workflow.id === 'ppt' && (
         <ol className="ppt-flow-guide" aria-label="科研 PPT 准备步骤">
@@ -123,7 +125,7 @@ export const WorkflowWorkspace = memo(({ workflow, thought, setThought, files = 
               <span>先写主题、听众、汇报目的与已有材料；接着选择模板和 Logo。</span>
             ) : (
               <>
-                <span>生成后由你检查启动语，再复制到 Codex；本页不会启动对话。</span>
+                <span>整理启动语后，可选择创建并打开 Codex 新对话；提交前由你检查内容。</span>
                 <button className="primary-button compact" type="button" onClick={() => onBegin(thought, workflow.focus)}>整理启动语 <ArrowRight size={16} aria-hidden="true" /></button>
               </>
             )}

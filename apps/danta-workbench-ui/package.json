@@ -1,6 +1,6 @@
 {
   "name": "danta-workbench-ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "面向龚博士的本机科研工作台桌面应用。",
   "author": "Danta Research Workbench",
   "private": true,
@@ -16,7 +16,8 @@
     "build:desktop": "node desktop/build.js",
     "dist:win": "npm run build:desktop && electron-builder --win nsis --x64",
     "preview": "vite preview --host 127.0.0.1",
-    "check": "npm run build"
+    "check": "npm run build",
+    "test:tasks": "node --test tests/taskContinuity.test.mjs"
   },
   "devDependencies": {
     "@phosphor-icons/react": "2.1.10",

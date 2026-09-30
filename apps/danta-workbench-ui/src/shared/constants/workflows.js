@@ -41,6 +41,14 @@ export const PROMPT_STARTERS = [
   },
 ];
 
+export const MECHANISM_WORKFLOW = {
+  id: 'mechanism',
+  label: '科研机制图',
+  detail: '整理病理与生物学关系、证据和绘图需求',
+  focus: '科研机制图',
+  seed: '研究主题 / 核心发现：……\n已有证据或参考文献：……\n使用场景：PPT 汇报 / 论文插图',
+};
+
 export const TASK_GUIDES = {
   '选题思路': '先梳理研究现象、证据缺口和可行条件，不替我决定题目；给出不同解释和可验证路径。',
   '论文写作': '按需调用 $danta-bio-paper-writing；依据稿件和已有证据协作，不补造结果、方法或引文。',

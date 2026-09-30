@@ -684,6 +684,7 @@ export function createLocalBridgeService({
 
     async createArchive({ title, body, category = '研究记录' }) {
       if (!vaultRoot || !scopes.has('archive-write')) throw new Error('请先为“新建归档”明确授权。');
+      if (typeof body !== 'string' || body.length > 60_000) throw new Error('归档正文须为文字且不超过 60000 字符，请拆分内容后再保存。');
       const safeTitle = safeText(title, 240).trim();
       const safeBody = safeText(body, 60_000).trim();
       if (!safeTitle || !safeBody) throw new Error('请填写归档标题和内容。');
@@ -727,6 +728,7 @@ export function createLocalBridgeService({
       if (!project || !path.isAbsolute(project.root)) throw new Error('所选工作区已不存在，请刷新工作区列表。');
       const rootStat = await fs.stat(project.root).catch(() => null);
       if (!rootStat?.isDirectory()) throw new Error('所选工作区文件夹当前不可用。');
+      if (typeof prompt !== 'string' || prompt.length > 50_000) throw new Error('启动语须为文字且不超过 50000 字符，请缩短或拆分任务内容。');
       const kickoff = safeText(prompt, 50_000).trim();
       if (!kickoff) throw new Error('启动语为空。');
       const label = safeText(workflowLabel || '研究讨论', 48).trim() || '研究讨论';
@@ -744,6 +746,12 @@ export function createLocalBridgeService({
       try { await copyText(kickoff); copied = true; } catch { /* Browser clipboard may already contain the prompt. */ }
       try { opened = await openThread(threadId); } catch { /* The new conversation can still be reached from Codex Recents. */ }
       return { threadId, title, workspaceName: project.name, rootLabel: project.rootLabel, copied, opened };
+    },
+
+    async openCodexThread({ threadId }) {
+      if (typeof threadId !== 'string' || !/^[a-zA-Z0-9-]{12,80}$/.test(threadId)) throw new Error('任务卡中的 Codex 对话编号无效。');
+      await openThread(threadId);
+      return { opened: true };
     },
   };
   return service;
@@ -769,6 +777,7 @@ export function createLocalBridgeRequestHandler(service) {
       if (requestUrl.pathname === `${API_PREFIX}vault/disconnect`) return json(res, 200, await service.disconnectVault());
       if (requestUrl.pathname === `${API_PREFIX}vault/archive`) return json(res, 201, await service.createArchive(body));
       if (requestUrl.pathname === `${API_PREFIX}codex/new-thread`) return json(res, 201, await service.createCodexThread(body));
+      if (requestUrl.pathname === `${API_PREFIX}codex/open-thread`) return json(res, 200, await service.openCodexThread(body));
       return json(res, 404, { error: '没有这个本机功能。' });
     } catch (error) {
       const status = Number(error?.statusCode) || 400;

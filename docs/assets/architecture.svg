@@ -18,7 +18,7 @@
   </defs>
   <rect width="1600" height="1280" fill="#F5F7FA"/><rect width="1600" height="138" fill="url(#header)"/>
   <text x="60" y="61" class="title">龚博士科研工作台｜完整架构</text>
-  <text x="60" y="101" class="subtitle">桌面图标打开工作台 → Codex 接续执行 → 核对结果 → Obsidian 持续留存</text>
+  <text x="60" y="101" class="subtitle">桌面图标打开工作台 → Codex 接续执行 → 成果与来源记录 → Obsidian 持续留存</text>
   <rect x="1190" y="38" width="350" height="46" rx="23" fill="#FFFFFF" stroke="#CCD9E5"/><circle cx="1216" cy="61" r="7" fill="#16827C"/>
   <text x="1233" y="67" class="small">数据留在本机 · 权限分层授权</text>
 
@@ -31,13 +31,13 @@
   <text x="84" y="239" class="small">使用者</text><text x="84" y="277" class="cardTitle">龚博士</text>
   <text x="84" y="312" class="body">选择任务与工作区</text><text x="84" y="342" class="body">确认内容与授权范围</text>
   <text x="84" y="372" class="small">科学判断由本人和导师决定</text>
-  <text x="365" y="239" class="small">独立窗口中的 React 工作台</text><text x="365" y="277" class="cardTitle">任务引导与可恢复草稿</text>
-  <text x="365" y="312" class="body">选题 · 论文 · PPT / 组会 · 科研日报 · 机制图</text>
-  <text x="365" y="342" class="body">按需填空、选择模板与标识，生成可编辑启动语</text>
-  <text x="365" y="372" class="small">本机保存草稿，退出重开后可恢复</text>
+  <text x="365" y="239" class="small">独立窗口中的 React 工作台</text><text x="365" y="277" class="cardTitle">任务卡与研究工作区</text>
+  <text x="365" y="312" class="body">选题 · 论文 · PPT / 组会 · 日报 · 机制图</text>
+  <text x="365" y="342" class="body">目标、阶段、下一步 · 成果、来源与版本</text>
+  <text x="365" y="372" class="small">多任务恢复；阶段记录可保存到 Obsidian</text>
   <text x="985" y="239" class="small">随桌面程序启动 · 127.0.0.1:48921</text><text x="985" y="277" class="cardTitle">本地桥接层（Local Bridge）</text>
   <text x="985" y="312" class="body">Obsidian：选择目录后逐项授权；范围只驻留服务内存</text>
-  <text x="985" y="342" class="body">Codex：读取工作区，创建并打开新对话</text>
+  <text x="985" y="342" class="body">Codex：创建新对话，或打开任务关联对话</text>
   <text x="985" y="372" class="small">归档另行授权，只能在指定目录新建文件</text>
   <path d="M292 297H330" fill="none" stroke="#6B7F96" stroke-width="3" marker-end="url(#arrow)"/>
   <path d="M912 297H950" fill="none" stroke="#16827C" stroke-width="3" marker-end="url(#arrowTeal)"/>
@@ -55,7 +55,7 @@
   <text x="109" y="596" class="body">恢复本轮相关上下文</text><text x="109" y="626" class="body">判断目标、权限和停止条件</text>
   <text x="109" y="656" class="body">简单任务直接完成</text><text x="109" y="686" class="body">复杂任务明确负责人并协调</text>
   <line x1="109" y1="710" x2="407" y2="710" stroke="#D2D8EB"/>
-  <text x="109" y="742" class="small">核对依据、未知、交付与下一步</text><text x="109" y="774" class="small">长期记录由主 agent 审核后更新</text>
+  <text x="109" y="742" class="small">核对依据、未知、交付与下一步</text><text x="109" y="774" class="small">长期记录保留来源与证据状态</text>
   <rect x="108" y="807" width="304" height="43" rx="11" fill="#FFFFFF" stroke="#D5DCEE"/>
   <text x="127" y="834" class="tag">启动语复制后需手动粘贴并提交</text>
   <path d="M438 697H454" fill="none" stroke="#6D61B2" stroke-width="3" marker-end="url(#arrowViolet)"/>
@@ -88,13 +88,13 @@
   <rect x="1087" y="414" width="358" height="30" rx="15" fill="#F4F0FC"/>
   <text x="1266" y="434" text-anchor="middle" class="tag" fill="#6255A8">创建新对话 · 打开 · 启动语入剪贴板</text>
 
-  <text x="60" y="958" class="section">03　唯一私有知识库：记录经核对的研究状态</text>
+  <text x="60" y="958" class="section">03　唯一私有知识库：接续任务与研究材料</text>
   <g filter="url(#shadow)"><rect x="60" y="981" width="1480" height="214" rx="20" fill="#EAF6F2" stroke="#B9DCD2"/></g>
   <text x="90" y="1025" class="cardTitle">Obsidian vault · 研究资料的唯一长期档案</text>
-  <text x="90" y="1062" class="body">课题与研究日志　·　文献证据　·　RSS 插件已有缓存　·　明确新建的归档</text>
+  <text x="90" y="1062" class="body">课题与研究日志　·　文献证据　·　RSS 插件已有缓存　·　阶段快照与新归档</text>
   <text x="90" y="1097" class="body">工作台按模块授权后读取指定目录；新归档只在约定目录创建文件，不覆盖旧记录。</text>
   <text x="90" y="1132" class="body">Codex 访问文件另受 Codex 本机运行权限与本轮任务授权约束，与工作台读取范围相互独立。</text>
-  <text x="90" y="1170" class="small">RSS 页面显示已缓存线索；外部检索只处理公开查询，不自动发送私有笔记。</text>
+  <text x="90" y="1170" class="small">点击保存阶段记录后新增快照；保留来源与未决问题，不自动改变任务状态。</text>
   <path d="M1510 390H1570V1088H1552" fill="none" stroke="#16827C" stroke-width="3" marker-end="url(#arrowTeal)"/>
   <text x="1552" y="715" text-anchor="middle" transform="rotate(90 1552 715)" class="tag" fill="#16827C">工作台 scope：逐项授权</text>
   <path d="M1050 912V972" fill="none" stroke="#6D61B2" stroke-width="3" marker-end="url(#arrowViolet)"/>

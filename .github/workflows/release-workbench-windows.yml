@@ -26,6 +26,10 @@ jobs:
         working-directory: apps/danta-workbench-ui
         run: npm ci
 
+      - name: Verify task continuity and stage archives
+        working-directory: apps/danta-workbench-ui
+        run: npm run test:tasks
+
       - name: Build Windows installer
         working-directory: apps/danta-workbench-ui
         run: npm run dist:win
