@@ -2,7 +2,7 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import { ArrowClockwise, CheckCircle, FolderOpen, Info, LockKey, ShieldCheck, Wrench, XCircle } from '@phosphor-icons/react';
 import { PageBack } from '../../../shared/components/PageBack.jsx';
 
-export const VaultConnection = memo(({ status, structure, onSelect, onRemember, onRestore, onForget, onAddScopeFolder, onRemoveScopeFolder, onAuthorize, onDisconnect, onInspectStructure, onRepairStructure, onBack, busy = false, notice = '' }) => {
+export const VaultConnection = memo(({ status, structure, onSelect, onRemember, onRestore, onForget, onAddScopeFolder, onRemoveScopeFolder, onAuthorize, onDisconnect, onInspectStructure, onRepairStructure, onBack, embedded = false, busy = false, notice = '' }) => {
   const options = status?.scopeOptions || [];
   const [selectedScopes, setSelectedScopes] = useState(status?.scopes || []);
   const [confirmed, setConfirmed] = useState(false);
@@ -95,11 +95,9 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
   }
 
   return (
-    <section className="subpage-view vault-page" aria-labelledby="vault-connection-title">
-      <PageBack onBack={onBack} />
-      <div className="home-eyebrow">本机资料 · Obsidian</div>
-      <h1 id="vault-connection-title">知识库连接</h1>
-      <p className="subpage-lede">先选一个 vault，再按用途勾选读取或归档范围。网页不会在选择时扫描内容；读取只在你打开相应页面后发生，数据留在本机。</p>
+    <section className={`vault-page${embedded ? ' vault-embedded' : ' subpage-view'}`} aria-labelledby={embedded ? 'vault-connection-status' : 'vault-connection-title'}>
+      {!embedded && <><PageBack onBack={onBack} /><div className="home-eyebrow">本机资料 · Obsidian</div><h1 id="vault-connection-title">知识库连接</h1></>}
+      <p className="subpage-lede">先选一个 vault，再按用途勾选读取或归档范围。选择文件夹时不会扫描笔记；内容只在你打开相应页面后按授权读取。</p>
 
       <section className="vault-connection" aria-labelledby="vault-connection-status">
         <div className="vault-connection-header">

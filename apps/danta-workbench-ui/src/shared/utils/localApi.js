@@ -75,6 +75,22 @@ export function getCodexStatus() {
   return requestLocal('/codex/status');
 }
 
+export function getJevStatus() {
+  return requestLocal('/jev/status');
+}
+
+export function configureJev(apiKey) {
+  return requestLocal('/jev/configure', { method: 'POST', body: JSON.stringify({ apiKey }) });
+}
+
+export function verifyJev() {
+  return requestLocal('/jev/verify', { method: 'POST', body: '{}' });
+}
+
+export function forgetJev() {
+  return requestLocal('/jev/forget', { method: 'POST', body: '{}' });
+}
+
 export function createCodexThread(payload) {
   return requestLocal('/codex/new-thread', { method: 'POST', body: JSON.stringify(payload) });
 }

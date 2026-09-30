@@ -593,6 +593,7 @@ export function createLocalBridgeService({
   openThread = openCodexThread,
   copyText = selectClipboardTarget,
   vaultMemoryPath = '',
+  jevCredentialStore = null,
 } = {}) {
   let vaultRoot = '';
   let vaultName = '';
@@ -653,12 +654,32 @@ export function createLocalBridgeService({
   }
 
   const service = {
+    async jevStatus() {
+      return jevCredentialStore?.status() || { supported: false, saved: false, verified: false, verifiedAt: null, message: 'Jev 密钥仅能在桌面版安全保存。' };
+    },
+
+    async configureJev({ apiKey }) {
+      if (!jevCredentialStore) throw new Error('请在桌面版设置 Jev 密钥。');
+      await jevCredentialStore.save(apiKey);
+      return jevCredentialStore.verify();
+    },
+
+    async verifyJev() {
+      if (!jevCredentialStore) throw new Error('请在桌面版验证 Jev 连接。');
+      return jevCredentialStore.verify();
+    },
+
+    async forgetJev() {
+      if (!jevCredentialStore) throw new Error('请在桌面版管理 Jev 密钥。');
+      return jevCredentialStore.forget();
+    },
+
     async codexStatus() {
       try {
         const projects = projectFetcher
           ? await projectFetcher()
           : await withCodexClient(async client => getCodexProjects(await client.request('project/list', {})), codexBinary);
-        return { available: true, projects: projects.map(({ id, name, rootLabel }) => ({ id, name, rootLabel })) };
+        return { available: true, projects: projects.map(({ id, name, root, rootLabel }) => ({ id, name, root, rootLabel })) };
       } catch {
         return { available: false, projects: [], message: '暂时无法连接本机 Codex。' };
       }
@@ -948,12 +969,16 @@ export function createLocalBridgeRequestHandler(service) {
     if (!originMatchesRequest(req)) return json(res, 403, { error: '请求来源无效，请从本机工作台操作。' });
     try {
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}codex/status`) return json(res, 200, await service.codexStatus());
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}jev/status`) return json(res, 200, await service.jevStatus());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/status`) return json(res, 200, await service.vaultStatus());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/structure`) return json(res, 200, await service.inspectVaultStructure());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/data`) return json(res, 200, await service.vaultData(requestUrl.searchParams.get('section')));
       if (req.method !== 'POST') return json(res, 405, { error: '不支持此请求。' });
       if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return json(res, 415, { error: '请求格式无效。' });
       const body = await readJsonBody(req);
+      if (requestUrl.pathname === `${API_PREFIX}jev/configure`) return json(res, 200, await service.configureJev(body));
+      if (requestUrl.pathname === `${API_PREFIX}jev/verify`) return json(res, 200, await service.verifyJev());
+      if (requestUrl.pathname === `${API_PREFIX}jev/forget`) return json(res, 200, await service.forgetJev());
       if (requestUrl.pathname === `${API_PREFIX}vault/select`) return json(res, 200, await service.chooseVault());
       if (requestUrl.pathname === `${API_PREFIX}vault/remember`) return json(res, 200, await service.rememberVault());
       if (requestUrl.pathname === `${API_PREFIX}vault/restore`) return json(res, 200, await service.restoreRememberedVault());

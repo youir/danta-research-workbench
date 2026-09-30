@@ -9,6 +9,7 @@ import { LiteraturePage } from './features/literature/components/LiteraturePage.
 import { DailyBriefsPage } from './features/daily-briefs/components/DailyBriefsPage.jsx';
 import { ArchivePage } from './features/archive/components/ArchivePage.jsx';
 import { VaultConnection } from './features/vault/components/VaultConnection.jsx';
+import { SettingsPage } from './features/settings/components/SettingsPage.jsx';
 import { KickoffModal } from './shared/components/KickoffModal.jsx';
 import { Notice } from './shared/components/Notice.jsx';
 import { useNotice } from './shared/hooks/useNotice.js';
@@ -51,6 +52,7 @@ export function App() {
   const [pptPromptChoices] = usePersistentState('pptPromptChoices', PPT_PROMPT_CHOICES);
   const [filesByWorkflow] = usePersistentState('filesByWorkflow', {});
   const [pendingKickoff, setPendingKickoff] = usePersistentState('pendingKickoff', null);
+  const [defaultCodexProjectId, setDefaultCodexProjectId] = usePersistentState('defaultCodexProjectId', '');
   const [lastCheckpoint, setLastCheckpoint] = usePersistentState('lastCheckpoint', null);
   const storageError = useStorageHealth();
   const [showMechanismProcess, setShowMechanismProcess] = useState(false);
@@ -59,6 +61,7 @@ export function App() {
   const [vaultStatus, setVaultStatus] = useState({ selected: false, connected: false, name: '', scopes: [], scopeOptions: [] });
   const [vaultBusy, setVaultBusy] = useState(false);
   const [vaultStructure, setVaultStructure] = useState(null);
+  const [settingsSection, setSettingsSection] = useState('workspace');
   const [archivingTaskId, setArchivingTaskId] = useState('');
   const archiveLockRef = useRef(false);
 
@@ -123,7 +126,7 @@ export function App() {
   useEffect(() => { window.scrollTo(0, 0); }, [activePage]);
 
   const workflow = useMemo(() => PROMPT_STARTERS.find(item => item.id === activePage), [activePage]);
-  const activeNav = ['start', 'records', 'mechanism', 'literature', 'daily-briefs', 'archive', 'vault'].includes(activePage) ? activePage : 'start';
+  const activeNav = ['start', 'records', 'mechanism', 'literature', 'daily-briefs', 'archive', 'settings'].includes(activePage) ? activePage : 'start';
   const kickoffPrompt = pendingKickoff?.prompt || '';
   const taskRecordActions = {
     add: () => addTaskRecord(activeTaskId),
@@ -149,9 +152,12 @@ export function App() {
   }
 
   function navigate(page, targetTaskId = activeTaskId) {
-    setPageHistory(current => page === activePage && targetTaskId === activeTaskId ? current : [...current.slice(-29), { page: activePage, taskId: activeTaskId }]);
+    const destination = page === 'vault' ? 'settings' : page;
+    if (page === 'vault') setSettingsSection('vault');
+    else if (page === 'settings') setSettingsSection('workspace');
+    setPageHistory(current => destination === activePage && targetTaskId === activeTaskId ? current : [...current.slice(-29), { page: activePage, taskId: activeTaskId }]);
     setActiveTaskId(targetTaskId || '');
-    setActivePage(page);
+    setActivePage(destination);
   }
 
   function goBack() {
@@ -474,6 +480,7 @@ export function App() {
     if (activePage === 'literature') return <LiteraturePage canReadRss={vaultStatus.scopes.includes('rss')} canReadLiterature={vaultStatus.scopes.includes('literature')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
     if (activePage === 'daily-briefs') return <DailyBriefsPage onBack={goBack} onBegin={beginDiscussion} />;
     if (activePage === 'archive') return <ArchivePage canRead={vaultStatus.scopes.includes('archive-read')} canWrite={vaultStatus.scopes.includes('archive-write')} onOpenVault={() => navigate('vault')} onBack={goBack} onCheckpoint={() => markCheckpoint('archive', '历史归档')} />;
+    if (activePage === 'settings') return <SettingsPage section={settingsSection} onSectionChange={setSettingsSection} defaultProjectId={defaultCodexProjectId} onDefaultProjectChange={setDefaultCodexProjectId} onBack={goBack} vaultProps={{ status: vaultStatus, structure: vaultStructure, busy: vaultBusy, onSelect: selectVault, onRemember: rememberVault, onRestore: restoreVault, onForget: forgetVault, onAddScopeFolder: addScopeFolder, onRemoveScopeFolder: removeScopeFolder, onAuthorize: authorizeScopes, onDisconnect: clearVault, onInspectStructure: checkVaultStructure, onRepairStructure: completeVaultStructure, onBack: goBack }} />;
     return <VaultConnection status={vaultStatus} structure={vaultStructure} busy={vaultBusy} onSelect={selectVault} onRemember={rememberVault} onRestore={restoreVault} onForget={forgetVault} onAddScopeFolder={addScopeFolder} onRemoveScopeFolder={removeScopeFolder} onAuthorize={authorizeScopes} onDisconnect={clearVault} onInspectStructure={checkVaultStructure} onRepairStructure={completeVaultStructure} onBack={goBack} />;
   }
 
@@ -485,7 +492,7 @@ export function App() {
         <Sidebar activePage={activeNav} vaultName={vaultStatus.name} vaultConnected={vaultStatus.connected} onNavigate={navigateFromSidebar} />
         <main className="main-content">{renderContent()}</main>
       </div>
-      <KickoffModal isOpen={modalOpen} kickoffPrompt={kickoffPrompt} copied={copied} onCopy={copyKickoff} onCreateThread={createCodexHandoff} workflowLabel={pendingKickoff?.taskTitle || taskFocus} onClose={() => setModalOpen(false)} copyButtonRef={copyButtonRef} dialogRef={dialogRef} />
+      <KickoffModal isOpen={modalOpen} kickoffPrompt={kickoffPrompt} copied={copied} onCopy={copyKickoff} onCreateThread={createCodexHandoff} defaultProjectId={defaultCodexProjectId} onOpenSettings={() => { setModalOpen(false); navigate('settings'); }} workflowLabel={pendingKickoff?.taskTitle || taskFocus} onClose={() => setModalOpen(false)} copyButtonRef={copyButtonRef} dialogRef={dialogRef} />
       <Notice message={notice.message} type={notice.type} onClose={hideNotice} />
     </div>
   );

@@ -8,6 +8,8 @@ export const KickoffModal = memo(({
   copied,
   onCopy,
   onCreateThread,
+  defaultProjectId = '',
+  onOpenSettings,
   workflowLabel = '研究讨论',
   onClose,
   copyButtonRef,
@@ -33,12 +35,15 @@ export const KickoffModal = memo(({
       if (!active) return;
       setCodexAvailable(Boolean(status.available));
       setProjects(status.projects || []);
-      setProjectId(current => status.projects?.some(project => project.id === current) ? current : status.projects?.[0]?.id || '');
+      setProjectId(current => {
+        if (status.projects?.some(project => project.id === defaultProjectId)) return defaultProjectId;
+        return status.projects?.some(project => project.id === current) ? current : status.projects?.[0]?.id || '';
+      });
       if (!status.available) setProjectError(status.message || '暂时无法连接本机 Codex。');
     }).catch(error => { if (active) setProjectError(error?.message || '无法读取 Codex 工作区列表。'); })
       .finally(() => { if (active) setLoadingProjects(false); });
     return () => { active = false; };
-  }, [isOpen]);
+  }, [isOpen, defaultProjectId]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -119,6 +124,7 @@ export const KickoffModal = memo(({
         <section className="codex-handoff-panel" aria-labelledby="codex-handoff-title">
           <div className="codex-handoff-heading"><div><span className="panel-kicker">本机 Codex</span><h3 id="codex-handoff-title">新对话放到哪个工作区？</h3></div><span className="connection-pill">不自动提交</span></div>
           {loadingProjects ? <p className="codex-handoff-status" role="status">正在读取 Codex 工作区…</p> : projects.length ? <label className="codex-workspace-select">Codex 工作区<select value={projectId} onChange={event => { setProjectId(event.target.value); setHandoffResult(''); }} disabled={handoffBusy}><option value="" disabled>选择一个工作区</option>{projects.map(project => <option key={project.id} value={project.id}>{project.name} · {project.rootLabel}</option>)}</select></label> : <p className="codex-handoff-status">{projectError || '没有可用的 Codex 工作区。请先在 Codex 中添加一个工作区。'}</p>}
+          <div className="codex-workspace-helper"><span>本次可临时更换工作区；常用位置在设置中保存。</span>{onOpenSettings && <button className="text-button" type="button" onClick={onOpenSettings}>打开设置</button>}</div>
           {projects.length > 0 && <button className="primary-button compact codex-open-button" type="button" onClick={createThread} disabled={!codexAvailable || !projectId || handoffBusy || loadingProjects}><FolderOpen size={17} aria-hidden="true" />{handoffBusy ? '正在创建新对话…' : handoffResult ? '再次创建新对话' : '创建并打开 Codex 新对话'}<ArrowSquareOut size={15} aria-hidden="true" /></button>}
           {projectError && projects.length > 0 && <p className="codex-handoff-error" role="status">{projectError}</p>}
           {handoffResult && <p className="codex-handoff-success" role="status"><Check size={16} aria-hidden="true" />{handoffResult}</p>}

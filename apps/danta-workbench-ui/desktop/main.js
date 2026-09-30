@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createLocalBridgeRequestHandler, createLocalBridgeService } from '../server/localBridge.js';
+import { createJevCredentialStore } from './jevCredentials.js';
 
 const APP_URL = 'http://127.0.0.1:48921';
 const appDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -58,7 +59,10 @@ if (!appLock) {
 }
 
 async function startLocalServer() {
-  const bridgeService = createLocalBridgeService({ vaultMemoryPath: path.join(app.getPath('userData'), 'vault-location.json') });
+  const bridgeService = createLocalBridgeService({
+    vaultMemoryPath: path.join(app.getPath('userData'), 'vault-location.json'),
+    jevCredentialStore: createJevCredentialStore(path.join(app.getPath('userData'), 'jev-credentials.json')),
+  });
   const handleBridge = createLocalBridgeRequestHandler(bridgeService);
   localServer = createServer(async (req, res) => {
     await handleBridge(req, res);

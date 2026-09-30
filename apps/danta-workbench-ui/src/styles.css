@@ -1339,6 +1339,51 @@ button:focus-visible, textarea:focus-visible {
 .codex-handoff-error { color: #ad4c47; }
 .codex-handoff-success { display: flex; align-items: flex-start; gap: 6px; color: var(--accent-strong); }
 .codex-handoff-success svg { flex: 0 0 auto; margin-top: 1px; }
+.codex-workspace-helper { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; color: var(--ink-light); font-size: 10px; }
+.codex-workspace-helper .text-button { margin: 0; }
+
+/* 本机设置 */
+.settings-page { padding-bottom: 28px; }
+.settings-page h1 { margin-bottom: 7px; }
+.settings-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin: 22px 0 18px; padding-bottom: 11px; border-bottom: 1px solid var(--line-default); }
+.settings-tabs button { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 8px 14px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: var(--ink-muted); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.settings-tabs button:hover { background: var(--surface-hover); color: var(--ink-primary); }
+.settings-tabs button.active { border-color: var(--accent-border); background: var(--accent-soft); color: var(--accent-strong); }
+.settings-tab-light { width: 8px; height: 8px; border-radius: 50%; }
+.settings-tab-light.is-green { background: #218652; box-shadow: 0 0 0 3px #2186521c; }
+.settings-tab-light.is-red { background: #bf514d; box-shadow: 0 0 0 3px #bf514d1c; }
+.settings-card { max-width: 920px; padding: 22px; border: 1px solid var(--line-default); border-radius: 16px; background: var(--surface-raised); box-shadow: var(--shadow-sm); }
+.settings-card-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; }
+.settings-card-heading h2 { margin: 3px 0 0; color: var(--ink-primary); font-size: 17px; }
+.settings-card > p { margin: 12px 0 0; color: var(--ink-secondary); font-size: 12px; line-height: 1.7; }
+.settings-field { display: grid; gap: 7px; max-width: 650px; margin-top: 18px; color: var(--ink-secondary); font-size: 12px; font-weight: 600; }
+.settings-field input, .settings-field select { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid var(--line-default); border-radius: 9px; background: var(--surface-base); color: var(--ink-primary); font: inherit; font-weight: 400; }
+.settings-field input:focus-visible, .settings-field select:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
+.settings-path { display: grid; gap: 5px; }
+.settings-path strong { color: var(--ink-muted); font-size: 11px; }
+.settings-path code { overflow-wrap: anywhere; color: var(--ink-primary); font-size: 11px; }
+.settings-key-form { margin-top: 8px; }
+.settings-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; }
+.settings-actions .text-button { margin: 0; }
+.settings-light { display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px; border: 1px solid; border-radius: 99px; font-size: 11px; font-weight: 650; white-space: nowrap; }
+.settings-light > span { width: 9px; height: 9px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 16%, transparent); }
+.settings-light.is-green { border-color: #b7dec6; background: #edf8f1; color: #17673d; }
+.settings-light.is-red { border-color: #efc8c4; background: #fdf1ef; color: #a33f3c; }
+.settings-card > .settings-muted, .settings-card > .settings-footnote { color: var(--ink-muted); font-size: 11px; }
+.settings-card > .settings-error { color: #a33f3c; }
+.settings-card > .settings-success { color: #17673d; }
+.settings-success, .settings-error { display: flex; align-items: flex-start; gap: 6px; line-height: 1.6; }
+.settings-success svg, .settings-error svg { flex: 0 0 auto; margin-top: 2px; }
+.settings-link { display: inline-block; margin-top: 12px; color: var(--accent-strong); font-size: 11px; text-decoration: none; }
+.settings-link:hover { text-decoration: underline; }
+.vault-embedded .subpage-lede { margin-top: 0; }
+
+@media (prefers-color-scheme: dark) {
+  .settings-light.is-green { border-color: #2b6745; background: #173525; color: #91d7a9; }
+  .settings-light.is-red { border-color: #713d3c; background: #361f20; color: #f0aaa5; }
+  .settings-card > .settings-error { color: #f0aaa5; }
+  .settings-card > .settings-success { color: #91d7a9; }
+}
 
 @media (max-width: 640px) {
   .resume-card, .archive-form-footer { align-items: flex-start; flex-direction: column; }
@@ -1348,4 +1393,6 @@ button:focus-visible, textarea:focus-visible {
   .rss-filter-row { align-items: stretch; flex-direction: column; }
   .rss-search { width: 100%; }
   .codex-open-button { width: 100%; justify-content: center; }
+  .settings-card { padding: 16px; }
+  .settings-card-heading { align-items: flex-start; }
 }
