@@ -654,6 +654,21 @@ export function createLocalBridgeService({
   }
 
   const service = {
+    async initializeVault() {
+      if (!vaultMemoryPath) return;
+      if (!await readVaultMemory()) {
+        if (await fs.stat(vaultMemoryPath).catch(() => null)) {
+          restoreMessage = '本机保存的知识库记录无法读取。请重新选择知识库并确认授权；原有笔记不会被改动。';
+        }
+        return;
+      }
+      try {
+        await service.restoreRememberedVault();
+      } catch (error) {
+        restoreMessage = error?.message || '上次的知识库暂时无法恢复，请检查路径和授权目录。';
+      }
+    },
+
     async jevStatus() {
       return jevCredentialStore?.status() || { supported: false, saved: false, verified: false, verifiedAt: null, message: 'Jev 密钥仅能在桌面版安全保存。' };
     },

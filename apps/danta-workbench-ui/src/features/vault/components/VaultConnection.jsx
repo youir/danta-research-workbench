@@ -33,7 +33,7 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
       const nextStatus = await onAuthorize(selectedScopeIds);
       setSelectedScopes(nextStatus.scopes || selectedScopeIds);
       setConfirmed(false);
-      setLocalMessage(nextStatus.memoryAvailable ? '授权范围已保存在这台电脑。下次核对知识库后可直接恢复；打开相应页面时才读取内容。' : '本次运行的授权范围已更新；打开相应页面时才读取内容。');
+      setLocalMessage(nextStatus.memoryAvailable ? '授权范围已保存在这台电脑。下次打开桌面版时会自动核对并恢复；打开相应页面时才读取内容。' : '本次运行的授权范围已更新；打开相应页面时才读取内容。');
     } catch (error) {
       setLocalMessage(error?.message || '保存授权范围失败。');
     }
@@ -97,7 +97,7 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
   return (
     <section className={`vault-page${embedded ? ' vault-embedded' : ' subpage-view'}`} aria-labelledby={embedded ? 'vault-connection-status' : 'vault-connection-title'}>
       {!embedded && <><PageBack onBack={onBack} /><div className="home-eyebrow">本机资料 · Obsidian</div><h1 id="vault-connection-title">知识库连接</h1></>}
-      <p className="subpage-lede">先选一个 vault，再按用途勾选读取或归档范围。选择文件夹时不会扫描笔记；内容只在你打开相应页面后按授权读取。</p>
+      <p className="subpage-lede">首次使用时选择知识库并确认读取或归档范围。之后打开桌面版会自动核对并恢复原授权；内容只在你打开相应页面后按授权读取。</p>
 
       <section className="vault-connection" aria-labelledby="vault-connection-status">
         <div className="vault-connection-header">
@@ -105,7 +105,8 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
           <span className="vault-status-pill">{status?.name || '需要你选择'}</span>
         </div>
         {status?.selected && <p className="vault-selected-path"><strong>已选择的完整路径：</strong><code>{status.path}</code></p>}
-        <p>请核对完整路径。桌面版会在本机保存本人确认的授权范围；下次打开时先核对知识库和关联目录，再恢复相同范围。不会写进 Git 或云端，也不会在重启后自动读取笔记。</p>
+        <p>桌面版会在本机保存本人确认的授权范围，并在下次启动时自动核对知识库和关联目录。路径与目录未变化时直接恢复；不会写进 Git 或云端，也不会在启动时读取笔记。</p>
+        {status?.restoreMessage && <p className={`vault-feedback${status.selected ? '' : ' is-error'}`} role="status">{status.restoreMessage}</p>}
 
         <div className="vault-actions">
           <button className="primary-button compact" type="button" onClick={async () => { setLocalMessage(''); try { await onSelect(); setConfirmed(false); } catch (error) { setLocalMessage(error?.message || '选择知识库失败。'); } }} disabled={busy}>
@@ -118,7 +119,7 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
           {status.remembered && <p>上次保存的位置：<code>{status.remembered.path}</code>；已记录 {Object.keys(status.remembered.grants || {}).length} 项授权范围。</p>}
           {status.remembered?.version === 1 && <p>旧版只保存了位置，没有保存授权范围。升级后首次需核对并确认一次，以后无需重复勾选。</p>}
           <div className="vault-actions">
-            {!status.selected && status.remembered && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onRestore, '已恢复上次的知识库，请核对实际路径。')}>核对并继续使用上次知识库</button>}
+            {!status.selected && status.remembered && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onRestore, '已恢复上次的知识库，请核对实际路径。')}>重新尝试恢复上次知识库</button>}
             {status.selected && !status.connected && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onRemember, '已保存当前路径与关联；确认授权后会一并记住范围。')}>{status.remembered?.path === status.path ? '更新保存的位置与关联' : '记住当前路径与关联'}</button>}
             {status.remembered && <button className="text-button" type="button" disabled={busy} onClick={() => runMemoryAction(onForget, '已忘记上次保存的位置；没有删除知识库内容。')}>忘记上次路径</button>}
           </div>

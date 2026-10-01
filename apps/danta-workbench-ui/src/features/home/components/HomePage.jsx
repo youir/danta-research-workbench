@@ -8,7 +8,7 @@ function taskUpdatedLabel(timestamp) {
   return new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(timestamp));
 }
 
-export const HomePage = memo(({ thought, setThought, taskFocus, recovery, researchTasks = [], vaultConnected = false, vaultName = '', onBegin, onOpenWorkflow, onResume, onResumeTask, onOpenCodexThread, onOpenVault, onRestoreKickoff, onExportBackup, onImportBackup }) => {
+export const HomePage = memo(({ thought, setThought, taskFocus, recovery, researchTasks = [], vaultConnected = false, vaultName = '', vaultRestoreMessage = '', onBegin, onOpenWorkflow, onResume, onResumeTask, onOpenCodexThread, onOpenVault, onRestoreKickoff, onExportBackup, onImportBackup }) => {
   const textareaRef = useRef(null);
   const backupInputRef = useRef(null);
   const [backupMessage, setBackupMessage] = useState('');
@@ -106,7 +106,7 @@ export const HomePage = memo(({ thought, setThought, taskFocus, recovery, resear
         <FolderOpen size={20} aria-hidden="true" />
         <span className="resume-label">知识库连接状态</span>
         <span className="resume-divider" aria-hidden="true" />
-        <span className="resume-summary">{vaultConnected ? `${vaultName} 已连接；读取范围由龚博士选择` : vaultName ? `${vaultName} 已选择，尚未授权读取范围` : '研究资料仍由 Obsidian 知识库维护'}</span>
+        <span className="resume-summary">{vaultRestoreMessage || (vaultConnected ? `${vaultName} 已连接；读取范围由龚博士选择` : vaultName ? `${vaultName} 已选择，尚未授权读取范围` : '研究资料仍由 Obsidian 知识库维护')}</span>
         <span className="inline-link">查看说明 <ArrowRight size={15} aria-hidden="true" /></span>
       </button>
       <p className="local-note">草稿保存在本机浏览器 · Obsidian 只按勾选范围读取 · 研究判断由龚博士和导师作出</p>

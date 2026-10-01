@@ -305,7 +305,7 @@ export function App() {
     try {
       const status = await authorizeVaultScopes(scopes);
       setVaultStatus(status);
-      showNotice(status.memoryAvailable ? '已在本机保存授权范围。下次核对知识库后可继续使用。' : '本次运行的读取范围已更新。', 'success');
+      showNotice(status.memoryAvailable ? '已在本机保存授权范围。下次打开桌面版时会自动核对并恢复。' : '本次运行的读取范围已更新。', 'success');
       return status;
     } finally {
       setVaultBusy(false);
@@ -435,6 +435,7 @@ export function App() {
         researchTasks={recentResearchTasks}
         vaultConnected={vaultStatus.connected}
         vaultName={vaultStatus.name}
+        vaultRestoreMessage={vaultStatus.restoreMessage}
         onBegin={beginDiscussion}
         onOpenWorkflow={openWorkflow}
         onResumeTask={resumeResearchTask}

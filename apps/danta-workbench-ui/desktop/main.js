@@ -63,6 +63,7 @@ async function startLocalServer() {
     vaultMemoryPath: path.join(app.getPath('userData'), 'vault-location.json'),
     jevCredentialStore: createJevCredentialStore(path.join(app.getPath('userData'), 'jev-credentials.json')),
   });
+  await bridgeService.initializeVault();
   const handleBridge = createLocalBridgeRequestHandler(bridgeService);
   localServer = createServer(async (req, res) => {
     await handleBridge(req, res);
