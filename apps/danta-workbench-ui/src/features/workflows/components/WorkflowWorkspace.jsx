@@ -38,7 +38,7 @@ export const WorkflowWorkspace = memo(({ workflow, task, onTaskChange, recordAct
     <div className="workspace-sidepanels">
       <section className="workspace-panel" aria-labelledby="conversation-title">
         <div className="workspace-panel-heading"><div><span className="panel-kicker">下一步</span><h2 id="conversation-title">带着启动语进入 Codex</h2></div><span className="connection-pill">本人提交</span></div>
-        <div className="workspace-empty"><p>整理好任务后，可创建并打开目标工作区的新对话。</p><span>任务卡信息会放入启动语；打开后仍需你检查、粘贴并提交。工作台不读取 Codex 历史对话。</span></div>
+        <div className="workspace-empty"><p>{task?.linkedCodexThreadId ? '这项任务已有 Codex 对话，可从任务卡继续原讨论。' : '整理好任务后，可创建并打开目标工作区的新对话。'}</p><span>任务卡信息会放入启动语；打开后粘贴并提交。成果位置和下一步可记回这张任务卡，供下次接续。</span></div>
       </section>
 
       <section className="workspace-panel" aria-labelledby="files-title">

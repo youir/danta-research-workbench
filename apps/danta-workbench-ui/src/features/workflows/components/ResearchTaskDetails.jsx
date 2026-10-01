@@ -12,7 +12,7 @@ export function ResearchTaskDetails({ task, onChange, recordActions }) {
           <span className="panel-kicker">本机保存 · 可随时恢复</span>
           <h2 id="research-task-title">研究任务卡</h2>
         </div>
-        <span className="research-task-id" title={`任务编号 ${task.id}`}>本机任务卡</span>
+        {task.linkedCodexThreadId ? <button className="secondary-button compact" type="button" onClick={() => recordActions?.openConversation(task.linkedCodexThreadId)}>继续 Codex 对话</button> : <span className="research-task-id" title={`任务编号 ${task.id}`}>本机任务卡</span>}
       </div>
       <div className="research-task-fields">
         <label className="research-task-title-field">任务名称
@@ -39,6 +39,7 @@ export function ResearchTaskDetails({ task, onChange, recordActions }) {
         </label>
       </div>
       <p className="research-task-stage-help">{stage.help} 填写即时保存，可在任何阶段继续任务或保存阶段记录。</p>
+      {task.codexThreadIds?.length > 1 && <details className="task-conversation-history"><summary>这项任务的历史对话 · {task.codexThreadIds.length} 段</summary><ul>{task.codexThreadIds.map((id, index) => <li key={id}><button className="text-button" type="button" onClick={() => recordActions?.openConversation(id)}>{id === task.linkedCodexThreadId ? '当前对话' : `历史对话 ${index + 1}`} · {id.slice(0, 8)}</button></li>)}</ul></details>}
       <TaskRecords task={task} actions={recordActions} />
     </section>
   );

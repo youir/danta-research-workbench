@@ -95,6 +95,6 @@ export function createCodexThread(payload) {
   return requestLocal('/codex/new-thread', { method: 'POST', body: JSON.stringify(payload) });
 }
 
-export function openCodexThread(threadId) {
-  return requestLocal('/codex/open-thread', { method: 'POST', body: JSON.stringify({ threadId }) });
+export function openCodexThread(threadId, prompt = '') {
+  return requestLocal('/codex/open-thread', { method: 'POST', body: JSON.stringify({ threadId, prompt }) });
 }

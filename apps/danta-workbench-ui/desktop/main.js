@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createLocalBridgeRequestHandler, createLocalBridgeService } from '../server/localBridge.js';
 import { createJevCredentialStore } from './jevCredentials.js';
+import { createWorkbenchStateStore } from '../server/workbenchState.js';
 
 const APP_URL = 'http://127.0.0.1:48921';
 const appDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -15,6 +16,7 @@ const appLock = app.requestSingleInstanceLock();
 let mainWindow;
 let localServer;
 let isQuitting = false;
+let quitRequested = false;
 
 app.setAppUserModelId('org.danta.research-workbench');
 
@@ -48,7 +50,8 @@ if (!appLock) {
     app.quit();
   });
 
-  app.on('before-quit', () => {
+  app.on('before-quit', () => { quitRequested = true; });
+  app.on('will-quit', () => {
     isQuitting = true;
     localServer?.close();
   });
@@ -60,8 +63,19 @@ if (!appLock) {
 
 async function startLocalServer() {
   const bridgeService = createLocalBridgeService({
+    folderPicker: async ({ scopeLabel = '', initialPath, title } = {}) => {
+      const result = await dialog.showOpenDialog(mainWindow, { title: title || (scopeLabel ? `选择 ${scopeLabel} 文件夹` : '选择 Obsidian 知识库'), defaultPath: initialPath, properties: ['openDirectory'] });
+      return result.canceled ? '' : result.filePaths[0];
+    },
     vaultMemoryPath: path.join(app.getPath('userData'), 'vault-location.json'),
     jevCredentialStore: createJevCredentialStore(path.join(app.getPath('userData'), 'jev-credentials.json')),
+    workbenchStateStore: createWorkbenchStateStore(path.join(app.getPath('userData'), 'workbench-state')),
+    artifactMemoryPath: path.join(app.getPath('userData'), 'artifact-location.json'),
+    artifactFilePicker: async ({ preview = false } = {}) => {
+      const result = await dialog.showOpenDialog(mainWindow, { title: preview ? '选择同版本预览件' : '选择成果原件', properties: ['openFile'], filters: [{ name: '科研成果', extensions: preview ? ['pdf', 'png', 'jpg', 'jpeg', 'webp', 'svg', 'md', 'txt', 'html', 'htm'] : ['pdf', 'png', 'jpg', 'jpeg', 'webp', 'svg', 'md', 'txt', 'html', 'htm', 'pptx', 'docx'] }] });
+      return result.canceled ? '' : result.filePaths[0];
+    },
+    artifactOpenFile: async target => { const error = await shell.openPath(target); if (error) throw new Error('关联程序无法打开原件，请保存副本后打开。'); },
   });
   await bridgeService.initializeVault();
   const handleBridge = createLocalBridgeRequestHandler(bridgeService);
@@ -140,6 +154,8 @@ async function serveRendererFile(req, res) {
 }
 
 function openMainWindow() {
+  let closing = false;
+  let flushing = false;
   mainWindow = new BrowserWindow({
     width: 1440,
     height: 980,
@@ -179,6 +195,30 @@ function openMainWindow() {
     openExternalUrl(url);
   });
   mainWindow.on('closed', () => { mainWindow = undefined; });
+  mainWindow.on('close', async event => {
+    if (closing) return;
+    event.preventDefault();
+    if (flushing) return;
+    flushing = true;
+    const window = mainWindow;
+    try {
+      await window.webContents.executeJavaScript('window.__dantaFlushState ? window.__dantaFlushState() : Promise.resolve()');
+      closing = true;
+      window.close();
+      if (quitRequested) app.quit();
+    } catch {
+      const { response } = await dialog.showMessageBox(window, {
+        type: 'warning', title: '任务尚未备份',
+        message: '本次修改还没有保存到任务自动备份。',
+        detail: '返回工作台后，可在设置中重试保存或导出任务备份。',
+        buttons: ['返回工作台', '仍然关闭'], defaultId: 0, cancelId: 0,
+      });
+      if (response === 1) { closing = true; window.close(); if (quitRequested) app.quit(); }
+      else quitRequested = false;
+    } finally {
+      flushing = false;
+    }
+  });
   mainWindow.loadURL(APP_URL);
 }
 
@@ -193,11 +233,13 @@ function openExternalUrl(value) {
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self'",
+  "script-src 'self' 'wasm-unsafe-eval'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
   "connect-src 'self' https://api.github.com",
+  "worker-src 'self' blob:",
+  "frame-src 'self' about:",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -209,6 +251,8 @@ const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
   '.ico': 'image/x-icon',
   '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.wasm': 'application/wasm',
   '.json': 'application/json; charset=utf-8',
   '.png': 'image/png',
   '.svg': 'image/svg+xml',

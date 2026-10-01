@@ -1,6 +1,7 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
+import { STORAGE_PREFIX } from '../constants/persistedState.js';
+import { getPersistedValue, hasDesktopPersistence, queueDesktopState } from '../utils/desktopState.js';
 
-const STORAGE_PREFIX = 'danta-workbench:v2:';
 const LEGACY_SESSION_PREFIX = 'danta-workbench:v1:';
 let storageError = '';
 const failedKeys = new Set();
@@ -31,8 +32,10 @@ export function useStorageHealth() {
 export function usePersistentState(key, initialValue) {
   const [value, setValue] = useState(() => {
     try {
-      const saved = window.localStorage.getItem(`${STORAGE_PREFIX}${key}`);
+      const saved = hasDesktopPersistence() ? getPersistedValue(key) ?? null
+        : getPersistedValue(key) ?? window.localStorage.getItem(`${STORAGE_PREFIX}${key}`);
       if (saved !== null) return JSON.parse(saved);
+      if (hasDesktopPersistence()) return initialValue;
       const legacy = window.sessionStorage.getItem(`${LEGACY_SESSION_PREFIX}${key}`);
       return legacy === null ? initialValue : JSON.parse(legacy);
     } catch {
@@ -42,8 +45,10 @@ export function usePersistentState(key, initialValue) {
   });
 
   useEffect(() => {
-    try { window.localStorage.setItem(`${STORAGE_PREFIX}${key}`, JSON.stringify(value)); clearStorageError(key); }
-    catch { reportStorageError(key); }
+    const serialized = JSON.stringify(value);
+    queueDesktopState(key, serialized);
+    try { window.localStorage.setItem(`${STORAGE_PREFIX}${key}`, serialized); clearStorageError(key); }
+    catch { if (!hasDesktopPersistence()) reportStorageError(key); }
   }, [key, value]);
 
   return [value, setValue];

@@ -1,11 +1,9 @@
-import { Archive, BookOpenText, House, Notebook, ShareNetwork, GearSix, Newspaper } from '@phosphor-icons/react';
+import { BookOpenText, House, Notebook, ShareNetwork, GearSix } from '@phosphor-icons/react';
 
 export const NAV_ITEMS = [
-  { id: 'start', label: '开始', Icon: House },
-  { id: 'records', label: '研究记录', Icon: Notebook },
-  { id: 'mechanism', label: '机制图', Icon: ShareNetwork },
-  { id: 'literature', label: '文献与信息源', Icon: BookOpenText },
-  { id: 'daily-briefs', label: '科研日报', Icon: Newspaper },
-  { id: 'archive', label: '历史归档', Icon: Archive },
+  { id: 'start', label: '今天', Icon: House },
+  { id: 'tasks', label: '研究任务', Icon: Notebook },
+  { id: 'sources', label: '文献资料', Icon: BookOpenText },
+  { id: 'outputs', label: '汇报制图', Icon: ShareNetwork },
   { id: 'settings', label: '设置', Icon: GearSix },
 ];

@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createLocalBridgePlugin } from './server/localBridge.js';
+import { pdfResourcesPlugin } from './server/pdfResources.js';
 
 const appDirectory = path.dirname(fileURLToPath(import.meta.url));
 let appCommit = '';
@@ -30,7 +31,7 @@ try {
 }
 
 export default defineConfig({
-  plugins: [react(), createLocalBridgePlugin()],
+  plugins: [react(), createLocalBridgePlugin(), pdfResourcesPlugin()],
   define: {
     __APP_COMMIT__: JSON.stringify(appCommit),
     __APP_HAS_LOCAL_CHANGES__: JSON.stringify(appHasLocalChanges),

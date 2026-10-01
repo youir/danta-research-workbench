@@ -5,7 +5,7 @@ import { NAV_ITEMS } from '../constants/navigation.js';
 export const Sidebar = memo(({ activePage, vaultName, vaultConnected = false, onNavigate }) => (
   <aside className="sidebar">
     <button className="vault-status" type="button" onClick={() => onNavigate('vault')}>
-      <span className={`status-dot ${vaultName ? 'selected' : ''}`} aria-hidden="true" />
+      <span className={`status-dot ${vaultConnected ? 'connected' : vaultName ? 'selected' : ''}`} aria-hidden="true" />
       <span><strong>{vaultName || 'Obsidian 本机知识库'}</strong><small>{vaultConnected ? '已授权 · 本机读取' : vaultName ? '已选择 · 尚未授权' : '尚未选择'}</small></span>
       <FolderOpen size={16} aria-hidden="true" />
     </button>

@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { usePersistentState } from '../../../shared/hooks/usePersistentState.js';
 import { createResearchTask, migrateLegacyResearchTasks } from '../../../shared/constants/researchTasks.js';
 import { createTaskRecord, TASK_RECORD_FIELDS, TASK_RECORD_LIMIT } from '../../../shared/utils/taskRecords.js';
+import { retainThreadLinks } from '../../../shared/utils/taskHandoff.js';
 
 /** Owns the workbench's local task cards and their legacy-draft migration. */
 export function useResearchTasks({
@@ -62,7 +63,7 @@ export function useResearchTasks({
   function patchTask(taskId, patch) {
     if (!taskId) return;
     setTasks(current => current.map(task => task.id === taskId
-      ? { ...task, ...patch, updatedAt: Date.now() }
+      ? { ...task, ...(typeof patch === 'function' ? patch(task) : patch), updatedAt: Date.now() }
       : task));
   }
 
@@ -82,7 +83,7 @@ export function useResearchTasks({
 
   function linkCodexThread(taskId, threadId) {
     if (!taskId || !threadId) return;
-    patchTask(taskId, { linkedCodexThreadId: threadId });
+    setTasks(current => current.map(task => task.id === taskId ? retainThreadLinks(task, threadId) : task));
   }
 
   function addTaskRecord(taskId) {

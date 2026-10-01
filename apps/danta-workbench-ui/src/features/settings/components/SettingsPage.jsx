@@ -1,16 +1,20 @@
-import { useEffect, useState } from 'react';
-import { ArrowClockwise, CheckCircle, LockKey, WarningCircle } from '@phosphor-icons/react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { ArrowClockwise, CheckCircle, DownloadSimple, LockKey, UploadSimple, WarningCircle } from '@phosphor-icons/react';
 import { PageBack } from '../../../shared/components/PageBack.jsx';
 import { VaultConnection } from '../../vault/components/VaultConnection.jsx';
+import { ArtifactSettings } from '../../artifacts/ArtifactSettings.jsx';
 import { configureJev, forgetJev, getCodexStatus, getJevStatus, verifyJev } from '../../../shared/utils/localApi.js';
+import { flushDesktopState, getDesktopBackups, getDesktopStateHealth, restoreDesktopBackup, subscribeDesktopState } from '../../../shared/utils/desktopState.js';
 
 const SECTIONS = [
   { id: 'workspace', label: 'Codex 工作区' },
   { id: 'vault', label: '知识库与授权' },
+  { id: 'artifacts', label: '成果与预览' },
   { id: 'jev', label: 'Jev API Key' },
+  { id: 'backup', label: '任务备份' },
 ];
 
-export function SettingsPage({ section, onSectionChange, defaultProjectId, onDefaultProjectChange, vaultProps, onBack }) {
+export function SettingsPage({ section, onSectionChange, defaultProjectId, onDefaultProjectChange, vaultProps, artifactConnection, onBack, taskCount = 0, onExportBackup, onImportBackup }) {
   const [codexStatus, setCodexStatus] = useState({ available: false, projects: [] });
   const [codexBusy, setCodexBusy] = useState(false);
   const [codexMessage, setCodexMessage] = useState('');
@@ -18,6 +22,33 @@ export function SettingsPage({ section, onSectionChange, defaultProjectId, onDef
   const [jevKey, setJevKey] = useState('');
   const [jevBusy, setJevBusy] = useState(false);
   const [jevMessage, setJevMessage] = useState('');
+  const backupInputRef = useRef(null);
+  const [backupMessage, setBackupMessage] = useState('');
+  const desktopState = useSyncExternalStore(subscribeDesktopState, getDesktopStateHealth, getDesktopStateHealth);
+  const [diskBackups, setDiskBackups] = useState([]);
+  const [selectedBackup, setSelectedBackup] = useState('');
+  const [backupBusy, setBackupBusy] = useState(false);
+
+  async function refreshBackups() {
+    setBackupBusy(true);
+    try { const result = await getDesktopBackups(); setDiskBackups(result.backups || []); setSelectedBackup(''); setBackupMessage(result.message || '已刷新本机备份。'); }
+    catch (error) { setBackupMessage(error.message || '无法读取本机备份。'); }
+    finally { setBackupBusy(false); }
+  }
+
+  async function retryDiskSave() {
+    setBackupBusy(true);
+    try { await flushDesktopState(); setBackupMessage('当前任务和界面状态已保存。'); }
+    catch (error) { setBackupMessage(error.message); }
+    finally { setBackupBusy(false); }
+  }
+
+  async function restoreBackup() {
+    if (!selectedBackup || !window.confirm('恢复所选备份中的任务、草稿和界面状态？当前状态会先保留一份备份，恢复后工作台会重新打开。Obsidian 笔记和授权不受影响。')) return;
+    setBackupBusy(true);
+    try { await restoreDesktopBackup(selectedBackup); }
+    catch (error) { setBackupMessage(error.message || '备份恢复失败，当前任务仍保留。'); setBackupBusy(false); }
+  }
 
   useEffect(() => {
     let active = true;
@@ -68,6 +99,14 @@ export function SettingsPage({ section, onSectionChange, defaultProjectId, onDef
     finally { setJevBusy(false); }
   }
 
+  async function importBackup(event) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    try { setBackupMessage(await onImportBackup(file)); }
+    catch (error) { setBackupMessage(error?.message || '读取任务备份失败。'); }
+  }
+
   const selectedProject = codexStatus.projects.find(project => project.id === defaultProjectId);
   const verifiedTime = jevStatus.verifiedAt ? new Date(jevStatus.verifiedAt).toLocaleString('zh-CN') : '';
 
@@ -75,7 +114,7 @@ export function SettingsPage({ section, onSectionChange, defaultProjectId, onDef
     <PageBack onBack={onBack} />
     <div className="home-eyebrow">本机配置</div>
     <h1 id="settings-title">设置</h1>
-    <p className="subpage-lede">工作区、知识库和 Jev 连接集中在这里管理。路径与密钥不会写入 Git。</p>
+    <p className="subpage-lede">在这里管理 Codex 工作区、知识库、成果预览、Jev 连接和任务备份。</p>
     <div className="settings-tabs" role="tablist" aria-label="设置项目">
       {SECTIONS.map(item => <button key={item.id} type="button" role="tab" aria-selected={section === item.id} className={section === item.id ? 'active' : ''} onClick={() => onSectionChange(item.id)}>{item.id === 'jev' && <span className={`settings-tab-light ${jevStatus.verified ? 'is-green' : 'is-red'}`} aria-hidden="true" />}{item.label}</button>)}
     </div>
@@ -92,6 +131,7 @@ export function SettingsPage({ section, onSectionChange, defaultProjectId, onDef
     </section>}
 
     {section === 'vault' && <VaultConnection {...vaultProps} embedded />}
+    {section === 'artifacts' && <ArtifactSettings connection={artifactConnection} />}
 
     {section === 'jev' && <section className="settings-card" aria-labelledby="settings-jev-title">
       <div className="settings-card-heading"><div><span className="panel-kicker">TypeSafe · Jev</span><h2 id="settings-jev-title">Jev API Key</h2></div><span className={`settings-light ${jevStatus.verified ? 'is-green' : 'is-red'}`} role="status"><span aria-hidden="true" />{jevStatus.verified ? '绿灯 · 上次验证成功' : '红灯 · 尚未验证成功'}</span></div>
@@ -105,6 +145,34 @@ export function SettingsPage({ section, onSectionChange, defaultProjectId, onDef
       {jevMessage && <p className={jevStatus.verified ? 'settings-success' : 'settings-error'} role="status">{jevStatus.verified ? <CheckCircle size={16} /> : <WarningCircle size={16} />}{jevMessage}</p>}
       <p className="settings-footnote">绿灯只表示 TypeSafe API Key 曾通过实际连接验证；本机网络或额度之后仍可能变化。Codex 内的 Jev MCP 是独立连接，这里的灯不代表 Codex 已加载该工具。</p>
       <a className="settings-link" href="https://console.typesafe.ai/settings/keys" target="_blank" rel="noreferrer">打开 TypeSafe 密钥页面</a>
+    </section>}
+
+    {section === 'backup' && <section className="settings-card" aria-labelledby="settings-backup-title">
+      <div className="settings-card-heading"><div><span className="panel-kicker">本机保存</span><h2 id="settings-backup-title">研究任务备份</h2></div></div>
+      <div className="automatic-backup-panel">
+        <strong>{desktopState.supported ? '任务自动备份' : '浏览器预览'}</strong>
+        <p role="status">{!desktopState.supported ? '当前使用浏览器存储；正式桌面版会自动保存任务和界面状态，并保留本机历史备份。' : desktopState.error || (desktopState.phase === 'saving' ? '正在保存本次修改…' : desktopState.savedAt ? `已保存 · ${new Date(desktopState.savedAt).toLocaleString('zh-CN')}` : '首次任务备份准备中…')}</p>
+        {desktopState.message && <p>{desktopState.message}</p>}
+        {desktopState.supported && <>
+          <p>保留最近一次状态和最多 10 份历史备份。重开时自动恢复；恢复历史备份可撤回近期修改。</p>
+          <div className="settings-actions">
+            <button className="secondary-button" type="button" disabled={backupBusy} onClick={refreshBackups}>查看可恢复备份</button>
+            {desktopState.error && <button className="secondary-button" type="button" disabled={backupBusy} onClick={retryDiskSave}>重试保存</button>}
+          </div>
+          {diskBackups.length > 0 && <div className="settings-backup-restore">
+            <label className="settings-field">选择恢复时间<select value={selectedBackup} onChange={event => setSelectedBackup(event.target.value)} disabled={backupBusy}><option value="">请选择一份备份</option>{diskBackups.map(item => <option key={item.id} value={item.id}>{new Date(item.savedAt).toLocaleString('zh-CN')}{item.id.startsWith('previous:') ? ' · 最近一次' : ''}</option>)}</select></label>
+            <button className="secondary-button" type="button" disabled={!selectedBackup || backupBusy} onClick={restoreBackup}>恢复这份备份</button>
+          </div>}
+        </>}
+      </div>
+      <p>当前本机有 {taskCount} 张任务卡。导出文件包含任务卡、未完成启动语和首页草稿，请保存在自己掌控的位置。文件不会自动上传。</p>
+      <p>导入时只合并新任务；同编号任务保留当前本机版本。已有启动语和首页草稿不会被覆盖。</p>
+      <div className="settings-actions">
+        <button className="secondary-button" type="button" onClick={onExportBackup}><DownloadSimple size={16} aria-hidden="true" />导出备份</button>
+        <button className="secondary-button" type="button" onClick={() => backupInputRef.current?.click()}><UploadSimple size={16} aria-hidden="true" />导入备份</button>
+        <input ref={backupInputRef} type="file" accept=".json,application/json" className="visually-hidden" aria-label="选择工作台任务备份 JSON 文件" onChange={importBackup} />
+      </div>
+      {backupMessage && <p className="settings-muted" role="status">{backupMessage}</p>}
     </section>}
   </section>;
 }

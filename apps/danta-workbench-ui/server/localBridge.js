@@ -3,6 +3,7 @@ import { accessSync, constants as fsConstants, statSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
+import { createArtifactService } from './artifactService.js';
 
 const execFileAsync = promisify(execFile);
 const API_PREFIX = '/__danta/';
@@ -131,12 +132,12 @@ function json(res, statusCode, payload) {
   res.end(JSON.stringify(payload));
 }
 
-async function readJsonBody(req) {
+async function readJsonBody(req, limit = MAX_REQUEST_BYTES) {
   const chunks = [];
   let size = 0;
   for await (const chunk of req) {
     size += chunk.length;
-    if (size > MAX_REQUEST_BYTES) throw Object.assign(new Error('请求内容过大。'), { statusCode: 413 });
+    if (size > limit) throw Object.assign(new Error('请求内容过大。'), { statusCode: 413 });
     chunks.push(chunk);
   }
   try {
@@ -260,8 +261,8 @@ async function withCodexClient(callback, binary) {
   }
 }
 
-async function chooseVaultFolder({ scopeLabel = '', initialPath = '' } = {}) {
-  const prompt = scopeLabel ? `选择“${scopeLabel}”现有笔记所在的文件夹` : '选择要连接的 Obsidian 知识库';
+async function chooseVaultFolder({ scopeLabel = '', initialPath = '', title = '' } = {}) {
+  const prompt = title || (scopeLabel ? `选择“${scopeLabel}”现有笔记所在的文件夹` : '选择要连接的 Obsidian 知识库');
   if (process.platform === 'darwin') {
     const { stdout } = await execFileAsync('osascript', ['-e', `POSIX path of (choose folder with prompt "${prompt}")`], { timeout: 300_000 });
     return stdout.trim();
@@ -594,7 +595,12 @@ export function createLocalBridgeService({
   copyText = selectClipboardTarget,
   vaultMemoryPath = '',
   jevCredentialStore = null,
+  workbenchStateStore = null,
+  artifactMemoryPath = '',
+  artifactFilePicker,
+  artifactOpenFile,
 } = {}) {
+  const artifacts = createArtifactService({ memoryPath: artifactMemoryPath, folderPicker, filePicker: artifactFilePicker, openFile: artifactOpenFile });
   let vaultRoot = '';
   let vaultName = '';
   let scopes = new Set();
@@ -654,6 +660,21 @@ export function createLocalBridgeService({
   }
 
   const service = {
+    artifacts,
+    async loadWorkbenchState() {
+      return workbenchStateStore?.load() || { supported: false, values: null, backups: [] };
+    },
+    async workbenchStateStatus() {
+      return workbenchStateStore?.status() || { supported: false, backups: [] };
+    },
+    async saveWorkbenchState({ values }) {
+      if (!workbenchStateStore) throw new Error('任务自动备份仅在桌面版可用。');
+      return workbenchStateStore.save(values);
+    },
+    async restoreWorkbenchState({ id }) {
+      if (!workbenchStateStore || typeof id !== 'string') throw new Error('请选择桌面版中的本机备份。');
+      return workbenchStateStore.restore(id);
+    },
     async initializeVault() {
       if (!vaultMemoryPath) return;
       if (!await readVaultMemory()) {
@@ -967,10 +988,14 @@ export function createLocalBridgeService({
       return { threadId, title, workspaceName: project.name, rootLabel: project.rootLabel, copied, opened };
     },
 
-    async openCodexThread({ threadId }) {
+    async openCodexThread({ threadId, prompt = '' }) {
       if (typeof threadId !== 'string' || !/^[a-zA-Z0-9-]{12,80}$/.test(threadId)) throw new Error('任务卡中的 Codex 对话编号无效。');
-      await openThread(threadId);
-      return { opened: true };
+      if (typeof prompt !== 'string' || prompt.length > 50_000) throw new Error('启动语须为文字且不超过 50000 字符。');
+      let copied = false;
+      if (prompt) { try { await copyText(prompt); copied = true; } catch { /* The renderer can offer manual copy. */ } }
+      let opened = false;
+      try { opened = Boolean(await openThread(threadId)); } catch { /* Retain the existing thread for a retry. */ }
+      return { threadId, opened, copied };
     },
   };
   return service;
@@ -983,6 +1008,21 @@ export function createLocalBridgeRequestHandler(service) {
     if (!localAddress(req.headers.host)) return json(res, 403, { error: '本机功能只接受来自本地工作台的请求。' });
     if (!originMatchesRequest(req)) return json(res, 403, { error: '请求来源无效，请从本机工作台操作。' });
     try {
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}artifacts/status`) return json(res, 200, await service.artifacts.status());
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}artifacts/list`) return json(res, 200, await service.artifacts.list(requestUrl.searchParams.get('taskId')));
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}artifacts/content`) {
+        const download = requestUrl.searchParams.get('download') === '1';
+        const file = await service.artifacts.content({ taskId: requestUrl.searchParams.get('taskId'), key: requestUrl.searchParams.get('key'), fingerprint: requestUrl.searchParams.get('fingerprint') || '', original: download });
+        res.writeHead(200, {
+          'Content-Type': file.type, 'Content-Length': file.bytes.length,
+          'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer',
+          'Content-Security-Policy': "sandbox; default-src 'none'; img-src data:; style-src 'unsafe-inline'; frame-ancestors 'self'; base-uri 'none'; form-action 'none'",
+          ...(download ? { 'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(file.filename).replace(/'/g, '%27')}` } : {}),
+        });
+        return res.end(file.bytes);
+      }
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}state`) return json(res, 200, await service.loadWorkbenchState());
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}state/status`) return json(res, 200, await service.workbenchStateStatus());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}codex/status`) return json(res, 200, await service.codexStatus());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}jev/status`) return json(res, 200, await service.jevStatus());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/status`) return json(res, 200, await service.vaultStatus());
@@ -990,7 +1030,14 @@ export function createLocalBridgeRequestHandler(service) {
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/data`) return json(res, 200, await service.vaultData(requestUrl.searchParams.get('section')));
       if (req.method !== 'POST') return json(res, 405, { error: '不支持此请求。' });
       if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return json(res, 415, { error: '请求格式无效。' });
-      const body = await readJsonBody(req);
+      const body = await readJsonBody(req, requestUrl.pathname === `${API_PREFIX}state/save` ? 12 * 1024 * 1024 + 4096 : MAX_REQUEST_BYTES);
+      if (requestUrl.pathname === `${API_PREFIX}artifacts/select`) return json(res, 200, await service.artifacts.select(body));
+      if (requestUrl.pathname === `${API_PREFIX}artifacts/forget`) return json(res, 200, await service.artifacts.forget());
+      if (requestUrl.pathname === `${API_PREFIX}artifacts/import`) return json(res, 200, await service.artifacts.import(body));
+      if (requestUrl.pathname === `${API_PREFIX}artifacts/attach-preview`) return json(res, 200, await service.artifacts.attachPreview(body));
+      if (requestUrl.pathname === `${API_PREFIX}artifacts/open`) return json(res, 200, await service.artifacts.open(body));
+      if (requestUrl.pathname === `${API_PREFIX}state/save`) return json(res, 200, await service.saveWorkbenchState(body));
+      if (requestUrl.pathname === `${API_PREFIX}state/restore`) return json(res, 200, await service.restoreWorkbenchState(body));
       if (requestUrl.pathname === `${API_PREFIX}jev/configure`) return json(res, 200, await service.configureJev(body));
       if (requestUrl.pathname === `${API_PREFIX}jev/verify`) return json(res, 200, await service.verifyJev());
       if (requestUrl.pathname === `${API_PREFIX}jev/forget`) return json(res, 200, await service.forgetJev());

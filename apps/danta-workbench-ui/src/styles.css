@@ -728,8 +728,7 @@ button:focus-visible, textarea:focus-visible {
 .workspace-topline,
 .workspace-panel-heading,
 .workspace-form-footer,
-.file-add-button,
-.inline-link {
+.file-add-button {
   display: flex;
   align-items: center;
 }
@@ -753,6 +752,7 @@ button:focus-visible, textarea:focus-visible {
 .vault-status > svg { color: var(--ink-light); }
 .status-dot { width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: #b7bdc7; }
 .status-dot.selected { background: #d09a64; }
+.status-dot.connected { background: #218652; }
 .primary-nav { align-items: stretch; flex-direction: column; gap: 4px; margin-top: 22px; }
 .nav-item { gap: 12px; padding: 11px 12px; font-size: 13px; }
 .nav-item.active { background: var(--accent-soft); color: var(--accent-strong); }
@@ -785,13 +785,18 @@ button:focus-visible, textarea:focus-visible {
 .workflow-entry-copy small { overflow: hidden; color: var(--ink-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .workflow-entry > svg { color: var(--ink-light); }
 .workflow-entry:hover > svg { color: var(--accent-strong); }
+.research-task-list-section.home-latest-task { margin-top: 0; }
+.home-latest-task .quick-start-heading .text-button { margin: 0; }
+.home-new-work { margin-top: 20px; }
+.home-navigation-hint { margin: 20px 0 0; color: var(--ink-muted); font-size: 12px; line-height: 1.65; }
 .research-task-list-section { margin: 26px 0 20px; }
-.task-backup-panel { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; margin: 10px 0 24px; padding: 13px 16px; border: 1px solid var(--line-default); border-radius: 12px; background: var(--surface-raised); }
-.task-backup-panel strong { color: var(--ink-secondary); font-size: 12px; }
-.task-backup-panel p { margin: 4px 0 0; color: var(--ink-muted); font-size: 10px; line-height: 1.55; }
-.task-backup-actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.task-backup-actions .text-button { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 11px; }
-.task-backup-panel .task-backup-message { flex-basis: 100%; color: var(--ink-secondary); }
+.work-area .subpage-lede { margin-bottom: 22px; }
+.area-action-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.area-action .workflow-entry-copy small { white-space: normal; line-height: 1.5; }
+.area-action .workflow-entry-copy strong { font-size: 14px; }
+.area-action .workflow-entry-copy small { font-size: 12px; }
+.area-secondary-action { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; margin-top: 18px; color: var(--ink-muted); font-size: 11px; }
+.area-secondary-action .text-button { margin: 0; }
 .storage-warning { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 18px; background: #fff0e7; color: #8f3e28; font-size: 12px; }
 .storage-warning button { flex: 0 0 auto; border: 1px solid #bd6b4e; border-radius: 7px; padding: 5px 9px; background: white; color: #8f3e28; cursor: pointer; }
 .research-task-list-section .quick-start-heading { margin-top: 0; }
@@ -800,20 +805,14 @@ button:focus-visible, textarea:focus-visible {
 .research-task-card:hover { border-color: var(--accent-border); background: var(--accent-soft); }
 .research-task-card-open { display: flex; align-items: center; flex: 1; gap: 14px; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; }
 .research-task-card-main { display: grid; flex: 1; gap: 4px; min-width: 0; }
-.research-task-card-title { overflow: hidden; color: var(--ink-primary); font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
-.research-task-card-meta, .research-task-card-next, .research-task-card-updated { color: var(--ink-muted); font-size: 10px; line-height: 1.5; }
+.research-task-card-title { overflow: hidden; color: var(--ink-primary); font-size: 14px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.research-task-card-meta, .research-task-card-next, .research-task-card-updated { color: var(--ink-muted); font-size: 11px; line-height: 1.5; }
 .research-task-card-next { overflow: hidden; color: var(--ink-secondary); text-overflow: ellipsis; white-space: nowrap; }
 .research-task-card-updated { flex: 0 0 auto; color: var(--ink-light); }
 .research-task-card-open > svg { flex: 0 0 auto; color: var(--ink-light); }
 .research-task-card:hover .research-task-card-open > svg { color: var(--accent-strong); }
 .research-task-codex-button { flex: 0 0 auto; padding: 7px 9px; border: 1px solid var(--line-default); border-radius: 8px; background: var(--surface-raised); color: var(--accent-strong); font-size: 10px; }
 .research-task-codex-button:hover { border-color: var(--accent-border); background: var(--surface-base); }
-.resume-row { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 24px; padding: 13px 14px; border: 1px solid var(--line-subtle); border-radius: 12px; background: transparent; color: var(--ink-muted); text-align: left; }
-.resume-row:hover { border-color: var(--line-default); background: var(--surface-raised); }
-.resume-label { color: var(--ink-secondary); font-size: 12px; font-weight: 600; white-space: nowrap; }
-.resume-divider { width: 1px; height: 16px; background: var(--line-default); }
-.resume-summary { flex: 1; font-size: 11px; }
-.inline-link { gap: 5px; color: var(--accent-strong); font-size: 11px; white-space: nowrap; }
 .local-note { margin: 14px 0 0; color: var(--ink-light); font-size: 10px; text-align: center; }
 
 .workspace-workspace,
@@ -1143,10 +1142,11 @@ button:focus-visible, textarea:focus-visible {
   .sidebar { order: 2; position: sticky; bottom: 0; z-index: 10; width: 100%; min-height: auto; flex: 0 0 auto; padding: 5px 8px max(5px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line-default); border-right: 0; background: var(--surface-raised); }
   .vault-status, .sidebar-footer { display: none; }
   .primary-nav { flex-direction: row; justify-content: space-around; gap: 2px; margin: 0; }
-  .nav-item { flex: 1; flex-direction: column; justify-content: center; gap: 3px; min-width: 0; padding: 7px 3px; font-size: 9px; }
+  .nav-item { flex: 1; flex-direction: column; justify-content: center; gap: 3px; min-width: 0; padding: 7px 3px; font-size: 11px; }
   .nav-item span { overflow: hidden; max-width: 100%; text-overflow: ellipsis; white-space: nowrap; }
   .main-content { order: 1; padding: 24px 16px 32px; }
   .workflow-entry-grid { grid-template-columns: 1fr; }
+  .area-action-grid { grid-template-columns: 1fr; }
   .quick-start-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
   .research-task-card { align-items: flex-start; gap: 8px; }
   .research-task-card-open { align-items: flex-start; gap: 8px; }
@@ -1154,9 +1154,6 @@ button:focus-visible, textarea:focus-visible {
   .research-task-codex-button { align-self: center; }
   .research-task-fields { grid-template-columns: 1fr; }
   .research-task-title-field, .research-task-objective-field, .research-task-next-field, .research-task-questions-field { grid-column: auto; }
-  .resume-row { flex-wrap: wrap; }
-  .resume-summary { flex-basis: calc(100% - 45px); }
-  .resume-divider { display: none; }
   .workspace-form-footer { align-items: flex-start; flex-direction: column; }
   .ppt-guidance-heading { flex-direction: column; }
   .ppt-guidance .text-button { padding: 3px 0; }
@@ -1199,6 +1196,11 @@ button:focus-visible, textarea:focus-visible {
   .daily-report-choice { width: 100%; }
 }
 
+.automatic-backup-panel { padding: 16px; margin: 16px 0; border: 1px solid var(--line-default); border-radius: 12px; background: var(--surface-base); }
+.automatic-backup-panel strong { color: var(--ink-secondary); }
+.settings-backup-restore { margin-top: 14px; }
+.codex-new-thread { margin: 14px 0; }
+.codex-new-thread > summary { color: var(--accent-strong); cursor: pointer; }
 /* 本机知识库、恢复入口与工作台交接 */
 .page-back-row { display: flex; margin: 0 0 17px; }
 .page-back-row .back-link { min-height: 30px; }
@@ -1395,4 +1397,88 @@ button:focus-visible, textarea:focus-visible {
   .codex-open-button { width: 100%; justify-content: center; }
   .settings-card { padding: 16px; }
   .settings-card-heading { align-items: flex-start; }
+}
+
+/* Task-local results: a quiet, Codex-style file pane. */
+.main-content:has(.artifact-workspace) { min-width: 0; max-width: none; }
+.artifact-workspace { min-width: 0; }
+.artifact-workspace.has-artifact-panel { display: grid; grid-template-columns: minmax(0, 1fr) 10px minmax(350px, var(--artifact-width)); gap: 6px; align-items: start; }
+.artifact-task-content { min-width: 0; }
+.artifact-library { margin-bottom: 24px; padding: 16px 18px; border: 1px solid var(--line-default); border-radius: 14px; background: var(--surface-raised); outline-offset: 3px; }
+.artifact-library-heading, .artifact-library-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.artifact-library-heading > div:first-child { display: grid; gap: 3px; }
+.artifact-library-heading strong { font-size: 14px; }
+.artifact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 12px; max-height: 230px; overflow: auto; }
+.artifact-cards button { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 11px; border: 1px solid var(--line-default); border-radius: 9px; background: var(--surface-base); color: var(--ink-secondary); text-align: left; cursor: pointer; }
+.artifact-cards button:hover, .artifact-cards button.is-selected { background: var(--accent-soft); border-color: var(--accent-border); color: var(--accent-strong); }
+.artifact-cards button > span { display: grid; gap: 4px; min-width: 0; }
+.artifact-cards strong { font-size: 12px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.artifact-cards small { font-size: 10px; color: var(--ink-muted); }
+.artifact-small-note { font-size: 11px; color: var(--ink-muted); line-height: 1.6; margin: 10px 0 0; }
+.artifact-error { margin: 12px 0; color: #b34c40; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.artifact-resizer { cursor: col-resize; min-height: 70vh; border-radius: 8px; touch-action: none; }
+.artifact-resizer:hover, .artifact-resizer:focus-visible { background: var(--accent-border); outline: none; }
+.artifact-panel { position: sticky; top: 14px; height: calc(100dvh - 100px); min-height: 580px; min-width: 0; display: flex; flex-direction: column; background: var(--surface-raised); border: 1px solid var(--line-default); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-sm); outline: none; }
+.artifact-panel.is-expanded { position: fixed; inset: 82px 22px 22px 258px; height: auto; z-index: 80; box-shadow: var(--shadow-lg); }
+.artifact-panel-heading { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line-default); }
+.artifact-panel-heading strong { font-size: 13px; }
+.artifact-panel-heading > div { display: flex; gap: 5px; }
+.artifact-panel-heading button, .artifact-tabs button, .artifact-viewer-tools button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--ink-secondary); font: inherit; font-size: 11px; cursor: pointer; }
+.artifact-panel button:hover { background: var(--accent-soft); }
+.artifact-panel .primary-button:hover { background: var(--accent-strong); }
+.artifact-tabs { display: flex; gap: 3px; padding: 6px 8px 0; overflow-x: auto; border-bottom: 1px solid var(--line-default); flex-shrink: 0; }
+.artifact-tabs > div { display: flex; align-items: center; flex: 0 0 auto; max-width: 220px; border-radius: 7px 7px 0 0; border: 1px solid transparent; border-bottom: 2px solid transparent; }
+.artifact-tabs > div.is-selected { background: var(--accent-soft); border-bottom-color: var(--accent-primary); }
+.artifact-tabs button[role="tab"] { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+.artifact-tabs button:last-child { flex-shrink: 0; }
+.artifact-file-meta { display: grid; gap: 5px; padding: 12px 14px; flex-shrink: 0; }
+.artifact-file-meta strong { font-size: 13px; overflow-wrap: anywhere; }
+.artifact-file-meta span { color: var(--ink-muted); font-size: 10px; }
+.artifact-active-view { flex: 1; min-height: 180px; overflow: hidden; background: var(--surface-base); border-block: 1px solid var(--line-default); }
+.artifact-document-scroll { height: 100%; overflow: auto; padding: 10px; }
+.artifact-loading { padding: 24px; color: var(--ink-muted); font-size: 12px; }
+.artifact-preview-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; height: 100%; padding: 28px; color: var(--ink-muted); text-align: center; font-size: 12px; }
+.artifact-preview-empty p { line-height: 1.7; }
+.artifact-viewer-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; padding: 6px 0 10px; font-size: 11px; }
+.artifact-viewer-tools label { display: inline-flex; align-items: center; gap: 5px; }
+.artifact-viewer-tools input, .artifact-viewer-tools select { padding: 5px; border: 1px solid var(--line-default); border-radius: 5px; background: var(--surface-raised); color: var(--ink-primary); font: inherit; }
+.artifact-viewer-tools input { width: 54px; }
+.pdf-canvas-wrap { min-height: 140px; text-align: center; }
+.pdf-canvas-wrap canvas { display: block; margin: 0 auto; background: #fff; box-shadow: var(--shadow-sm); }
+.artifact-image-wrap { overflow: auto; }
+.artifact-image-wrap img { display: block; height: auto; margin: 0 auto; max-width: none; }
+.artifact-markdown { padding: 14px 18px; font-size: 14px; line-height: 1.8; background: var(--surface-raised); overflow-wrap: anywhere; }
+.artifact-markdown h1 { font-size: 24px; }.artifact-markdown h2 { font-size: 20px; }.artifact-markdown h3 { font-size: 16px; }
+.artifact-markdown ul, .artifact-markdown ol { padding-left: 24px; }.artifact-markdown pre { overflow-x: auto; font-size: 12px; }
+.artifact-text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; line-height: 1.8; padding: 14px; }
+.artifact-html { width: 100%; height: 100%; min-height: 430px; border: 0; background: #fff; }
+.artifact-original-actions { display: flex; gap: 12px; padding: 10px 14px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--line-default); }
+.artifact-original-actions a { display: inline-flex; gap: 5px; align-items: center; color: var(--accent-strong); text-decoration: none; font-size: 11px; }
+.artifact-feedback { padding: 12px 14px; flex-shrink: 0; }
+.artifact-feedback label { font-size: 12px; font-weight: 650; }.artifact-feedback label span { color: var(--ink-muted); font-weight: 400; }
+.artifact-feedback textarea { display: block; width: 100%; margin-top: 9px; padding: 10px; min-height: 68px; max-height: 150px; resize: vertical; border: 1px solid var(--line-default); border-radius: 8px; background: var(--surface-base); color: var(--ink-primary); font: inherit; font-size: 12px; }
+.artifact-feedback > div { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.artifact-feedback small { font-size: 10px; color: var(--ink-muted); }
+.has-artifact-panel .workspace-grid, .has-artifact-panel .mechanism-grid { grid-template-columns: 1fr; }
+.has-artifact-panel .workspace-heading h1 { font-size: 28px; }
+.has-artifact-panel .research-task-fields, .has-artifact-panel .ppt-guidance-grid { grid-template-columns: minmax(0, 1fr); }
+.has-artifact-panel .research-task-fields > label { grid-column: auto; }
+.has-artifact-panel .ppt-template-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1150px) {
+  .artifact-workspace.has-artifact-panel { display: block; }
+  .artifact-resizer { display: none; }
+  .artifact-panel, .artifact-panel.is-expanded { position: fixed; inset: 82px 16px 16px 250px; height: auto; min-height: 0; z-index: 80; box-shadow: var(--shadow-lg); }
+}
+@media (max-width: 700px) {
+  .artifact-panel, .artifact-panel.is-expanded { inset: 12px; z-index: 90; }
+  .artifact-feedback > div { align-items: start; flex-direction: column; }
+}
+@media (max-height: 800px) {
+  .artifact-panel { min-height: 0; }
+  .artifact-active-view { min-height: 110px; }
+  .artifact-file-meta { padding-block: 8px; }
+  .artifact-feedback { padding-block: 8px; }
+  .artifact-feedback textarea { min-height: 48px; height: 55px; max-height: 90px; }
+  .artifact-feedback > div { margin-top: 6px; }
+  .artifact-feedback small { display: none; }
 }
