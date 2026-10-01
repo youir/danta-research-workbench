@@ -41,8 +41,8 @@ function savedTimeLabel(timestamp) {
 }
 
 export function App() {
-  const [activePage, setActivePage] = useState('start');
-  const [pageHistory, setPageHistory] = useState([]);
+  const [activePage, setActivePage] = usePersistentState('activePage', 'start');
+  const [pageHistory, setPageHistory] = usePersistentState('pageHistory', []);
   const [homeThought, setHomeThought] = usePersistentState('homeThought', '');
   const [drafts] = usePersistentState('workflowDrafts', INITIAL_DRAFTS);
   const [taskFocus, setTaskFocus] = usePersistentState('taskFocus', '自由讨论');
@@ -55,13 +55,13 @@ export function App() {
   const [defaultCodexProjectId, setDefaultCodexProjectId] = usePersistentState('defaultCodexProjectId', '');
   const [lastCheckpoint, setLastCheckpoint] = usePersistentState('lastCheckpoint', null);
   const storageError = useStorageHealth();
-  const [showMechanismProcess, setShowMechanismProcess] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [showMechanismProcess, setShowMechanismProcess] = usePersistentState('showMechanismProcess', false);
+  const [modalOpen, setModalOpen] = usePersistentState('kickoffModalOpen', false);
   const [copied, setCopied] = useState(false);
   const [vaultStatus, setVaultStatus] = useState({ selected: false, connected: false, name: '', scopes: [], scopeOptions: [] });
   const [vaultBusy, setVaultBusy] = useState(false);
   const [vaultStructure, setVaultStructure] = useState(null);
-  const [settingsSection, setSettingsSection] = useState('workspace');
+  const [settingsSection, setSettingsSection] = usePersistentState('settingsSection', 'workspace');
   const [archivingTaskId, setArchivingTaskId] = useState('');
   const archiveLockRef = useRef(false);
 
@@ -123,7 +123,11 @@ export function App() {
     return () => { active = false; };
   }, [showNotice]);
 
-  useEffect(() => { window.scrollTo(0, 0); }, [activePage]);
+  const firstPageRender = useRef(true);
+  useEffect(() => {
+    if (firstPageRender.current) { firstPageRender.current = false; return; }
+    window.scrollTo(0, 0);
+  }, [activePage]);
 
   const workflow = useMemo(() => PROMPT_STARTERS.find(item => item.id === activePage), [activePage]);
   const activeNav = ['start', 'records', 'mechanism', 'literature', 'daily-briefs', 'archive', 'settings'].includes(activePage) ? activePage : 'start';
@@ -493,7 +497,7 @@ export function App() {
         <Sidebar activePage={activeNav} vaultName={vaultStatus.name} vaultConnected={vaultStatus.connected} onNavigate={navigateFromSidebar} />
         <main className="main-content">{renderContent()}</main>
       </div>
-      <KickoffModal isOpen={modalOpen} kickoffPrompt={kickoffPrompt} copied={copied} onCopy={copyKickoff} onCreateThread={createCodexHandoff} defaultProjectId={defaultCodexProjectId} onOpenSettings={() => { setModalOpen(false); navigate('settings'); }} workflowLabel={pendingKickoff?.taskTitle || taskFocus} onClose={() => setModalOpen(false)} copyButtonRef={copyButtonRef} dialogRef={dialogRef} />
+      <KickoffModal isOpen={modalOpen && Boolean(kickoffPrompt)} kickoffPrompt={kickoffPrompt} copied={copied} onCopy={copyKickoff} onCreateThread={createCodexHandoff} defaultProjectId={defaultCodexProjectId} preferredProjectId={pendingKickoff?.projectId || ''} onProjectChange={projectId => setPendingKickoff(current => current ? { ...current, projectId } : current)} onOpenSettings={() => { setModalOpen(false); navigate('settings'); }} workflowLabel={pendingKickoff?.taskTitle || taskFocus} onClose={() => setModalOpen(false)} copyButtonRef={copyButtonRef} dialogRef={dialogRef} />
       <Notice message={notice.message} type={notice.type} onClose={hideNotice} />
     </div>
   );

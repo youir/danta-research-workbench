@@ -2,6 +2,7 @@ import { memo, useMemo, useState } from 'react';
 import { ArrowSquareOut, ArrowRight, BookOpenText, Rss } from '@phosphor-icons/react';
 import { PageBack } from '../../../shared/components/PageBack.jsx';
 import { useVaultSection } from '../../../shared/hooks/useVaultSection.js';
+import { usePersistentState } from '../../../shared/hooks/usePersistentState.js';
 
 function dateLabel(value) {
   const date = new Date(value);
@@ -11,9 +12,9 @@ function dateLabel(value) {
 export const LiteraturePage = memo(({ onOpenVault, onBack, canReadRss = false, canReadLiterature = false }) => {
   const rss = useVaultSection('rss', canReadRss);
   const literature = useVaultSection('literature', canReadLiterature);
-  const [filter, setFilter] = useState('all');
-  const [search, setSearch] = useState('');
-  const [seedPmid, setSeedPmid] = useState('');
+  const [filter, setFilter] = usePersistentState('literatureFilter', 'all');
+  const [search, setSearch] = usePersistentState('literatureSearch', '');
+  const [seedPmid, setSeedPmid] = usePersistentState('linkedDiscoveriesPmid', '');
   const [linkedDiscoveriesError, setLinkedDiscoveriesError] = useState('');
   const items = rss.data?.items || [];
   const visibleItems = useMemo(() => items.filter(item => {

@@ -105,7 +105,7 @@ export const VaultConnection = memo(({ status, structure, onSelect, onRemember, 
           <span className="vault-status-pill">{status?.name || '需要你选择'}</span>
         </div>
         {status?.selected && <p className="vault-selected-path"><strong>已选择的完整路径：</strong><code>{status.path}</code></p>}
-        <p>桌面版会在本机保存本人确认的授权范围，并在下次启动时自动核对知识库和关联目录。路径与目录未变化时直接恢复；不会写进 Git 或云端，也不会在启动时读取笔记。</p>
+        <p>桌面版会在本机保存本人确认的授权范围，并在下次启动时自动核对知识库和关联目录。路径与目录未变化时直接恢复；不会写进 Git 或云端。启动核对本身不读取笔记；若重开后回到资料页，该页会按原授权读取。</p>
         {status?.restoreMessage && <p className={`vault-feedback${status.selected ? '' : ' is-error'}`} role="status">{status.restoreMessage}</p>}
 
         <div className="vault-actions">

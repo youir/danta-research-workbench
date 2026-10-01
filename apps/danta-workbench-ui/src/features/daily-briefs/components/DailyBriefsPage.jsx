@@ -32,7 +32,7 @@ function saveBlob(blob, name) {
 export function DailyBriefsPage({ onBack, onBegin }) {
   const [directoryHandle, setDirectoryHandle] = useState(null);
   const [reports, setReports] = useState([]);
-  const [selectedId, setSelectedId] = useState('');
+  const [selectedId, setSelectedId] = usePersistentState('selectedDailyBriefId', '');
   const [status, setStatus] = useState('');
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState(null);
