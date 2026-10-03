@@ -8,7 +8,7 @@ type: fleeting
 record: experiment
 status: draft
 summary: ""
-project: "P001"
+project: ""
 sources: []
 aliases: []
 ---

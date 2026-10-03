@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "grants": [],
+  "note": "空白模板不含授权。每项记录 id、status、path、file_types、excluded、purposes、save_to、processing_services、include_future_files、granted_at、source、original_statement、revoked_at；仅按本人实际确认填写。无密钥；私有路径不上传。"
+}

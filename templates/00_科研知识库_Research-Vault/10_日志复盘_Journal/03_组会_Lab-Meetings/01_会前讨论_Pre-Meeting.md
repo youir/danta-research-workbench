@@ -7,7 +7,7 @@ type: "permanent"
 record: "meeting"
 status: "template"
 summary: "组会准备、证据与会后研究行动"
-project: "P001"
+project: ""
 sources: []
 aliases: []
 ---

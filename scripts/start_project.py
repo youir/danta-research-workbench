@@ -6,6 +6,7 @@ from pathlib import Path
 import shutil
 import sys
 import tempfile
+from skill_deployment import content_version
 ROOT = Path(__file__).resolve().parent.parent
 MARKER = '.danta-workspace.json'
 
@@ -62,7 +63,7 @@ def main():
             output = stage / relative
             output.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, output)
-        (stage / MARKER).write_text(json.dumps({'kind':'danta-research-workspace','version':1},indent=2)+'\n',encoding='utf-8')
+        (stage / MARKER).write_text(json.dumps({'kind':'danta-research-workspace','version':1,'content_version':content_version()},indent=2)+'\n',encoding='utf-8')
         dest.mkdir()  # Exclusive claim: do not replace a concurrently-created target.
         claimed = True
         for child in stage.iterdir():

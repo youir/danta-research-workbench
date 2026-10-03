@@ -28,6 +28,7 @@ def main():
     files = sorted(set(files + ['project-files.json']))
     (ROOT / 'project-files.json').write_text(json.dumps({'version':1,'files':files},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     path = ROOT / 'MANIFEST.json';data = json.loads(path.read_text())
+    data['content_version'] = json.loads((ROOT / 'content-version.json').read_text(encoding='utf-8'))['content_version']
     for item in data['skills'].values():item['files'] = hashes(ROOT / item['source'], tracked_set)
     path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     base = ROOT / 'variants/mentor-agent';path = base / 'skill-manifest.json';data = json.loads(path.read_text())

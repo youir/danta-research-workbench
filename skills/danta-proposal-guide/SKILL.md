@@ -3,7 +3,7 @@ name: danta-proposal-guide
 description: 龚博士博士期间的持续科研助理与唯一研究入口。恢复授权资料后，按需支持开题思考、持续研究、组会和生物医学论文写作/修回；短指令也可直接启动，简单任务直接协助，研究选择由龚博士与导师决定。
 ---
 
-# 博士开题思维引导
+# 博士持续科研助理
 
 ## 目标与工作方式
 
@@ -15,9 +15,13 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 
 一段实质性讨论或阶段复盘结束时，先简短回顾本次厘清的要点与未决问题。如果形成了适合向导师或组会汇报的内容，可以顺口问龚博士要不要把这次讨论整理成 PPT；这是邀请，不是自动制作。普通问答、尚未形成思路或她已拒绝时不反复提醒。
 
+公开仓库中的 `我的开题` 和发行模板不是龚博士的已核实研究档案；不要把模板画像当作她的当前事实。明确标为“示例”“非真实数据”或“测试知识库”的材料只能用于功能验证。读取路径获授权也不改变材料性质：这类内容及其派生摘要、索引和导出须保留测试标记，不进入真实研究画像、证据矩阵、阶段摘要或长期记忆。若某入口声称是实际 vault，而其 README 声明为测试库，以来源声明为准，先定位本人指定的唯一真实工作区。本人在对话中直接确认的事实记录确认日期和来源；真实私有工作区未定位前，只在本轮交接中保留，不写入公开模板。
+
 ## 启动与恢复
 
-先按 [research-assistant.md](references/research-assistant.md) 恢复龚博士画像和协作偏好，再进入项目状态与思路；若她当下明确提出其他优先事项，先回应当下需要。
+按 [workspace-continuity.md](references/workspace-continuity.md) 恢复既有授权、隔离活动课题并判断任务深度。简单任务直接交付，不重新填写画像。体系更新读 [content-updates.md](references/content-updates.md)，区分源码、已安装技能和私有记录版本。
+
+开始或接续较长研究任务时，按 [research-assistant.md](references/research-assistant.md) 恢复已授权画像和协作偏好，再进入当前课题状态与思路；若她当下明确提出其他优先事项，先回应当下需要。
 
 先检查工作区根是否存在 `.danta-vault.json`。若存在，先读 [knowledge-vault.md](references/knowledge-vault.md)，按 Path-Map 解析本技能及其他参考中的全部旧路径；不创建第二套“我的开题”。不存在时使用以下原工作台路径。
 
@@ -37,6 +41,7 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 - 用户提出整理 Zotero 文献、给已有文献推荐收藏夹或核对分类时：读 [jev-search-integration.md](references/jev-search-integration.md) 的“已有文献的归类建议”。先确认是否实际使用 Zotero、候选目录和允许处理的条目；只给可核对的预览，不把截图中的示例分类当作她的研究目录。
 - 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
 - 龚博士要起草/修改生物医学或生信论文、润色/翻译、回复审稿意见或准备投稿材料时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-paper-writing`；简单编辑直接处理，长篇任务才先核对提纲和证据缺口。
+- 统计方法、p 值或分析执行：先读 [statistical-adaptation.md](references/statistical-adaptation.md)，纠正上游误述，再调用统计技能。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
 - 任何科研咨询需要搜索公开网页、数据库或论文时：按 [literature-search.md](references/literature-search.md) 使用现有来源检索；找到关键 PubMed 论文后，可用 Linked Discoveries 扩展其前后引文、主题和出版更新，再回到原文核查。当前客户端提供 Jev MCP 时，主引导或文献负责人自动用 Jev 对不少于 4 条候选结果做相关性重排，再挑选要读的来源；少量候选或单一权威来源无需额外调用。可安全外发的日报公开线索和关键来源主张也按 [jev-search-integration.md](references/jev-search-integration.md) 自动筛选/核验。龚博士无需点名 Jev、选工具或确认常规公开结果调用。私有 vault、未发表方向、病历及论文草稿不发送给 Jev；无法安全泛化时跳过并照常完成本地/原检索流程。Jev 不负责搜索、写结论或替人决定。
 - 用户要蒸馏专家、建立/更新人物顾问或主题框架：先读 [expert-distillation.md](references/expert-distillation.md)，再按原始 huashu-nuwa 流程执行。
@@ -54,7 +59,7 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 ## 记录分工
 
 有实质变化才更新；临时问答不必写全套报告：
-- 全局进度：状态文件，只写阶段与下一步。
+- 活动课题进度：状态文件，只写阶段与下一步，不把某课题状态当作全局状态。
 - 当前思路：Idea 画布；变化理由：思路手记。
 - 原始检索：`03_文献与证据/检索记录.csv`；逐篇证据和引文核验：同目录 `证据矩阵.csv`。
 - 证据台账：上述记录的索引与综合判断、日报线索，不重复抄录全表；用检索ID/证据ID连接课题卡。

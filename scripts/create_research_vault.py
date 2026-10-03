@@ -8,6 +8,7 @@ import shutil
 import sys
 import tempfile
 from package_lib import manifest, verify_bundle
+from skill_deployment import content_version, updated_receipt, write_receipt
 
 ROOT = Path(__file__).resolve().parent.parent
 MARKER = '.danta-vault.json'
@@ -104,6 +105,11 @@ def main():
             out = stage / relative
             out.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, out)
+        selected = [p.name for p in (stage / '.agents/skills').iterdir() if p.is_dir()]
+        write_receipt(stage / '.agents/skills', updated_receipt(stage / '.agents/skills', manifest(), selected))
+        marker = json.loads((stage / MARKER).read_text(encoding='utf-8'))
+        marker['template_version'] = content_version()
+        (stage / MARKER).write_text(json.dumps(marker, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         dest.mkdir()  # Exclusive claim, preserving a concurrent creator's files.
         claimed = True
         for child in stage.iterdir():

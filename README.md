@@ -1,5 +1,7 @@
 # 龚博士科研工作台
 
+内容体系版本见 [content-version.json](content-version.json)，与桌面版本独立。Git 同步不自动升级私有库技能；按 [内容更新说明](skills/danta-proposal-guide/references/content-updates.md) 使用只读计划、校验、备份及受管理更新。
+
 **思维优先，决策在人。** 主 agent 是龚博士博士期间的持续科研助理与思考搭档：在她授权的工作区逐步了解资料和协作偏好，延续研究脉络，再通过倾听、证据和不同解释帮助她推进当下问题。
 
 本仓库包含龚博士的主引导 skill、固定版本科研 skills、生物数据库查询、生物医学论文写作与修回、生物科研日报、PPT 与科研图工作流、Consensus/Semantic Scholar 检索及 PubMed Linked Discoveries 文献脉络探索、科研工具地图、PPT Master 官方固定版本安装器、女娲专家蒸馏 skill、可选职责 agent 配置、空白模板，以及可安装的 Windows 桌面工作台。桌面应用负责分流任务、整理可编辑的启动语；用户可在选定知识库后检查科研目录结构，经本人确认补齐缺失的空目录。读取 Markdown、RSS 缓存和新建归档分别按范围授权。任务交接优先接续任务关联的 Codex 对话，也可另开选定工作区的新对话；复制启动语后仍需使用者粘贴并提交。工作台不会后台扫描资料或自动运行 agent。外部检索按需调用；账号 API key 由使用者申请并在本机环境配置，不写入发行包。PPT Master 不占用日常知识库空间，第一次需要真正制图时再按校验值下载到当前私有工作区。

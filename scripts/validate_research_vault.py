@@ -20,7 +20,10 @@ def check(root):
         assert resolved.exists(), relative
         return resolved
     mapping = json.loads(within(marker['path_map']).read_text(encoding='utf-8'))
-    assert marker['active_project'] == mapping['active_project']
+    if mapping.get('schema_version') == 2:
+        assert mapping['projects'][mapping['active_project_id']]['root'] == mapping['active_project']
+    else:
+        assert marker.get('active_project', mapping['active_project']) == mapping['active_project']
     within(mapping['active_project'])
     assert len(set(mapping['paths'].values())) == len(mapping['paths'])
     for path in list(mapping['paths'].values()) + list(mapping['roles'].values()):

@@ -8,7 +8,7 @@ type: permanent
 record: decision
 status: draft
 summary: ""
-project: "P001"
+project: ""
 sources: []
 aliases: []
 ---

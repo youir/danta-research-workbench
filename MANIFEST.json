@@ -6,24 +6,29 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "c20730f0bc081d3222036ca86c0989b2e4b1b0edbb30d44f5b16110ca3e171eb",
+        "SKILL.md": "5b2dc55877f1b0f31dcf6ea5b84184e0b9c54176c26b6d4956c077f8a69bf8ea",
         "agents/openai.yaml": "945dc0eb8e27f0478b0da327f54b2c7967a382455b1247c2274c913ea8396d60",
+        "references/content-updates.md": "6a297c8ebaac76937591e4e4c74dcc2e2784d0deaffdc1f6908ceacb56ec8792",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
         "references/expert-distillation.md": "5b5b80aebc307bb985fa5d35d8fb32a631e054eaa7aefea955b561c9f5a44b8f",
-        "references/intake.md": "93c039351cfe75280459ef37ac42588efcbdfc83ca9f68a2b33feb40c5518387",
-        "references/jev-search-integration.md": "631e332c4621440a53c3239f124d84134d52cceba5bb87cdde420fd1340166e9",
-        "references/knowledge-vault.md": "2e1c0595777efa241bed24b532ba911d3754c8c8153d4d1cb922aea7979f0e04",
+        "references/intake.md": "53269ee358eb6fb3dae3acb969b088eeda2c8a9e45b73a5c8eab47beaa428533",
+        "references/jev-search-integration.md": "f7bfb5bae8d4436827f00640e6fc2694acf958872faaf6237e04f4d47e100b6e",
+        "references/knowledge-vault.md": "9dc48396737316f97f2f25622b37e13da2e5cad9a67548073ef2b563e7e7e8e3",
         "references/lab-meeting.md": "2585b206c2dc588c3c53cd574f52b67a0d0f0a7585df240e524d3cebc269c5d4",
-        "references/literature-search.md": "3eb2a6dc99ce89abd730036e96e0629e2c63978138fb91d7f46eece85a8f1965",
-        "references/literature-update.md": "af3311534df17e5229b81b641a04330667a9aeeddb01a8f65ecbeb818c5333b6",
-        "references/multi-agent.md": "427404cc231d00a6442598714995216b14f0e119242dd297b156ccbbd6532e27",
+        "references/literature-search.md": "360c7599b79b82844a691f255a9b5dbe23c2a80da351c0c25cc9a6372373e45c",
+        "references/literature-update.md": "5d30f31a4a4da36ee5ee683f5e728bcddce2cd3f62a7f3cdd15abe462e11961e",
+        "references/multi-agent.md": "9e7be136e6d23ef27789198b6a814fc2b5d577072d25556d13d3643fc71bf420",
         "references/ogsm.md": "63b46980beb443aaa303205ae6e00d7738dfb0cb8e229274f1e5474746cb472c",
-        "references/research-assistant.md": "bf028f4acadad910027e2e6c07fbcf53fe09f7ac74633143d3b9fb4420f651ab",
+        "references/research-assistant.md": "897738b8eaf711574c54830e91157b3908350056c2db7eca3e5edb0f00c34550",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
-        "references/skill-routing.md": "dbffb31be4a9edaac217ad2d1e664df31f5f40a3b869db77ac9199891871010f",
-        "references/thinking-dialogue.md": "0081bb8cdba78f7447bc627b788f1881b895d248893457b70b69bcd0e5d00b28",
-        "references/writing-review-cards.md": "ffaa70e8ebb858a28d6144e8b6e34bb03eee5308d69e926adbae318818adbc9b",
-        "scripts/search_literature.py": "c0182e19b2bc2c2d539ae06621fc904b9e4e3fec84f3358e74cae3969d083303"
+        "references/skill-routing.md": "75fa902a72095fe2db7f0956d2a523a92b89de9dee6064614c1317d9efef9e43",
+        "references/statistical-adaptation.md": "6ad21ec197acfafcdefea741b7bc0c1589853742a3ac91b02db8e6637b85a63e",
+        "references/thinking-dialogue.md": "cdfe7685c059f239eddca7171de4c991c11c3382ae07357eba4f62e43a2f5704",
+        "references/workspace-continuity.md": "e0ecc04b9089e0b3d4e1bbaae6b6622b34e5afce938f53f0e502d67a55639618",
+        "references/writing-review-cards.md": "fea10beb22f201c439ffc0ce010e692d1da2aa91b50b07142d3224a880559f33",
+        "scripts/search_literature.py": "c0182e19b2bc2c2d539ae06621fc904b9e4e3fec84f3358e74cae3969d083303",
+        "scripts/validate_research_records.py": "9a056309a6a73652ab76fd522af0397937f405d6b53cdf37bb9b00d541478a68",
+        "scripts/workspace_context.py": "01e8a6a68a3f8b3098e5c0ad4b9e28848ec3aedad2437565ea811135dcec84b3"
       },
       "dependencies": [
         "danta-research-ppt",
@@ -38,7 +43,7 @@
         "SKILL.md": "f517e9eabdc1001de8b897840952f7240a6f024e3398bc05e4e292570ca86839",
         "assets/content.schema.json": "709a693117b17402a1bbb7f42e963611109ba4da6d6ce349cf586a895fdecc6e",
         "examples/no-sources.json": "c236351d8fa3a1ee484ac9f6dfa938c76fc79c8b03902c46a23c126af63b8d68",
-        "references/briefing-workflow.md": "a98829e5d6bddafcb76d21a34924a3df1d58330e8609987b276ca76808ab3fc6",
+        "references/briefing-workflow.md": "3dfb1abfb2092b9c44e30a59174d5c39487da5c0c31c4ae42bc6acf45409988d",
         "scripts/render_brief.py": "270576f4c8789d1996d7ef455bd22714f49371fb75a5432f44f1384683d7a365",
         "tests/test_render_brief.py": "7bae0eba8db12826614cee305e8c82b8775b93a39ba68c779de15a1a01cf2470"
       },
@@ -325,10 +330,11 @@
       "files": {
         "SKILL.md": "c333a79699d7004f69b61b8682a29b6fcf63b522bd21b1fa3b2abaa1feb691c8",
         "references/svg-reconstruction.md": "8b0739d65275983cd9b7794ec0dc91c47b5e7ac9c99ac3bf924af05cbbf1c612",
-        "references/workflow.md": "8c1c18b3307182e1925bcda20d3ef6ba4a65d1c297f71032c118e4721538c49a",
+        "references/workflow.md": "a3702452aa134fd247df1548dc77a9d801e9d4e67a41bbca1b37390a3bcbad0b",
         "scripts/install_ppt_master.py": "237b11dbec62cd26c08477bd2ada223371ad84cade2e13dab9b1286dd39c2ee2"
       }
     }
   },
-  "package_version": "1.3-reviewed-20260924"
+  "package_version": "1.3-reviewed-20260924",
+  "content_version": "1.22.0"
 }

@@ -18,8 +18,8 @@ Jev 在工作台中承担少量、边界明确的语义判断：公开线索排�
 ## 启用条件
 
 - 仅在当前客户端工具清单里确实能调用 Jev MCP 工具时运行。仅安装了 Jev skill、模型密钥或项目配置，不代表工具已连通；不可用时自然回退，不让龚博士排障或补说工具名。
-- 当前工作台项目级 MCP 配置使用 [`@jkudish/jev-mcp`](https://github.com/jkudish/jev-mcp)，由 TypeSafe API key 驱动。上游还提供 `jev_classify`、`jev_audit` 等工具；这表示可供按需试用，不表示本工作台已接入 Zotero 或已验证分类质量。它是社区维护的 MCP 服务，运行依赖 Node.js 22+。
-- 在 macOS Codex 中首次配置时，在工作台根目录运行 `swift scripts/jev_mcp_launcher.swift setup`，通过隐藏输入把 key 保存到当前 Mac 登录钥匙串；`swift scripts/jev_mcp_launcher.swift check` 只报告是否已配置，不回显 key。之后重新启动 Codex 或新开会话，使项目级 MCP 配置生效。Windows/其他客户端需按该客户端方式单独接入，不能沿用本机钥匙串脚本。
+- 可选项目级 MCP 接入使用 [`@jkudish/jev-mcp`](https://github.com/jkudish/jev-mcp)，由 TypeSafe API key 驱动。上游还提供 `jev_classify`、`jev_audit` 等工具；这表示可供按需试用，不表示本工作台已接入 Zotero 或已验证分类质量。它是社区维护的 MCP 服务，运行依赖 Node.js 22+。
+- 默认发行不启用 Jev。原 macOS 源码工作区可选用钥匙串方式：在 macOS Codex 中首次配置时，在工作台根目录运行 `swift scripts/jev_mcp_launcher.swift setup`，通过隐藏输入把 key 保存到当前 Mac 登录钥匙串；`swift scripts/jev_mcp_launcher.swift check` 只报告是否已配置，不回显 key。还需在本人实际工作区单独配置 Swift 启动器的绝对路径，再重新启动 Codex 或新开会话；仅 setup 不会启用 MCP。Windows/其他客户端需按该客户端方式单独接入，不能沿用本机钥匙串脚本。
 - MCP 启动器只在内存中读取钥匙串凭据并传给 Jev 子进程；key 不写入项目配置、仓库、检索结果、提示词或研究库。缺少 key 时 MCP 无法启动，原有检索继续运行。不要把 key 粘贴进聊天或工作台网页。
 - 不得为让流程“可用”而把私有查询自动送往 Jev 服务。仍按下文的公开资料最小化规则控制 Jev 输入。
 - 若客户端没有 Jev 工具，使用普通检索流程并继续任务；只有当缺少排序实质影响结果覆盖或选择时，才简短说明这个限制，不要求使用者排障。
@@ -65,7 +65,7 @@ Jev 的主要训练语言是英语；官方说明中文等 CJK 输入可用，�
 
 ## 私有资料与知识库
 
-私有 vault 的内容默认不发送给 Jev。只有当使用者明确指定该资料可由 Jev 服务处理、且当前部署符合机构要求时，才可把经过最小化处理的检索片段用于 `jev_rerank` 或 `jev_screen`。这项许可只覆盖本轮和所选片段，不等于允许批量扫描或长期留存。其余情况在本地按原检索结果继续。
+私有 vault 的内容默认不发送给 Jev。只有当使用者明确指定该资料可由 Jev 服务处理、且当前部署符合机构要求时，才可把经过最小化处理的检索片段用于 `jev_rerank` 或 `jev_screen`。许可沿用本人真实确认的范围；只有明确包含的路径、用途、服务和后续资料可复用，不等于允许批量扫描或长期留存。其余情况在本地按原检索结果继续。
 
 ## 失败与记录
 
@@ -82,3 +82,22 @@ Jev 的主要训练语言是英语；官方说明中文等 CJK 输入可用，�
 - [`jev-reviewer`](https://github.com/choxos/jev-reviewer)：以后若有正式系统综述的数据提取任务，可单独评估。文件留在浏览器不等于离线处理：其说明称提取文本与问题会发送给 TypeSafe，不适合默认读取私有或未发表材料。
 
 上游接口、服务状态和开源项目实现会变化。正式配置前以项目当前说明为准；本工作台只约定调用边界，不将社区服务器代码复制进发行包。
+
+## 按平台独立接入
+
+桌面工作台的 API 设置与 Codex MCP 是两套连接，网页绿灯不等于当前对话工具可用。Windows 不运行 Swift。无需 Jev 时继续科研任务，不要求日常使用安装 Node。
+
+需要 MCP 时按社区项目核对兼容版本，在本机独立工具目录安装固定版本，配置已核实启动命令/参数；避免每次 npx 拉未固定最新版。凭据从既有安全配置注入进程，不写 TOML、对话或公开仓库。示意配置，不能原样复制占位符：
+
+```toml
+[mcp_servers.jev]
+command = "已核实的本机启动命令"
+args = ["已核实的启动参数"]
+env_vars = ["TYPESAFE_API_KEY"]
+startup_timeout_sec = 45
+tool_timeout_sec = 90
+```
+
+环境变量必须来自 Codex 启动环境；另一个终端有变量不代表桌面进程可读。新库不复制原 Mac Swift 启动器。配置后检查实际连接及最小公开查询，分别报告凭据存在、连接成功、调用成功；文件存在不等于认证成功。
+
+字段依据：[Codex MCP 官方说明](https://learn.chatgpt.com/docs/extend/mcp?surface=cli)，核对日期 2026-10-03。服务版本与 Node 依赖仍按实际社区包核对。

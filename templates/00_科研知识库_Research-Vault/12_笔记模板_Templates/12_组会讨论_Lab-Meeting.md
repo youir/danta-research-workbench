@@ -8,7 +8,7 @@ type: fleeting
 record: meeting
 status: draft
 summary: ""
-project: "P001"
+project: ""
 sources: []
 aliases: []
 ---

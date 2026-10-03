@@ -7,7 +7,7 @@ type: permanent
 record: index
 status: template
 summary: "可编辑组会、开题与阶段汇报文件的版本与源文件入口"
-project: "P001"
+project: ""
 sources: []
 aliases: []
 ---

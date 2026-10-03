@@ -6,7 +6,7 @@
 
 知识流：原始资料保留 → 文献与证据核查 → 可复用Wiki → 课题方案和成果。实验、分析、决定各用自己的记录；不能将一切都改写成Wiki。原始PDF/数据不改写，元数据另存侧边记录，链接到真实来源位置及阅读范围。
 
-当前状态、Idea、OGSM、检索CSV、证据CSV、决策日志均只有Path-Map指定的一份权威记录；Wiki和记忆引用ID，避免复制主张后逐渐失配。多课题共享文献但决策与状态隔离，切换需明确活动项目及映射。研究资料和生成顾问不进入公开发行仓库。
+当前状态、Idea、OGSM、检索CSV、证据CSV、决策日志均只有Path-Map指定的一份权威记录；Wiki和记忆引用ID，避免复制主张后逐渐失配。多课题共享文献但决策与状态隔离，切换按 [workspace-continuity.md](workspace-continuity.md) 与 scripts/workspace_context.py 同步所有课题路径，不只改 active_project。研究资料和生成顾问不进入公开发行仓库。
 
 女娲顾问在vault模式保存到roles.advisor_profiles（可见编号目录），旧工作台仍用原.local/advisors；不改变顾问内部原版结构、阶段确认或独立验证。顾问索引记录真实阶段、来源截止与验证状态，不把模拟顾问意见当导师意见。
 

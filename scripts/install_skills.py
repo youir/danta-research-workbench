@@ -7,6 +7,7 @@ import sys
 import tempfile
 from pathlib import Path
 from package_lib import ROOT, default_dest, manifest, verify_bundle, same_install
+from skill_deployment import read_receipt, updated_receipt, write_receipt
 
 def main():
     if sys.version_info < (3, 9):
@@ -48,6 +49,9 @@ def main():
         add(name)
     selected = ordered
     dest = args.dest.expanduser().resolve()
+    if args.dest.expanduser().absolute().is_symlink() or any(p.is_symlink() for p in args.dest.expanduser().absolute().parents):
+        raise ValueError('安装目标不可包含符号链接。')
+    read_receipt(dest)  # Validate metadata before changing any skill.
     print('安装目标：' + str(dest))
     conflicts = [name for name in selected
                  if ((dest / name).exists() or (dest / name).is_symlink())
@@ -90,6 +94,8 @@ def main():
         print('现有技能未被覆盖；请核对冲突版本：' + ', '.join(conflicts))
         return 2
     if not args.dry_run:
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        write_receipt(dest, updated_receipt(dest, data, selected))
         print('安装完成。请在下一轮对话调用 $danta-proposal-guide；文件安装不等于扩展依赖已配置。')
     return 0
 

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "active_project": "05_课题项目_Projects/00_主课题_Main-Project",
   "legacy_root": "我的开题",
   "paths": {
@@ -47,5 +47,12 @@
     "presentation_outputs": "08_成果输出_Outputs/04_科研汇报与答辩_Presentations",
     "research_figures": "08_成果输出_Outputs/03_图表_Figures",
     "research_digest": "08_成果输出_Outputs/05_科研日报_Research-Digest"
+  },
+  "active_project_id": "P001",
+  "projects": {
+    "P001": {
+      "root": "05_课题项目_Projects/00_主课题_Main-Project",
+      "title": "主课题（空白模板）"
+    }
   }
 }
