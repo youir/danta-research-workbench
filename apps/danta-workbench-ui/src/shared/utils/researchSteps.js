@@ -12,10 +12,12 @@ export function currentResearchStep(task) {
 // Disk fields are refreshed only by an exact task/key match; absent records remain drafts.
 export function mergeResearchSteps(local = [], remote = []) {
   const keys = new Set(local.map(step => step.key));
-  return [...local.map(step => {
+  const merged = [...local.map(step => {
     const actual = remote.find(item => item.key === step.key);
     return actual ? { ...step, ...actual } : { ...step, available: false };
-  }), ...remote.filter(step => !keys.has(step.key)).map(step => ({ ...step }))].slice(0, STEP_LIMIT);
+  }), ...remote.filter(step => !keys.has(step.key)).map(step => ({ ...step }))];
+  if (merged.length > STEP_LIMIT) throw new Error('本机草稿与知识库步骤合计超过 100 条，请拆分任务再同步；原记录已保留。');
+  return merged;
 }
 
 export function researchStepPrompt(task) {
@@ -37,6 +39,7 @@ export function researchStepPrompt(task) {
 }
 
 export function validResearchSteps(task) {
+  if (task.stepDraft != null && (typeof task.stepDraft !== 'object' || typeof task.stepDraft.title !== 'string' || typeof task.stepDraft.goal !== 'string' || task.stepDraft.title.length > 100 || task.stepDraft.goal.length > 240)) return false;
   if (task.steps === undefined) return task.activeStepKey === undefined || task.activeStepKey === '';
   if (!Array.isArray(task.steps) || task.steps.length > STEP_LIMIT) return false;
   const keys = new Set();

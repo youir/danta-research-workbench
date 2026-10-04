@@ -4,9 +4,10 @@ import { createResearchStep, currentResearchStep, mergeResearchSteps, STEP_LIMIT
 
 export function ResearchSteps({ task, actions }) {
   const current = currentResearchStep(task);
-  const [editing, setEditing] = useState(false);
-  const [title, setTitle] = useState('');
-  const [goal, setGoal] = useState('');
+  const taskRef = useRef(task); taskRef.current = task;
+  const [editing, setEditing] = useState(Boolean(task.stepDraft));
+  const [title, setTitle] = useState(task.stepDraft?.title || '');
+  const [goal, setGoal] = useState(task.stepDraft?.goal || '');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [documents, setDocuments] = useState(null);
@@ -23,11 +24,10 @@ export function ResearchSteps({ task, actions }) {
     try {
       const result = await getResearchSteps(task.id, key);
       if (revision.current !== request) return;
-      actionsRef.current?.patch(currentTask => {
-        const steps = mergeResearchSteps(currentTask.steps, result.steps);
-        const activeStepKey = currentTask.activeStepKey || result.steps.find(step => step.status !== 'complete')?.key || result.steps[0]?.key || '';
-        return JSON.stringify(steps) === JSON.stringify(currentTask.steps) && activeStepKey === currentTask.activeStepKey ? null : { steps, activeStepKey };
-      });
+      const latest = taskRef.current;
+      const steps = mergeResearchSteps(latest.steps, result.steps);
+      const activeStepKey = latest.activeStepKey || result.steps.find(step => step.status !== 'complete')?.key || result.steps[0]?.key || '';
+      if (JSON.stringify(steps) !== JSON.stringify(latest.steps) || activeStepKey !== latest.activeStepKey) actionsRef.current?.patch({ steps, activeStepKey });
       if (key) setDocuments(result.documents || []);
       setMessage(result.truncated ? '记录较多，读取达到上限；部分步骤可能尚未显示。' : result.steps.length ? '已与当前知识库的步骤记录核对。' : '暂未找到本任务的步骤记录。可先写下本步目标，进入 Codex 开始。');
     } catch (error) { if (revision.current === request) { setMessage(error.message); setDocuments(null); } }
@@ -35,7 +35,7 @@ export function ResearchSteps({ task, actions }) {
   }, [task.id, permitted, vaultPath, vaultScope]);
 
   useEffect(() => {
-    setDocuments(null); setMessage(''); setEditing(false);
+    setDocuments(null); setMessage('');
     if (permitted) void refresh();
     const onFocus = () => { if (permitted && !document.hidden) void refresh(); };
     window.addEventListener('focus', onFocus);
@@ -46,7 +46,7 @@ export function ResearchSteps({ task, actions }) {
   function add() {
     if (!title.trim() || !goal.trim()) return;
     const step = createResearchStep(title, goal);
-    actions?.patch(currentTask => ({ steps: [...(currentTask.steps || []), step], activeStepKey: step.key }));
+    actions?.patch(currentTask => ({ steps: [...(currentTask.steps || []), step], activeStepKey: step.key, stepDraft: null }));
     setEditing(false); setTitle(''); setGoal(''); setMessage('本步目标已保存。进入 Codex 后才会建立知识库记录。');
   }
 
@@ -74,10 +74,10 @@ export function ResearchSteps({ task, actions }) {
       <ul>{task.steps.map(step => <li key={step.key}><button className="text-button" type="button" aria-pressed={step.key === task.activeStepKey} onClick={() => actions?.patch({ activeStepKey: step.key })}>{step.title} · {step.directory ? STEP_STATUSES[step.status] : '待开始'}</button></li>)}</ul>
     </details>}
     {editing ? <form className="research-step-form" onSubmit={event => { event.preventDefault(); add(); }}>
-      <label>这一步做什么？<input autoFocus required maxLength={100} value={title} onChange={event => setTitle(event.target.value)} placeholder="用一句话命名正在推进的工作" /></label>
-      <label>做到什么就可以进入下一步？<input required maxLength={240} value={goal} onChange={event => setGoal(event.target.value)} placeholder="填写实际目标，未确定的细节可以继续讨论" /></label>
-      <div><button className="primary-button compact" type="submit" disabled={!title.trim() || !goal.trim()}>保存本步目标</button><button className="text-button" type="button" onClick={() => setEditing(false)}>取消</button></div>
-    </form> : <button className="text-button" type="button" disabled={(task.steps?.length || 0) >= STEP_LIMIT} onClick={() => { setGoal(task.objective || ''); setEditing(true); }}>添加本次步骤</button>}
+      <label>这一步做什么？<input autoFocus required maxLength={100} value={title} onChange={event => { setTitle(event.target.value); actions?.patch({ stepDraft: { title: event.target.value, goal } }); }} placeholder="用一句话命名正在推进的工作" /></label>
+      <label>做到什么就可以进入下一步？<input required maxLength={240} value={goal} onChange={event => { setGoal(event.target.value); actions?.patch({ stepDraft: { title, goal: event.target.value } }); }} placeholder="填写实际目标，未确定的细节可以继续讨论" /></label>
+      <div><button className="primary-button compact" type="submit" disabled={!title.trim() || !goal.trim()}>保存本步目标</button><button className="text-button" type="button" onClick={() => { setEditing(false); actions?.patch({ stepDraft: null }); }}>取消</button></div>
+    </form> : <button className="text-button" type="button" disabled={(task.steps?.length || 0) >= STEP_LIMIT} onClick={() => { setTitle(''); setGoal(task.objective || ''); actions?.patch({ stepDraft: { title: '', goal: task.objective || '' } }); setEditing(true); }}>添加本次步骤</button>}
     {message && <p className="research-step-note" role="status">{message}</p>}
     {!permitted && <button type="button" className="text-button" onClick={actions?.openVault}>查看研究记录连接</button>}
   </section>;
