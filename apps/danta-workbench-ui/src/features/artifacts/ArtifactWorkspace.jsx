@@ -48,6 +48,17 @@ export function ArtifactWorkspace({ task, connection, onStateChange, onOpenSetti
   }, [refresh]);
   busyRef.current = busy;
 
+  useEffect(() => {
+    const show = event => {
+      if (event.detail?.taskId !== task?.id) return;
+      patch({ open: false, expanded: false });
+      void refresh();
+      requestAnimationFrame(() => { libraryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); libraryRef.current?.focus(); });
+    };
+    window.addEventListener('danta:show-artifacts', show);
+    return () => window.removeEventListener('danta:show-artifacts', show);
+  }, [task?.id, refresh, patch]);
+
   const current = artifacts.find(item => item.key === state.selectedKey);
   const currentTab = state.tabs.find(item => item.key === state.selectedKey);
   const view = state.views[state.selectedKey] || {};

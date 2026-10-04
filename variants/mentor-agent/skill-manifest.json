@@ -2,7 +2,7 @@
   "name": "danta-research-mentor",
   "version": "1.2-reviewed",
   "files": {
-    "SKILL.md": "9a7a7abe3293ea6568a14feebca172ef4bac6df67d8761a2fe48661107036153",
+    "SKILL.md": "ddb4389e64f6532d1cbd8b44001f16de4d06a5798316590e73e97c45b3617def",
     "agents/openai.yaml": "db77662b674d114c078cf5112b5f66184e8be2ab1816830874b5ed96901cf4ec",
     "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
     "references/intake.md": "c0b52c397b17e1e17203ad59643bbe0827fe795077ab8e9196e2e3b7cdc00905",

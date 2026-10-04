@@ -1,3 +1,5 @@
+import { validResearchSteps } from './researchSteps.js';
+
 const BACKUP_KIND = 'danta-research-task-backup';
 const BACKUP_VERSION = 1;
 export const MAX_BACKUP_BYTES = 12 * 1024 * 1024;
@@ -28,7 +30,7 @@ export function parseTaskBackup(text) {
       typeof task.id !== 'string' || !/^[a-zA-Z0-9-]{8,100}$/.test(task.id) ||
       typeof task.workflowId !== 'string' || typeof task.title !== 'string' ||
       typeof task.content !== 'string' || !Array.isArray(task.files) ||
-      !Array.isArray(task.records) || !Array.isArray(task.archiveLinks) || ids.has(task.id)) {
+      !Array.isArray(task.records) || !Array.isArray(task.archiveLinks) || !validResearchSteps(task) || ids.has(task.id)) {
       throw new Error('备份中的任务格式不完整或编号重复，未导入任何内容。');
     }
     ids.add(task.id);

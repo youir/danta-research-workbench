@@ -1,4 +1,5 @@
 import { RESEARCH_STAGES, RESEARCH_TASK_STATUSES, getResearchStage } from '../../../shared/constants/researchTasks.js';
+import { ResearchSteps } from '../../research-tasks/components/ResearchSteps.jsx';
 import { TaskRecords } from '../../research-tasks/components/TaskRecords.jsx';
 
 export function ResearchTaskDetails({ task, onChange, recordActions }) {
@@ -40,6 +41,7 @@ export function ResearchTaskDetails({ task, onChange, recordActions }) {
       </div>
       <p className="research-task-stage-help">{stage.help} 填写即时保存，可在任何阶段继续任务或保存阶段记录。</p>
       {task.codexThreadIds?.length > 1 && <details className="task-conversation-history"><summary>这项任务的历史对话 · {task.codexThreadIds.length} 段</summary><ul>{task.codexThreadIds.map((id, index) => <li key={id}><button className="text-button" type="button" onClick={() => recordActions?.openConversation(id)}>{id === task.linkedCodexThreadId ? '当前对话' : `历史对话 ${index + 1}`} · {id.slice(0, 8)}</button></li>)}</ul></details>}
+      <ResearchSteps key={task.id} task={task} actions={recordActions?.steps} />
       <TaskRecords task={task} actions={recordActions} />
     </section>
   );

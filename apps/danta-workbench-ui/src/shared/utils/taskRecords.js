@@ -71,6 +71,7 @@ export function buildTaskArchiveDraft(task) {
     `当前阶段：${stage.label}`,
     `进度状态：${getResearchTaskStatus(task.statusId).label}`,
     ...(task.objective ? [`本次目标：${task.objective}`] : []),
+    ...(task.steps?.length ? ['研究步骤（进度记录，不代表结论核验）：', ...task.steps.map(step => `- ${step.title}：${step.goal}；${step.directory || '尚未建立知识库记录'}；下一步：${step.nextAction || '待记录'}`)] : []),
     ...(task.linkedCodexThreadId ? [`Codex 对话编号：${task.linkedCodexThreadId}`] : []),
     '',
     ...(content && content !== String(workflow?.seed || '').trim() ? ['## 任务内容', '', content, ''] : []),

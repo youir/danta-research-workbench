@@ -143,6 +143,12 @@ export function App() {
   const handoffTask = researchTasks.find(task => task.id === pendingKickoff?.taskId);
   const handoffThreadId = getHandoffThreadId(pendingKickoff, handoffTask);
   const taskRecordActions = {
+    steps: {
+      vaultStatus,
+      patch: patch => patchTask(activeTaskId, patch),
+      openVault: () => navigate('vault'),
+      begin: () => beginDiscussion(activeResearchTask?.content || activeResearchTask?.objective || '接续当前研究步骤', activeResearchTask?.focus || taskFocus, activeResearchTask?.selectedPptTemplate, activeResearchTask?.selectedPptLogo),
+    },
     openConversation: threadId => reopenCodexThread({ linkedCodexThreadId: threadId }),
     add: () => addTaskRecord(activeTaskId),
     update: (recordId, field, value) => updateTaskRecord(activeTaskId, recordId, field, value),

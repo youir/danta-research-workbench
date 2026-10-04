@@ -43,8 +43,8 @@
     "04_知识百科_Wiki/01_实体_Entities/00_index.md": "a8d35525549ae6e708070e6c826f68fe7edc6c10ce2cefe1a358d4342a19c1b0",
     "04_知识百科_Wiki/02_主题_Topics/00_index.md": "eeb3671f282eb38c06c4f9eb48ff887270a2ef66847cbf3ad8eb84f5485f5da1",
     "05_课题项目_Projects/00_index.md": "c8671e86fc8306a2f1ba86403b4219c690e913c33c279e5bbacaaf5b45bada44",
-    "05_课题项目_Projects/00_主课题_Main-Project/00_index.md": "2324dde8ce79fd655b14d3ed46e0c57dea67f17f454286a274007b063dbba3e8",
-    "05_课题项目_Projects/00_主课题_Main-Project/00_当前状态_Current-State.md": "714536947de0955cc54649bc81e03ab7f04215fef7383965a682680835f39715",
+    "05_课题项目_Projects/00_主课题_Main-Project/00_index.md": "e8228824ad06198b50ddbd679c07972f4f43390a2d6f19b8a2d19c9b4cfcf6a6",
+    "05_课题项目_Projects/00_主课题_Main-Project/00_当前状态_Current-State.md": "35229910b4fa43faa77a8cd2b6bfcf82c5a7ce74c424e7390c70188d16672d07",
     "05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context/00_index.md": "61dc77f5d7b28906f3f932fd3a9f6feaf4b81ca77c926b8e0e8380706558192f",
     "05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context/01_准备度_Readiness.md": "123b4a5bc52f00b79482f92449ccb8957d0959c4287201e273400dcf98a59b58",
     "05_课题项目_Projects/00_主课题_Main-Project/00_研究背景_Context/02_研究画像_Research-Profile.md": "f77cc75c06b7e322bb01f023f4272f551c3548b8664fb4f36c9c8f8d1458a319",
@@ -67,6 +67,7 @@
     "05_课题项目_Projects/00_主课题_Main-Project/05_决策记录_Decisions/01_决策日志_Decision-Log.md": "d0e6cd60a374edf05337763a8a6a1145e4359eafbef108a89373e1858ab30eb9",
     "05_课题项目_Projects/00_主课题_Main-Project/06_协作记录_Collaboration/00_index.md": "9ed1293809d77529e9eac1d1a697f78d5d7115a0b869dde2608d10c65d9a115d",
     "05_课题项目_Projects/00_主课题_Main-Project/06_协作记录_Collaboration/01_协作记录_Collaboration-Log.md": "5f3b7e0c459258ee45a2d2cfbab1dca1c524f638e8bef19cb15e5461919fd365",
+    "05_课题项目_Projects/00_主课题_Main-Project/07_研究步骤_Steps/00_index.md": "e940a85c282a494631bda46779721e8c9fe407a3601310c9a8d6009c347c7a92",
     "06_方法流程_Methods/00_index.md": "45e352c988c9d0e3a091bc2747c8bde26352e2440da5207a16838fd8c3d7d904",
     "06_方法流程_Methods/00_标准流程_SOPs/00_index.md": "6021240f6f34856ce171b0ff821977800d306318584c373deccfb6c758d78d76",
     "06_方法流程_Methods/01_分析计划_Analysis-Plans/00_index.md": "1cbf7ccb65b85238914636286e60671f4bd428720702ec55329cffd9754f629d",
@@ -127,6 +128,6 @@
     "13_附件资源_Attachments/02_补充材料_Supplements/00_index.md": "f492d30ea5b34774827c5ae41518744c25cab531800280c52b6161d84471ce32",
     "14_历史归档_Archive/00_index.md": "86a54266e941f2ded97daf663687481996b88721b43a65328ba1ce63504ce5fa",
     "14_历史归档_Archive/01_归档登记_Archive-Register.csv": "0fd850b51c85addd289fe81c1f42fe43135c233f6ff90208f0dc969db4d14e40",
-    "AGENTS.md": "ffbdcd430caa24b5b596664c68e4747f0379a70b6699f1d8428035db7b571a02"
+    "AGENTS.md": "3b40281a57e9f8c85a50308f4d8fca82e51b958f56da33a18a2786009472b59e"
   }
 }

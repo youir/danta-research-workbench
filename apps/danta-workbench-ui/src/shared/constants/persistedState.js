@@ -1,3 +1,5 @@
+import { validResearchSteps } from '../utils/researchSteps.js';
+
 export const STORAGE_PREFIX = 'danta-workbench:v2:';
 export const MAX_STATE_BYTES = 12 * 1024 * 1024;
 // Application state only. Vault grants and credentials have separate stores.
@@ -29,7 +31,7 @@ export function validateStateValues(values) {
         : objectKeys.includes(key) ? isObject(parsed)
           : nullableKeys.includes(key) ? parsed === null || isObject(parsed) : typeof parsed === 'string';
     if (!valid) throw new Error('工作台状态的字段类型不匹配。');
-    if (key === 'researchTasks' && parsed.some(task => !isObject(task) || typeof task.id !== 'string' || typeof task.workflowId !== 'string' || typeof task.content !== 'string' || typeof task.title !== 'string'
+    if (key === 'researchTasks' && parsed.some(task => !isObject(task) || typeof task.id !== 'string' || typeof task.workflowId !== 'string' || typeof task.content !== 'string' || typeof task.title !== 'string' || !validResearchSteps(task)
       || ['files', 'records', 'archiveLinks', 'codexThreadIds'].some(field => task[field] !== undefined && !Array.isArray(task[field])))) throw new Error('任务卡状态无法读取。');
     checked[key] = value;
   }

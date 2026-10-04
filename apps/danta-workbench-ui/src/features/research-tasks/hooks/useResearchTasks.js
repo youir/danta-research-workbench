@@ -62,9 +62,17 @@ export function useResearchTasks({
 
   function patchTask(taskId, patch) {
     if (!taskId) return;
-    setTasks(current => current.map(task => task.id === taskId
-      ? { ...task, ...(typeof patch === 'function' ? patch(task) : patch), updatedAt: Date.now() }
-      : task));
+    setTasks(current => {
+      let changed = false;
+      const next = current.map(task => {
+        if (task.id !== taskId) return task;
+        const update = typeof patch === 'function' ? patch(task) : patch;
+        if (!update) return task;
+        changed = true;
+        return { ...task, ...update, updatedAt: Date.now() };
+      });
+      return changed ? next : current;
+    });
   }
 
   function addTaskFiles(taskId, fileNames) {

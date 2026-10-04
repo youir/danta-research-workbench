@@ -1482,3 +1482,19 @@ button:focus-visible, textarea:focus-visible {
   .artifact-feedback > div { margin-top: 6px; }
   .artifact-feedback small { display: none; }
 }
+
+/* Actual research steps reuse the task card and the existing artifact panel. */
+.research-steps { border-top: 1px solid var(--line-default); margin-top: 16px; padding-top: 16px; }
+.research-steps-heading, .research-step-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.research-steps h3 { margin: 0; font-size: 14px; color: var(--ink-primary); }
+.research-steps-heading p, .research-step-note { font-size: 11px; line-height: 1.7; color: var(--ink-secondary); }
+.research-step-current { margin: 12px 0; padding: 14px; border: 1px solid var(--line-default); border-radius: 12px; background: var(--surface-base); }
+.research-step-current p { font-size: 12px; line-height: 1.7; }
+.research-step-path { display: block; overflow-wrap: anywhere; font-size: 10px; color: var(--ink-secondary); }
+.research-step-actions, .research-step-form > div { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.research-step-form { display: grid; gap: 12px; margin-top: 12px; }
+.research-step-form label { display: grid; gap: 6px; font-size: 12px; }
+.research-step-form input { width: 100%; border: 1px solid var(--line-default); padding: 10px; border-radius: 8px; background: var(--surface-base); color: var(--ink-primary); font: inherit; }
+.research-step-history, .research-step-documents { font-size: 12px; margin: 12px 0; }
+.research-step-documents pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.8; max-height: 420px; overflow: auto; background: var(--surface-base); padding: 14px; border-radius: 8px; }
+.research-step-documents small { overflow-wrap: anywhere; color: var(--ink-secondary); }

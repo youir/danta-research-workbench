@@ -28,6 +28,7 @@ aliases: []
 - [04_开题答辩_Proposal-Defense](04_开题答辩_Proposal-Defense/00_index.md)
 - [05_决策记录_Decisions](05_决策记录_Decisions/00_index.md)
 - [06_协作记录_Collaboration](06_协作记录_Collaboration/00_index.md)
+- [07_研究步骤_Steps](07_研究步骤_Steps/00_index.md)
 
 ## 本区维护
 

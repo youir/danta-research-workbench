@@ -1,3 +1,4 @@
+import { DESKTOP_MAINTENANCE_PROMPT } from '../utils/maintenancePrompt.js';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowClockwise, ArrowSquareOut, Check, Copy, X } from '@phosphor-icons/react';
 
@@ -115,7 +116,7 @@ export function UpdateControl() {
 
   async function copyUpdatePrompt() {
     try {
-      await navigator.clipboard.writeText(UPDATE_PROMPT);
+      await navigator.clipboard.writeText(IS_DESKTOP_APP ? DESKTOP_MAINTENANCE_PROMPT : UPDATE_PROMPT);
       setCopied(true);
     } catch {
       setCopied(false);
@@ -141,7 +142,7 @@ export function UpdateControl() {
             {result?.state === 'update-local-changes' && <div className="update-state available"><strong>远端有更新，本机也有未提交修改</strong><span>最新提交：{result.latest.slice(0, 7)} · {result.message}。复制更新指令后，Codex 会先查看本地修改再处理。</span><a href={`${REPOSITORY}/commit/${result.latest}`} target="_blank" rel="noreferrer">查看提交 <ArrowSquareOut size={14} aria-hidden="true" /></a></div>}
             {result?.state === 'unknown' && <p className="update-state">已查到 GitHub main 最新提交（{result.latest.slice(0, 7)}），但当前运行环境没有本地 Git 提交号，无法自动比较。</p>}
             {result?.state === 'error' && <p className="update-state">{IS_DESKTOP_APP ? '暂时无法连接 GitHub 检查桌面版更新，请稍后重试。' : '暂时无法连接 GitHub。你可以让 Codex 在本机仓库中检查更新。'}</p>}
-            <div className="update-help"><p>{IS_DESKTOP_APP ? '安装包更新会保留本机草稿；Obsidian 连接和权限需要在重新打开工作台后再次确认。' : '网页可以检查版本，实际更新需由 Codex 在本机仓库中完成；它会先检查并保留本地修改。'}</p>{!IS_DESKTOP_APP && <><button className="primary-button compact" type="button" onClick={copyUpdatePrompt}><Copy size={16} aria-hidden="true" />{copied ? '更新指令已复制' : '复制给 Codex 的更新指令'}</button>{result?.copyFailed && <span className="copy-error">剪贴板不可用，请从部署说明复制更新指令。</span>}</>}</div>
+            <div className="update-help"><p>{IS_DESKTOP_APP ? '安装包更新会保留本机草稿；已有 Obsidian 绑定和有效授权会自动核对恢复；Codex 可协助核对路径并更新研究技能。' : '网页可以检查版本，实际更新需由 Codex 在本机仓库中完成；它会先检查并保留本地修改。'}</p><button className="primary-button compact" type="button" onClick={copyUpdatePrompt}><Copy size={16} aria-hidden="true" />{copied ? '更新指令已复制' : IS_DESKTOP_APP ? '复制更新与路径核对指令' : '复制给 Codex 的更新指令'}</button>{result?.copyFailed && <span className="copy-error">剪贴板不可用，请从部署说明复制更新指令。</span>}</div>
             <a className="update-repo-link" href={IS_DESKTOP_APP ? `${REPOSITORY}/releases` : `${REPOSITORY}/commits/main`} target="_blank" rel="noreferrer">{IS_DESKTOP_APP ? '打开桌面版发布记录' : '打开 GitHub 更新记录'} <ArrowSquareOut size={14} aria-hidden="true" /></a>
           </section>
         </div>

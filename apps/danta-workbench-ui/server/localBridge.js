@@ -443,6 +443,20 @@ function unquoteYaml(value) {
   return text;
 }
 
+// Step cards use a flat header; JSON quoted strings avoid ambiguous YAML interpretation.
+function stepFields(markdown) {
+  const header = String(markdown).match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)?.[1];
+  if (!header) return {};
+  const fields = Object.create(null);
+  for (const line of header.split(/\r?\n/)) {
+    const match = line.match(/^([a-z_]+):\s*(.*?)\s*$/);
+    if (!match) continue;
+    if (Object.hasOwn(fields, match[1])) return {};
+    try { fields[match[1]] = match[2].startsWith('"') ? String(JSON.parse(match[2])) : match[2]; } catch { return {}; }
+  }
+  return fields;
+}
+
 function parseMarkdown(markdown, relativePath, mtime) {
   const source = String(markdown || '').replace(/^\uFEFF/, '');
   const frontmatter = source.match(/^---\s*\n([\s\S]*?)\n---\s*(?:\n|$)/);
@@ -472,27 +486,28 @@ function parseMarkdown(markdown, relativePath, mtime) {
   return { title: safeText(title, 240), date: Number.isFinite(parsedTime) ? new Date(parsedTime).toISOString() : mtime.toISOString(), excerpt: safeText(excerpt, 420), path: relativePath };
 }
 
-async function collectMarkdown(root, prefixes, { maxFiles = MAX_MARKDOWN_FILES, maxBytes = MAX_TOTAL_MARKDOWN_BYTES, maxDepth = MAX_SCAN_DEPTH } = {}) {
+async function collectMarkdown(root, prefixes, { maxFiles = MAX_MARKDOWN_FILES, maxBytes = MAX_TOTAL_MARKDOWN_BYTES, maxDepth = MAX_SCAN_DEPTH, acceptFile = () => true, includeBody = false } = {}) {
   const found = [];
   const seenFiles = new Set();
+  let directoriesVisited = 0;
   let bytesRead = 0;
   let truncated = false;
 
   async function visit(relativeDirectory, depth) {
-    if (depth > maxDepth || found.length >= maxFiles || bytesRead >= maxBytes) { truncated = true; return; }
+    if (++directoriesVisited > 2500 || depth > maxDepth || found.length >= maxFiles || bytesRead >= maxBytes) { truncated = true; return; }
     const absoluteDirectory = path.join(root, relativeDirectory);
     let entries;
     try { entries = await fs.readdir(absoluteDirectory, { withFileTypes: true }); } catch { return; }
     entries.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
     for (const entry of entries) {
-      if (found.length >= maxFiles || bytesRead >= maxBytes) { truncated = true; break; }
+      if (directoriesVisited > 2500 || found.length >= maxFiles || bytesRead >= maxBytes) { truncated = true; break; }
       if (entry.isSymbolicLink()) continue;
       const relativePath = path.join(relativeDirectory, entry.name);
       if (entry.isDirectory()) {
         if (KNOWN_HIDDEN_DIRECTORIES.has(entry.name) || entry.name.startsWith('.')) continue;
         await visit(relativePath, depth + 1);
       } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.md')) {
-        if (seenFiles.has(relativePath)) continue;
+        if (!acceptFile(relativePath) || seenFiles.has(relativePath)) continue;
         if (!await pathExists(root, relativePath, true)) continue;
         let fileStat;
         try { fileStat = await fs.lstat(path.join(root, relativePath)); } catch { continue; }
@@ -502,7 +517,7 @@ async function collectMarkdown(root, prefixes, { maxFiles = MAX_MARKDOWN_FILES, 
         try { text = await fs.readFile(path.join(root, relativePath), 'utf8'); } catch { continue; }
         bytesRead += fileStat.size;
         seenFiles.add(relativePath);
-        found.push({ ...parseMarkdown(text, relativePath, fileStat.mtime), path: relativePath.split(path.sep).join('/'), mtime: fileStat.mtime.getTime() });
+        found.push({ ...parseMarkdown(text, relativePath, fileStat.mtime), path: relativePath.split(path.sep).join('/'), mtime: fileStat.mtime.getTime(), ...(includeBody ? { body: text } : {}) });
       }
     }
   }
@@ -922,6 +937,40 @@ export function createLocalBridgeService({
       throw new Error('数据类别无效。');
     },
 
+    async researchSteps(taskId, stepKey = '') {
+      if (typeof taskId !== 'string' || !/^[a-zA-Z0-9-]{8,100}$/.test(taskId) || (stepKey && !/^[a-zA-Z0-9-]{8,100}$/.test(stepKey))) throw new Error('研究任务或步骤编号无效。');
+      if (!vaultRoot || !scopes.has('records')) throw new Error('当前没有“研究记录”读取授权。可在设置查看既有连接。');
+      const root = vaultRoot, granted = scopes, mappings = scopeMappings;
+      const result = await collectMarkdown(root, scopePaths('records', mappings), {
+        maxFiles: 400, maxBytes: 4 * 1024 * 1024, maxDepth: 6, includeBody: true,
+        acceptFile: relative => path.basename(relative) === '00_步骤卡.md' && /^STEP-\d{4,}-/.test(path.basename(path.dirname(relative))) && ['07_研究步骤_Steps', '11_研究步骤'].includes(path.basename(path.dirname(path.dirname(relative)))),
+      });
+      const steps = [];
+      for (const file of result.files) {
+        const fields = stepFields(file.body);
+        if (fields.danta_step_schema !== '1' || fields.task_id !== taskId || !/^[a-zA-Z0-9-]{8,100}$/.test(fields.step_key || '')
+          || !/^(P\d{3,}|legacy)$/.test(fields.project_id || '') || !/^STEP-\d{4,}$/.test(fields.step_id || '')
+          || !path.basename(path.dirname(file.path)).startsWith(`${fields.step_id}-`)
+          || !['planned', 'in_progress', 'waiting_input', 'complete'].includes(fields.status) || !fields.title || !fields.goal) continue;
+        if (steps.some(step => step.key === fields.step_key)) throw new Error('同一步骤键存在多份记录，请让 Codex 核对原课题目录，保留唯一记录后重试。');
+        steps.push({ key: fields.step_key, title: safeText(fields.title, 240), goal: safeText(fields.goal, 1000), status: fields.status,
+          nextAction: safeText(fields.next_action, 1000), stepId: fields.step_id, projectId: fields.project_id, directory: path.posix.dirname(file.path), vaultPath: root, vaultName, available: true });
+      }
+      if (steps.length > 100) throw new Error('本任务的步骤超过 100 条，请拆分研究任务后再同步。');
+      let documents;
+      let detailTruncated = false;
+      if (stepKey) {
+        const selected = steps.find(step => step.key === stepKey);
+        if (!selected) throw new Error('当前知识库内没有找到这一步。保留的本机索引可供 Codex 定位，不能作为已同步记录。');
+        const exactFiles = new Set(['00_步骤卡.md', '01_输入_Input/00_输入索引.md', '02_过程_Process/00_过程记录.md', '03_产出_Output/00_产出索引.md', '04_核查与交接_Review/00_核查与交接.md'].map(file => `${selected.directory}/${file}`));
+        const detail = await collectMarkdown(root, [selected.directory], { maxFiles: 6, maxBytes: 1024 * 1024, maxDepth: 1, includeBody: true, acceptFile: relative => exactFiles.has(relative.split(path.sep).join('/')) });
+        detailTruncated = detail.truncated;
+        documents = detail.files.map(file => ({ ...file, body: file.body.replace(/^---\s*\n[\s\S]*?\n---\s*(?:\n|$)/, '') }));
+      }
+      if (vaultRoot !== root || scopes !== granted || scopeMappings !== mappings || !scopes.has('records')) throw new Error('读取期间知识库连接发生变化，请在当前连接重试。');
+      return { steps, documents, truncated: result.truncated || detailTruncated };
+    },
+
     async createArchive({ title, body, category = '研究记录' }) {
       if (!vaultRoot || !scopes.has('archive-write')) throw new Error('请先为“新建归档”明确授权。');
       if (typeof body !== 'string' || body.length > 60_000) throw new Error('归档正文须为文字且不超过 60000 字符，请拆分内容后再保存。');
@@ -1027,6 +1076,7 @@ export function createLocalBridgeRequestHandler(service) {
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}jev/status`) return json(res, 200, await service.jevStatus());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/status`) return json(res, 200, await service.vaultStatus());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/structure`) return json(res, 200, await service.inspectVaultStructure());
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/steps`) return json(res, 200, await service.researchSteps(requestUrl.searchParams.get('taskId'), requestUrl.searchParams.get('stepKey') || ''));
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}vault/data`) return json(res, 200, await service.vaultData(requestUrl.searchParams.get('section')));
       if (req.method !== 'POST') return json(res, 405, { error: '不支持此请求。' });
       if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return json(res, 415, { error: '请求格式无效。' });

@@ -67,6 +67,10 @@ export function getVaultData(section) {
   return requestLocal(`/vault/data?section=${encodeURIComponent(section)}`);
 }
 
+export function getResearchSteps(taskId, stepKey = '') {
+  return requestLocal(`/vault/steps?taskId=${encodeURIComponent(taskId)}&stepKey=${encodeURIComponent(stepKey)}`);
+}
+
 export function createVaultArchive(payload) {
   return requestLocal('/vault/archive', { method: 'POST', body: JSON.stringify(payload) });
 }

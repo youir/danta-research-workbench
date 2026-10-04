@@ -1,6 +1,16 @@
 # GitHub 扩展候选与试用标准
 
-**核对日期：2026-09-26。** 本页记录值得观察的项目，不表示它们已在龚博士设备完成端到端验证。两个本工作台原创的生信专项技能已纳入发行包；BioServices 库、R/Python 环境及其他候选仍按任务配置。
+## 2026-10-04：视频所说“172 个科研 Skill”的核查
+
+用户提供的视频展示“杨师兄原创研究型论文 Skill”及 172 个可安装 Skill，但画面未给出可核验的 GitHub 仓库地址或 172 项目录；画面中的版权声明也指向该演示者自己的整套材料。因此 172 是视频中的陈述，不是已经找到、可公开获取的 GitHub 集合。不能将其与 K-Dense 的同类仓库视为同一产品。
+
+[K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills/tree/154988403bb5a18e9d3c0ce4e6d5e2e4b184a298) 在核对提交 `154988403bb5a18e9d3c0ce4e6d5e2e4b184a298` 时，实际有 **177** 个 `skills/*/SKILL.md`；[官方分类目录](https://github.com/K-Dense-AI/scientific-agent-skills/blob/154988403bb5a18e9d3c0ce4e6d5e2e4b184a298/docs/skills.md) 的“Bioinformatics & Genomics”分组有 **30** 项。它提供生信方法技能，但没有视频所示的同名“00-SCI原创研究论文总控专家”或那套 172 项共享协议。仓库 README/根许可证不能替代逐项许可证检查；例如 `bioservices` 技能自标 GPLv3，`depmap` 自标 CC-BY-4.0。
+
+按当前蛋挞工作台的差距，优先留意 `genomic-coordinates`（基因组版本、0/1 基坐标和变异标准化）、`ontology-term-resolution`（组织/细胞/疾病本体 ID）、`cellxgene-census`（公开单细胞数据）、`depmap`（肿瘤依赖证据）、`nextflow`（原始测序数据的可复现流程）和 `mageck`（CRISPR 筛选）。`bulk-rnaseq`、`pydeseq2`、`scanpy`、`scvi-tools`、`pathway-enrichment` 等与本机 Codar 31 技能快照重叠，先比较版本和任务缺口，不重复安装。上述均未在龚博士私有工作区验证运行。
+
+[GPTomics/bioSkills](https://github.com/GPTomics/bioSkills) 有 ATAC-seq、空间转录组、Hi-C、变异分析等更细的主题，可在具体数据类型出现时参考；原仓库已归档，因而不作为默认更新源。[GoekeLab/awesome-genomic-skills](https://github.com/GoekeLab/awesome-genomic-skills) 适合找候选，但目录收录不等于逐项验证。详细视频观察、优先级及吸收边界见 [本次分析记录](docs/reports/2026-10-04-科研Skill与主专家配置分析.md)。
+
+**以下原有候选清单核对于 2026-09-26。** 本页记录值得观察的项目，不表示它们已在龚博士设备完成端到端验证。两个本工作台原创的生信专项技能已纳入发行包；BioServices 库、R/Python 环境及其他候选仍按任务配置。
 
 ## 当前候选
 

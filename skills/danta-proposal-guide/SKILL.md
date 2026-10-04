@@ -27,6 +27,8 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 
 只处理用户指定工作区和资料，不扫描父目录、聊天导出或整个云盘。先读工作区 `我的开题/00_状态与下一步.md`，再读 `我的开题/08_思考过程/Idea画布.md`；需要了解变化原因时读手记。以下路径均相对用户工作台，不相对安装后的 skill 目录。找不到工作区先定位，不在技能安装目录创建研究档案。
 
+当前状态若链接了正在进行的步骤，再读该目录的 `00_步骤卡.md` 与 `04_核查与交接_Review/00_核查与交接.md`，从已有产物接续；没有实际开始的步骤就不预建目录。
+
 先了解资料、已有想法、导师实际要求、资源与时间，再提出针对性的选题建议。阅读范围、未知和工具能力分别记录；“掌握”不是读完无限资料或安装全部软件。先给简短已知/未知总结供她校正；她已明确选择或允许带缺口探索时继续，不反复确认。模拟案例、日报线索、公开实验室介绍都不能自动成为个人研究画像。
 
 ## 按需读取
@@ -43,6 +45,8 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 - 龚博士要起草/修改生物医学或生信论文、润色/翻译、回复审稿意见或准备投稿材料时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-paper-writing`；简单编辑直接处理，长篇任务才先核对提纲和证据缺口。
 - 统计方法、p 值或分析执行：先读 [statistical-adaptation.md](references/statistical-adaptation.md)，纠正上游误述，再调用统计技能。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
+- 用户要从选题推进原创研究论文，或任务涉及生信分析路线选择：读 [skill-routing.md](references/skill-routing.md) 的“原创研究与生信路线”。先识别真实研究问题、证据产生方式和当前瓶颈，再选当前需要的专项技能；实验与生信混合时按证据链组织，不强制用户走单一路线或先完成一套问卷。
+- 主引导引导到一个实质研究步骤并将开始处理材料、分析或制作交付物时，读 [research-step-workspace.md](references/research-step-workspace.md)，在当前活动课题下只为这一步建立文件夹记录输入索引、真实过程、产出索引、核查与交接；已配置工作台成果目录时沿用原成果位置。阶段、步骤和文件夹不是同义词；简单问答无需创建。
 - 任何科研咨询需要搜索公开网页、数据库或论文时：按 [literature-search.md](references/literature-search.md) 使用现有来源检索；找到关键 PubMed 论文后，可用 Linked Discoveries 扩展其前后引文、主题和出版更新，再回到原文核查。当前客户端提供 Jev MCP 时，主引导或文献负责人自动用 Jev 对不少于 4 条候选结果做相关性重排，再挑选要读的来源；少量候选或单一权威来源无需额外调用。可安全外发的日报公开线索和关键来源主张也按 [jev-search-integration.md](references/jev-search-integration.md) 自动筛选/核验。龚博士无需点名 Jev、选工具或确认常规公开结果调用。私有 vault、未发表方向、病历及论文草稿不发送给 Jev；无法安全泛化时跳过并照常完成本地/原检索流程。Jev 不负责搜索、写结论或替人决定。
 - 用户要蒸馏专家、建立/更新人物顾问或主题框架：先读 [expert-distillation.md](references/expert-distillation.md)，再按原始 huashu-nuwa 流程执行。
 - 需要专业工具：读 [skill-routing.md](references/skill-routing.md)，再读实际可用技能。缺失能力如实报告，能做的部分继续。
