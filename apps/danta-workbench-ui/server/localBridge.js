@@ -1059,6 +1059,7 @@ export function createLocalBridgeRequestHandler(service) {
     try {
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}artifacts/status`) return json(res, 200, await service.artifacts.status());
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}artifacts/list`) return json(res, 200, await service.artifacts.list(requestUrl.searchParams.get('taskId')));
+      if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}artifacts/provenance`) return json(res, 200, await service.artifacts.provenance(requestUrl.searchParams.get('taskId'), requestUrl.searchParams.get('key')));
       if (req.method === 'GET' && requestUrl.pathname === `${API_PREFIX}artifacts/content`) {
         const download = requestUrl.searchParams.get('download') === '1';
         const file = await service.artifacts.content({ taskId: requestUrl.searchParams.get('taskId'), key: requestUrl.searchParams.get('key'), fingerprint: requestUrl.searchParams.get('fingerprint') || '', original: download });
@@ -1086,6 +1087,7 @@ export function createLocalBridgeRequestHandler(service) {
       if (requestUrl.pathname === `${API_PREFIX}artifacts/import`) return json(res, 200, await service.artifacts.import(body));
       if (requestUrl.pathname === `${API_PREFIX}artifacts/attach-preview`) return json(res, 200, await service.artifacts.attachPreview(body));
       if (requestUrl.pathname === `${API_PREFIX}artifacts/open`) return json(res, 200, await service.artifacts.open(body));
+      if (requestUrl.pathname === `${API_PREFIX}artifacts/verify-output`) return json(res, 200, await service.artifacts.verifyOutput(body));
       if (requestUrl.pathname === `${API_PREFIX}state/save`) return json(res, 200, await service.saveWorkbenchState(body));
       if (requestUrl.pathname === `${API_PREFIX}state/restore`) return json(res, 200, await service.restoreWorkbenchState(body));
       if (requestUrl.pathname === `${API_PREFIX}jev/configure`) return json(res, 200, await service.configureJev(body));

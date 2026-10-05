@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="990" viewBox="0 0 1440 990" role="img" aria-labelledby="title desc">
+<title id="title">龚博士科研工作台整体体系</title><desc id="desc">工作台、Codex、私有知识库和成果目录协同：提出问题、推进实际步骤、查看成果、反馈修改和恢复下一步。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#877cbf"/></marker></defs>
+<rect width="1440" height="990" fill="#f6f5fa"/><g font-family="PingFang SC,Microsoft YaHei,Arial,sans-serif">
+<text x="64" y="75" fill="#7564ce" font-size="19" font-weight="700">龚博士科研工作台 · 体系总览</text>
+<text x="64" y="129" fill="#1c2d43" font-size="36" font-weight="700">一个问题，持续接着做</text>
+<text x="64" y="168" fill="#647084" font-size="19">工作台管理入口，Codex 完成工作，GY 留下研究记录，成果目录保留版本。</text>
+<rect x="64" y="209" width="1312" height="68" rx="16" fill="#ebe7fa"/>
+<text x="91" y="251" fill="#473880" font-size="21" font-weight="700">龚博士与导师：提出问题 · 选择方向 · 判断研究结论与下一步</text>
+<g stroke="#ddd8e9" fill="#fff"><rect x="64" y="326" width="290" height="322" rx="18"/><rect x="404" y="326" width="290" height="322" rx="18"/><rect x="744" y="326" width="290" height="322" rx="18"/><rect x="1084" y="326" width="292" height="322" rx="18"/></g>
+<g stroke="#877cbf" stroke-width="2" marker-end="url(#arrow)" fill="none"><path d="M359 482H397"/><path d="M699 482H737"/><path d="M1039 482H1077"/></g>
+<g fill="#7564ce" font-size="15" font-weight="700"><text x="87" y="366">01 · 日常入口</text><text x="427" y="366">02 · 科研协作与执行</text><text x="767" y="366">03 · 长期研究记录</text><text x="1107" y="366">04 · 实际交付</text></g>
+<g fill="#1c2d43" font-size="26" font-weight="700"><text x="87" y="408">桌面工作台</text><text x="427" y="408">Codex 主引导</text><text x="767" y="408">Obsidian / GY</text><text x="1107" y="408">成果目录</text></g>
+<g fill="#4d5b70" font-size="19">
+<text x="87" y="450"><tspan x="87" dy="0">今天 · 研究任务</tspan><tspan x="87" dy="35">文献资料 · 汇报制图</tspan><tspan x="87" dy="35">设置 · 草稿与恢复</tspan><tspan x="87" dy="35">成果预览 · 修改意见</tspan></text>
+<text x="427" y="450"><tspan x="427" dy="0">理解目标 · 恢复上下文</tspan><tspan x="427" dy="35">检索 · 分析 · 写作 · 制图</tspan><tspan x="427" dy="35">按需专项角色与工具</tspan><tspan x="427" dy="35">使用真实材料与运行记录</tspan></text>
+<text x="767" y="450"><tspan x="767" dy="0">研究画像 · 协作偏好</tspan><tspan x="767" dy="35">课题状态 · 思路 · 证据</tspan><tspan x="767" dy="35">决定 · 实际步骤与交接</tspan><tspan x="767" dy="35">一套权威记录，索引相连</tspan></text>
+<text x="1107" y="450"><tspan x="1107" dy="0">可编辑原件</tspan><tspan x="1107" dy="35">同版本 PDF / 图片预览</tspan><tspan x="1107" dy="35">方法 · 参数 · 环境 · 日志</tspan><tspan x="1107" dy="35">来源清单 · 历史版本</tspan></text>
+</g>
+<g fill="#8b8499" font-size="15"><text x="87" y="617">连接一次，核对后恢复有效范围</text><text x="427" y="617">角色配置不等于工具已经运行</text><text x="767" y="617">私有资料不随公开 Git 上传</text><text x="1107" y="617">运行成功不等于科学验证</text></g>
+<rect x="64" y="690" width="1312" height="223" rx="18" fill="#fff" stroke="#ddd8e9"/>
+<text x="89" y="731" fill="#1c2d43" font-size="23" font-weight="700">日常使用路径</text>
+<g fill="#ebe7fa"><rect x="89" y="759" width="212" height="54" rx="12"/><rect x="338" y="759" width="212" height="54" rx="12"/><rect x="587" y="759" width="212" height="54" rx="12"/><rect x="836" y="759" width="212" height="54" rx="12"/><rect x="1085" y="759" width="266" height="54" rx="12"/></g>
+<g fill="#473880" font-size="19" font-weight="650" text-anchor="middle"><text x="195" y="793">写问题 / 继续任务</text><text x="444" y="793">交接 Codex 工作</text><text x="693" y="793">回任务预览成果</text><text x="942" y="793">反馈修改，保留新版</text><text x="1218" y="793">记录下一步，重开继续</text></g>
+<g stroke="#877cbf" stroke-width="2" marker-end="url(#arrow)"><path d="M307 786H330"/><path d="M556 786H579"/><path d="M805 786H828"/><path d="M1054 786H1077"/></g>
+<text x="89" y="859" fill="#647084" font-size="17">实质步骤：输入索引 → 过程记录 → 产出索引 → 核查与交接。普通问题可直接在 Codex 中讨论。</text>
+<text x="89" y="890" fill="#647084" font-size="17">启动语需粘贴提交；分析依赖按任务核对；已有有效授权沿用。所有能力以实际本机连接与运行情况为准。</text>
+<text x="64" y="952" fill="#8b8499" font-size="15">2026-10-05 · 源码体系说明；本轮新增生信引导与来源展示尚待发布安装包。</text></g></svg>

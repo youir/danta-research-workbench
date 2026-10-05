@@ -25,10 +25,9 @@ import { makeKickoffPrompt } from './shared/utils/promptBuilder.js';
 import { makeTaskBackup, MAX_BACKUP_BYTES, parseTaskBackup } from './shared/utils/taskBackup.js';
 import { getDesktopStateHealth, subscribeDesktopState } from './shared/utils/desktopState.js';
 import { describeHandoff, getHandoffThreadId, isSameKickoff } from './shared/utils/taskHandoff.js';
+import { collectLiterature, literaturePrompt, mergeLiteratureBackup, removeLiteratureDraft, updateLiteratureCard } from './shared/utils/literatureCards.js';
 import { addVaultScopeFolder, authorizeVaultScopes, chooseVault, createCodexThread, createVaultArchive, disconnectVault, forgetVaultLocation, getVaultStatus, inspectVaultStructure, openCodexThread, rememberVaultLocation, removeVaultScopeFolder, repairVaultStructure, restoreVaultLocation } from './shared/utils/localApi.js';
 
-import quickstartImage from '../../../docs/assets/quickstart.png';
-import frameworkImage from '../../../docs/assets/workbench-map.png';
 
 const INITIAL_DRAFTS = Object.fromEntries(PROMPT_STARTERS.map(workflow => [workflow.id, workflow.seed]));
 const MECHANISM_SEED = MECHANISM_WORKFLOW.seed;
@@ -67,6 +66,12 @@ export function App() {
   const [vaultStructure, setVaultStructure] = useState(null);
   const [settingsSection, setSettingsSection] = usePersistentState('settingsSection', 'workspace');
   const [archivingTaskId, setArchivingTaskId] = useState('');
+  const [literatureCards, setLiteratureCards] = usePersistentState('literatureCards', []);
+  const [selectedLiteratureId, setSelectedLiteratureId] = usePersistentState('selectedLiteratureId', '');
+  const [literatureView, setLiteratureView] = usePersistentState('literatureView', 'inbox');
+  const [literatureTargetTaskId, setLiteratureTargetTaskId] = usePersistentState('literatureTargetTaskId', '');
+  const literatureRef = useRef(literatureCards);
+  literatureRef.current = literatureCards;
   const archiveLockRef = useRef(false);
   const artifactConnection = useArtifactConnection();
 
@@ -94,7 +99,7 @@ export function App() {
   } = useResearchTasks({ drafts, filesByWorkflow, selectedPptTemplate, selectedPptLogo, pptPromptChoices, mechanismBrief, lastCheckpoint });
 
   function exportTaskBackup() {
-    const backup = makeTaskBackup({ tasks: researchTasks, activeTaskId, pendingKickoff, homeThought });
+    const backup = makeTaskBackup({ tasks: researchTasks, activeTaskId, pendingKickoff, homeThought, literatureCards: literatureRef.current, selectedLiteratureId });
     const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -104,19 +109,23 @@ export function App() {
     link.click();
     link.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    showNotice(`已导出 ${researchTasks.length} 张任务卡的本机备份。请把文件保存在自己掌控的位置。`, 'success');
+    showNotice(`已导出 ${researchTasks.length} 张任务卡及 ${literatureRef.current.length} 张阅读卡的本机备份。请保存在自己掌控的位置。`, 'success');
   }
 
   async function importTaskBackup(file) {
     if (!file || file.size > MAX_BACKUP_BYTES) throw new Error('请选择不超过 12 MB 的工作台任务备份。');
     const backup = parseTaskBackup(await file.text());
+    const merged = mergeLiteratureBackup(literatureRef.current, backup.literatureCards);
     const existing = new Set(researchTasks.map(task => task.id));
-    const incoming = backup.tasks.filter(task => !existing.has(task.id));
+    const incoming = backup.tasks.filter(task => !existing.has(task.id)).map(task => ({ ...task, literatureIds: [...new Set((task.literatureIds || []).map(id => merged.idMap.get(id) || id))] }));
+    literatureRef.current = merged.cards;
+    setLiteratureCards(merged.cards);
+    if (!selectedLiteratureId && backup.selectedLiteratureId) setSelectedLiteratureId(merged.idMap.get(backup.selectedLiteratureId) || backup.selectedLiteratureId);
     if (incoming.length) mergeTaskCards(incoming);
     if (!activeTaskId && incoming.some(task => task.id === backup.activeTaskId)) setActiveTaskId(backup.activeTaskId);
     if (!pendingKickoff && backup.pendingKickoff && (!backup.pendingKickoff.taskId || incoming.some(task => task.id === backup.pendingKickoff.taskId))) setPendingKickoff(backup.pendingKickoff);
     if (!homeThought && backup.homeThought) setHomeThought(backup.homeThought);
-    const message = `已合并 ${incoming.length} 张任务卡；${backup.tasks.length - incoming.length} 张同编号任务保留本机现有版本。`;
+    const message = `已合并 ${incoming.length} 张任务卡及阅读索引；同编号任务与已有阅读进度保留本机版本。`;
     showNotice(message, 'success');
     return message;
   }
@@ -143,6 +152,7 @@ export function App() {
   const handoffTask = researchTasks.find(task => task.id === pendingKickoff?.taskId);
   const handoffThreadId = getHandoffThreadId(pendingKickoff, handoffTask);
   const taskRecordActions = {
+    literature: { cards: literatureCards, open: id => openReading(id, activeTaskId) },
     steps: {
       vaultStatus,
       patch: patch => patchTask(activeTaskId, patch),
@@ -210,6 +220,71 @@ export function App() {
     patchTask(activeTaskId, patch);
   }
 
+  function openReading(id = selectedLiteratureId, taskId = activeTaskId) {
+    setSelectedLiteratureId(id || '');
+    setLiteratureView('reading');
+    setLiteratureTargetTaskId(taskId || '');
+    navigate('literature', taskId);
+  }
+
+  function linkReading(cardId, taskId) {
+    if (!researchTasks.some(task => task.id === taskId)) return;
+    patchTask(taskId, task => task.literatureIds?.includes(cardId) ? null : { literatureIds: [...(task.literatureIds || []), cardId] });
+  }
+
+  function collectReading(input, taskId = activeTaskId) {
+    try {
+      const result = collectLiterature(literatureRef.current, input);
+      literatureRef.current = result.cards;
+      setLiteratureCards(result.cards);
+      setSelectedLiteratureId(result.card.id);
+      const target = researchTasks.find(task => task.id === taskId);
+      if (target) linkReading(result.card.id, target.id);
+      setLiteratureView('reading');
+      showNotice(`${result.reused ? '已复用已有阅读卡' : '已保存本机阅读草稿'}${target ? `，关联「${target.title || target.focus}」` : ''}；原文件未修改。`, 'success');
+      return result.card.id;
+    } catch (error) { showNotice(error.message, 'error'); return ''; }
+  }
+
+  function updateReading(id, field, value) {
+    try {
+      const cards = literatureRef.current.map(card => card.id === id ? updateLiteratureCard(card, field, value) : card);
+      literatureRef.current = cards; setLiteratureCards(cards);
+    } catch (error) { showNotice(error.message, 'error'); }
+  }
+
+  function beginReading(card, task) {
+    const focus = '文献证据';
+    const readingContext = task ? { ...task, literatureIds: [card.id] } : null;
+    const prompt = makeKickoffPrompt(`接续阅读「${card.title || '题名待填写'}」。${card.nextAction || '核对实际原文、阅读范围、结果与限制，并记录可继续的下一步。'}\n本次优先处理阅读卡 ${card.id}；只处理这篇及与本次目标直接相关的资料。`, focus, null, null, readingContext, literatureRef.current)
+      + (task ? artifactDeliveryPrompt(task, artifactConnection.status) : '\n' + literaturePrompt({ literatureIds: [card.id] }, literatureRef.current).join('\n') + '\n本次是独立阅读；未确认活动课题时只保留阅读草稿，不把它自动归入某课题的证据。');
+    setTaskFocus(focus);
+    setPendingKickoff({ id: crypto.randomUUID(), prompt, focus, page: task?.workflowId || 'literature', taskId: task?.id || '', taskTitle: task?.title || card.title, readingCardId: card.id, updatedAt: Date.now(), handoffThreadId: task?.linkedCodexThreadId || '' });
+    setCopied(false); setModalOpen(true);
+  }
+
+  function removeReading(id) {
+    const card = literatureRef.current.find(item => item.id === id);
+    if (!card) return;
+    const result = removeLiteratureDraft(literatureRef.current, researchTasks, id);
+    if (!window.confirm(`删除本机阅读草稿「${card.title || '题名待填写'}」并取消 ${result.taskLinks.length} 个任务的关联？\n原知识库文件不变。若要保留本机笔记，请先导出草稿或任务备份。`)) return;
+    literatureRef.current = result.cards;
+    setLiteratureCards(result.cards);
+    for (const link of result.taskLinks) patchTask(link.id, { literatureIds: link.literatureIds });
+    if (selectedLiteratureId === id) setSelectedLiteratureId(result.cards[0]?.id || '');
+    if (pendingKickoffRef.current?.readingCardId === id) { setPendingKickoff(null); setModalOpen(false); }
+    showNotice('已删除本机草稿及其任务关联；原知识库文件未修改。', 'success');
+  }
+
+  const readingLibrary = {
+    cards: literatureCards, selectedId: selectedLiteratureId, view: literatureView, setView: setLiteratureView,
+    targetTaskId: researchTasks.some(task => task.id === literatureTargetTaskId) ? literatureTargetTaskId : '',
+    setTargetTaskId: setLiteratureTargetTaskId, tasks: [...researchTasks].sort((a, b) => b.updatedAt - a.updatedAt), select: setSelectedLiteratureId,
+    collect: collectReading, update: updateReading, link: linkReading, remove: removeReading,
+    unlink: (cardId, taskId) => patchTask(taskId, task => ({ literatureIds: (task.literatureIds || []).filter(id => id !== cardId) })),
+    resumeTask: resumeResearchTask, begin: beginReading, notice: showNotice,
+  };
+
   async function archiveActiveTask() {
     if (!activeResearchTask || archiveLockRef.current) return;
     if (!vaultStatus.scopes.includes('archive-write')) {
@@ -221,7 +296,7 @@ export function App() {
     archiveLockRef.current = true;
     setArchivingTaskId(snapshot.id);
     try {
-      const result = await createVaultArchive(buildTaskArchiveDraft(snapshot));
+      const result = await createVaultArchive(buildTaskArchiveDraft(snapshot, literatureRef.current));
       recordTaskArchive(snapshot.id, { ...result, vaultName, savedAt: Date.now(), snapshotUpdatedAt: snapshot.updatedAt });
       showNotice(`已保存阶段记录到 ${vaultName}：${result.path}`, 'success');
     } catch (error) {
@@ -239,7 +314,7 @@ export function App() {
     }
     setTaskFocus(focus);
     const task = activeResearchTask?.workflowId === activePage ? activeResearchTask : null;
-    const prompt = makeKickoffPrompt(text, focus, template, logo, task) + artifactDeliveryPrompt(task, artifactConnection.status);
+    const prompt = makeKickoffPrompt(text, focus, template, logo, task, literatureRef.current) + artifactDeliveryPrompt(task, artifactConnection.status);
     setPendingKickoff({ id: crypto.randomUUID(), prompt, focus, page: activePage, taskId: task?.id || '', taskTitle: task?.title || '', updatedAt: Date.now(), handoffThreadId: task?.linkedCodexThreadId || '' });
     markCheckpoint(activePage, focus);
     setCopied(false);
@@ -513,8 +588,8 @@ export function App() {
       return withArtifactPanel(task, <MechanismWorkspace task={task} onTaskChange={updateActiveTask} recordActions={taskRecordActions} brief={task?.content ?? mechanismBrief} setBrief={value => task ? updateActiveTask('content', value) : setMechanismBrief(value)} showProcess={showMechanismProcess} setShowProcess={setShowMechanismProcess} onBack={goBack} onBegin={beginDiscussion} />);
     }
     if (activePage === 'records') return <ResearchRecordsPage canRead={vaultStatus.scopes.includes('records')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
-    if (activePage === 'literature') return <LiteraturePage canReadRss={vaultStatus.scopes.includes('rss')} canReadLiterature={vaultStatus.scopes.includes('literature')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
-    if (activePage === 'daily-briefs') return <DailyBriefsPage onBack={goBack} onBegin={beginDiscussion} />;
+    if (activePage === 'literature') return <LiteraturePage library={readingLibrary} vaultPath={vaultStatus.path || ''} vaultName={vaultStatus.name || ''} canReadRss={vaultStatus.scopes.includes('rss')} canReadLiterature={vaultStatus.scopes.includes('literature')} onOpenVault={() => navigate('vault')} onBack={goBack} />;
+    if (activePage === 'daily-briefs') return <DailyBriefsPage onBack={goBack} onBegin={beginDiscussion} onCollect={input => collectReading(input, activeTaskId)} onOpenReading={() => openReading()} activeTaskTitle={activeResearchTask?.title || ''} />;
     if (activePage === 'archive') return <ArchivePage canRead={vaultStatus.scopes.includes('archive-read')} canWrite={vaultStatus.scopes.includes('archive-write')} onOpenVault={() => navigate('vault')} onBack={goBack} onCheckpoint={() => markCheckpoint('archive', '历史归档')} />;
     if (activePage === 'settings') return <SettingsPage artifactConnection={artifactConnection} section={settingsSection} onSectionChange={setSettingsSection} defaultProjectId={defaultCodexProjectId} onDefaultProjectChange={setDefaultCodexProjectId} onBack={goBack} taskCount={researchTasks.length} onExportBackup={exportTaskBackup} onImportBackup={importTaskBackup} vaultProps={{ status: vaultStatus, structure: vaultStructure, busy: vaultBusy, onSelect: selectVault, onRemember: rememberVault, onRestore: restoreVault, onForget: forgetVault, onAddScopeFolder: addScopeFolder, onRemoveScopeFolder: removeScopeFolder, onAuthorize: authorizeScopes, onDisconnect: clearVault, onInspectStructure: checkVaultStructure, onRepairStructure: completeVaultStructure, onBack: goBack }} />;
     return <VaultConnection status={vaultStatus} structure={vaultStructure} busy={vaultBusy} onSelect={selectVault} onRemember={rememberVault} onRestore={restoreVault} onForget={forgetVault} onAddScopeFolder={addScopeFolder} onRemoveScopeFolder={removeScopeFolder} onAuthorize={authorizeScopes} onDisconnect={clearVault} onInspectStructure={checkVaultStructure} onRepairStructure={completeVaultStructure} onBack={goBack} />;
@@ -522,7 +597,7 @@ export function App() {
 
   return (
     <div className="app-frame">
-      <Titlebar guideUrl={quickstartImage} frameworkUrl={frameworkImage} />
+      <Titlebar guideUrl={`/workbench-guide.html?v=${__APP_VERSION__}`} frameworkUrl={`/framework-overview.svg?v=${__APP_VERSION__}`} />
       {storageError && <div className="storage-warning" role="alert"><span>{storageError}</span><button type="button" onClick={exportTaskBackup}>立即导出备份</button></div>}
       {desktopState.error && <div className="storage-warning" role="alert"><span>{desktopState.error}</span><button type="button" onClick={exportTaskBackup}>导出当前任务</button></div>}
       <div className="app-body">

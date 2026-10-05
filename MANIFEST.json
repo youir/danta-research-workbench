@@ -6,8 +6,9 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "f2a7f57eaa8dbacfbd3f4014d52a5654f6a01bf676a571a4bface4ef1043288d",
+        "SKILL.md": "2a6951cbbb2b1a2ef7c475feea0ad03549595cc7f93197e58c1aaf2c2f04f1d8",
         "agents/openai.yaml": "945dc0eb8e27f0478b0da327f54b2c7967a382455b1247c2274c913ea8396d60",
+        "references/bioinformatics-delivery.md": "2d8ef321b21c2d384833d267e13f9fcf748586873b43354648d9e4446ecf3b3c",
         "references/content-updates.md": "6a297c8ebaac76937591e4e4c74dcc2e2784d0deaffdc1f6908ceacb56ec8792",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
         "references/expert-distillation.md": "5b5b80aebc307bb985fa5d35d8fb32a631e054eaa7aefea955b561c9f5a44b8f",
@@ -16,13 +17,13 @@
         "references/knowledge-vault.md": "9aec2cf9c473593f5dc8ab05328ac362d40923e688546b47f183948b26e5ddce",
         "references/lab-meeting.md": "2585b206c2dc588c3c53cd574f52b67a0d0f0a7585df240e524d3cebc269c5d4",
         "references/literature-search.md": "360c7599b79b82844a691f255a9b5dbe23c2a80da351c0c25cc9a6372373e45c",
-        "references/literature-update.md": "5d30f31a4a4da36ee5ee683f5e728bcddce2cd3f62a7f3cdd15abe462e11961e",
+        "references/literature-update.md": "edcc993b38e0a442f676e0329080971ebbf4156d57294da56b8043d402960a2c",
         "references/multi-agent.md": "9e7be136e6d23ef27789198b6a814fc2b5d577072d25556d13d3643fc71bf420",
         "references/ogsm.md": "63b46980beb443aaa303205ae6e00d7738dfb0cb8e229274f1e5474746cb472c",
         "references/research-assistant.md": "897738b8eaf711574c54830e91157b3908350056c2db7eca3e5edb0f00c34550",
-        "references/research-step-workspace.md": "cbcb15e7fda2509cee5689cf7b34114b93fd393c9077cb69fad85db5f8e513c5",
+        "references/research-step-workspace.md": "cc278a811846fa2c968bae752b74f9da07fdc28472aa8754cf37347598e9dcfe",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
-        "references/skill-routing.md": "b97fce25f890b82df48e91a93f3e17b393d9595864123ff68a0e8308c57d64cb",
+        "references/skill-routing.md": "ae9721022bea91bd85cb9e19a20d5ff2782aad7faffc26b8a6bc113cb1e09fd9",
         "references/statistical-adaptation.md": "6ad21ec197acfafcdefea741b7bc0c1589853742a3ac91b02db8e6637b85a63e",
         "references/thinking-dialogue.md": "cdfe7685c059f239eddca7171de4c991c11c3382ae07357eba4f62e43a2f5704",
         "references/workspace-continuity.md": "e0ecc04b9089e0b3d4e1bbaae6b6622b34e5afce938f53f0e502d67a55639618",
@@ -339,5 +340,5 @@
     }
   },
   "package_version": "1.3-reviewed-20260924",
-  "content_version": "1.23.0"
+  "content_version": "1.24.0"
 }

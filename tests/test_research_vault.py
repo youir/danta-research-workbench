@@ -62,7 +62,12 @@ def main():
             run(init,'--dest',alias,ok=False)
         # Reject tampered template or symlink without a partially-created target.
         clone=temp/'distribution'
-        shutil.copytree(ROOT,clone,ignore=shutil.ignore_patterns('.git','.local','__pycache__'))
+        # Model the published distribution, not local dependencies or private files.
+        for relative in json.loads((ROOT/'project-files.json').read_text(encoding='utf-8'))['files']:
+            source = ROOT/relative
+            target = clone/relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
         template=clone/'templates/00_科研知识库_Research-Vault'
         file=template/'00_index.md'; original=file.read_bytes()
         file.write_text('Tampered')

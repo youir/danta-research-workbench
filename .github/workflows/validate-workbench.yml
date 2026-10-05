@@ -1,0 +1,51 @@
+name: Validate workbench
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: workbench-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-validation:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/danta-workbench-ui/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check content and distribution boundaries
+        run: |
+          python tests/test_research_records.py
+          python tests/test_jev_search_contract.py
+          python scripts/validate_release.py
+      - name: Install locked frontend dependencies
+        working-directory: apps/danta-workbench-ui
+        run: npm ci
+      - name: Verify all workbench regression cases
+        working-directory: apps/danta-workbench-ui
+        run: npm test
+      - name: Build Windows x64 installer
+        working-directory: apps/danta-workbench-ui
+        run: npm run dist:win
+      - name: Retain installer for acceptance, without publishing a release
+        uses: actions/upload-artifact@v4
+        with:
+          name: workbench-windows-acceptance-${{ github.sha }}
+          path: apps/danta-workbench-ui/release/*.exe
+          if-no-files-found: error
+          retention-days: 7

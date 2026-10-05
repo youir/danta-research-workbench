@@ -1,5 +1,7 @@
 import { getResearchStage, getResearchTaskStatus } from '../constants/researchTasks.js';
 import { MECHANISM_WORKFLOW, PROMPT_STARTERS } from '../constants/workflows.js';
+import { BIO_DATA_KINDS, BIO_INPUT_FIELDS } from './bioInputs.js';
+import { literaturePrompt } from './literatureCards.js';
 
 export const TASK_RECORD_KINDS = [
   { id: 'source', label: '文献或来源线索' },
@@ -54,10 +56,11 @@ export function makeRelatedTaskContext(parent, workflow) {
     ].join('\n'),
     files: [...(parent.files || [])],
     records: getUsefulTaskRecords(parent).map(record => ({ ...record })),
+    literatureIds: [...(parent.literatureIds || [])],
   };
 }
 
-export function buildTaskArchiveDraft(task) {
+export function buildTaskArchiveDraft(task, literatureCards = []) {
   const stage = getResearchStage(task.stageId);
   const workflow = [MECHANISM_WORKFLOW, ...PROMPT_STARTERS].find(item => item.id === task.workflowId);
   const content = String(task.content || '').trim();
@@ -72,12 +75,18 @@ export function buildTaskArchiveDraft(task) {
     `进度状态：${getResearchTaskStatus(task.statusId).label}`,
     ...(task.objective ? [`本次目标：${task.objective}`] : []),
     ...(task.steps?.length ? ['研究步骤（进度记录，不代表结论核验）：', ...task.steps.map(step => `- ${step.title}：${step.goal}；${step.directory || '尚未建立知识库记录'}；下一步：${step.nextAction || '待记录'}`)] : []),
+    ...(task.steps || []).filter(step => step.bioInput).flatMap(step => [
+      `本步材料线索（用户填写，尚未核验）：${step.title}`,
+      ...(step.bioInput.kind ? [`- 材料类型：${BIO_DATA_KINDS[step.bioInput.kind] || '未确定'}`] : []),
+      ...Object.entries(BIO_INPUT_FIELDS).filter(([key]) => step.bioInput[key]?.trim()).map(([key, [label]]) => `- ${label}：${step.bioInput[key]}`),
+    ]),
     ...(task.linkedCodexThreadId ? [`Codex 对话编号：${task.linkedCodexThreadId}`] : []),
     '',
     ...(content && content !== String(workflow?.seed || '').trim() ? ['## 任务内容', '', content, ''] : []),
     ...(task.nextStep ? ['## 下一步', '', task.nextStep, ''] : []),
     ...(task.openQuestions ? ['## 待解决问题', '', task.openQuestions, ''] : []),
     ...(records.length ? ['## 成果与来源索引', '', ...records.map(formatTaskRecord), ''] : []),
+    ...literaturePrompt(task, literatureCards),
     ...(task.files?.length ? ['## 关联文件名', '', ...task.files.map(name => `- ${name}`), '', '本快照仅记录文件名，没有复制或读取附件内容。', ''] : []),
     ...(task.selectedPptTemplate ? [`汇报模板：${task.selectedPptTemplate.title}`, `模板位置：${task.selectedPptTemplate.assetPath || '未注明'}`] : []),
     ...(task.selectedPptLogo ? [`单位标识：${task.selectedPptLogo.title || task.selectedPptLogo.id}`] : []),

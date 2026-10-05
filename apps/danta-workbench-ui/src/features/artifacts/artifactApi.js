@@ -9,6 +9,8 @@ export const getArtifactStatus = () => request('status');
 export const selectArtifactRoot = () => request('select', { confirm: true });
 export const forgetArtifactRoot = () => request('forget', {});
 export const listArtifacts = taskId => request(`list?taskId=${encodeURIComponent(taskId)}`);
+export const getArtifactProvenance = (taskId, key) => request(`provenance?${new URLSearchParams({ taskId, key })}`);
+export const verifyArtifactOutput = (taskId, key) => request('verify-output', { taskId, key });
 export const importArtifact = taskId => request('import', { taskId });
 export const attachArtifactPreview = (taskId, key) => request('attach-preview', { taskId, key });
 export const openArtifact = (taskId, key) => request('open', { taskId, key });

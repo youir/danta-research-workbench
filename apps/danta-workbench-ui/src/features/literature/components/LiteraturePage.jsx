@@ -3,15 +3,16 @@ import { ArrowSquareOut, ArrowRight, BookOpenText, Rss } from '@phosphor-icons/r
 import { PageBack } from '../../../shared/components/PageBack.jsx';
 import { useVaultSection } from '../../../shared/hooks/useVaultSection.js';
 import { usePersistentState } from '../../../shared/hooks/usePersistentState.js';
+import { LiteratureLibrary } from './LiteratureLibrary.jsx';
 
 function dateLabel(value) {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? '发布日期未注明' : new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' }).format(date);
 }
 
-export const LiteraturePage = memo(({ onOpenVault, onBack, canReadRss = false, canReadLiterature = false }) => {
-  const rss = useVaultSection('rss', canReadRss);
-  const literature = useVaultSection('literature', canReadLiterature);
+export const LiteraturePage = memo(({ library, vaultPath = '', vaultName = '', onOpenVault, onBack, canReadRss = false, canReadLiterature = false }) => {
+  const rss = useVaultSection('rss', canReadRss, vaultPath);
+  const literature = useVaultSection('literature', canReadLiterature, vaultPath);
   const [filter, setFilter] = usePersistentState('literatureFilter', 'all');
   const [search, setSearch] = usePersistentState('literatureSearch', '');
   const [seedPmid, setSeedPmid] = usePersistentState('linkedDiscoveriesPmid', '');
@@ -41,9 +42,21 @@ export const LiteraturePage = memo(({ onOpenVault, onBack, canReadRss = false, c
       <PageBack onBack={onBack} />
       <div className="home-eyebrow">来源可追溯</div>
       <h1 id="literature-title">文献与信息源</h1>
-      <p className="subpage-lede">查看 Obsidian 已缓存的 RSS 线索和文献笔记，或按 PMID 手动打开 NLM 的文献脉络图。本页的文献与 RSS 列表只读缓存；打开 Linked Discoveries 时只用所填 PMID 查询，不附带本地文献资料。</p>
+      <p className="subpage-lede">从已有线索选择要读的文献，记住读到哪里、下一步核实什么。选中的线索保存为本机阅读草稿；Obsidian 原笔记保持原位。</p>
+      <div className="literature-context">
+        <label>关联研究任务<select value={library.targetTaskId} onChange={event => library.setTargetTaskId(event.target.value)}>
+          <option value="">先保存阅读卡，暂不关联任务</option>
+          {library.tasks.map(task => <option key={task.id} value={task.id}>{task.title || task.focus}</option>)}
+        </select></label>
+        <div className="segmented-filter" aria-label="文献工作区">
+          <button type="button" className={library.view !== 'reading' ? 'is-active' : ''} aria-pressed={library.view !== 'reading'} onClick={() => library.setView('inbox')}>待整理</button>
+          <button type="button" className={library.view === 'reading' ? 'is-active' : ''} aria-pressed={library.view === 'reading'} onClick={() => library.setView('reading')}>我的阅读 · {library.cards.length}</button>
+        </div>
+      </div>
+      {library.view === 'reading' ? <LiteratureLibrary library={library} /> : <>
+      <button type="button" className="text-button reading-add-entry" onClick={() => library.setView('reading')}>添加 DOI / PMID / 来源链接 <ArrowRight size={16} aria-hidden="true" /></button>
 
-      <section className="linked-discoveries-panel literature-note-section" aria-labelledby="linked-discoveries-heading">
+      <details className="linked-discoveries-panel literature-note-section"><summary>用 PMID 寻找相关文献 · Linked Discoveries</summary>
         <div className="data-section-heading"><div><span className="panel-kicker">PubMed 文献脉络</span><h2 id="linked-discoveries-heading"><BookOpenText size={18} aria-hidden="true" />Linked Discoveries</h2></div></div>
         <p className="linked-discoveries-description">输入关键论文的 PMID，打开 NLM 文献关系图，查看相关论文、前后引文、主题及出版更新。</p>
         <form className="linked-discoveries-form" onSubmit={openLinkedDiscoveries} noValidate>
@@ -55,7 +68,7 @@ export const LiteraturePage = memo(({ onOpenVault, onBack, canReadRss = false, c
           {linkedDiscoveriesError && <p className="linked-discoveries-error" role="alert">{linkedDiscoveriesError}</p>}
         </form>
         <p id="linked-discoveries-note" className="linked-discoveries-note">点击后会将所填的公开 PMID 发给 NLM；须为符合条件且带摘要的 PubMed 记录。该工具处于试验阶段，只用于发现线索；引文可能不全，也不判断研究质量或复现成败。请回到 PubMed 和原文核实。<a href="https://linkeddiscoveries.ncbi.nlm.nih.gov/userguide/" target="_blank" rel="noreferrer">查看 NLM 使用说明 <ArrowSquareOut size={12} aria-hidden="true" /></a></p>
-      </section>
+      </details>
 
       {!canReadRss && !canReadLiterature ? <div className="empty-state data-empty-state"><BookOpenText size={30} weight="light" aria-hidden="true" /><h2>需要授权文献或 RSS 读取范围</h2><p>你可以分别授权 RSS 缓存与文献笔记。未选中的范围不会读取。</p><button className="text-button" type="button" onClick={onOpenVault}>设置知识库范围 <ArrowRight size={16} aria-hidden="true" /></button></div> : <>
         {canReadRss && <section className="rss-workbench" aria-labelledby="rss-heading">
@@ -71,7 +84,9 @@ export const LiteraturePage = memo(({ onOpenVault, onBack, canReadRss = false, c
               <div className="rss-item-meta"><span>{item.source || '来源未注明'}</span><span>{dateLabel(item.publishedAt)}</span>{item.favorite && <span className="rss-favorite">已收藏</span>}</div>
               <h3><a href={item.url} target="_blank" rel="noreferrer">{item.title}<ArrowSquareOut size={14} aria-hidden="true" /></a></h3>
               {item.excerpt && <p>{item.excerpt}</p>}
-              <div className="rss-item-footer"><span>{item.read ? '已读' : '未读复核'}</span>{item.savedPath && <code>已存入 {item.savedPath}</code>}</div>
+              <div className="rss-item-footer"><span>{item.read ? 'RSS 缓存标为已读' : 'RSS 线索待查看'}</span>{item.savedPath && <code>已存入 {item.savedPath}</code>}
+                <button type="button" className="text-button" onClick={() => library.collect({ title: item.title, url: item.url, summary: item.excerpt, originLabel: 'RSS · ' + (item.source || '来源未注明'), originKey: 'rss:' + vaultPath + ':' + (item.url || item.id || item.title), notePath: item.savedPath, vaultPath }, library.targetTaskId)}>加入我的阅读{library.targetTaskId ? '并关联任务' : ''} <ArrowRight size={14} aria-hidden="true" /></button>
+              </div>
             </article>)}</div> : <div className="data-empty-inline">缓存中没有符合当前筛选的线索。打开 Obsidian RSS 插件后可手动更新。</div>}
             {rss.data.truncated && <p className="data-limit-note">RSS 笔记已达到本次读取上限。</p>}
           </>}
@@ -81,8 +96,9 @@ export const LiteraturePage = memo(({ onOpenVault, onBack, canReadRss = false, c
           <div className="data-section-heading"><div><span className="panel-kicker">已有 Markdown</span><h2 id="literature-notes-heading"><BookOpenText size={18} aria-hidden="true" />文献阅读笔记</h2></div><span className="vault-status-pill">{notes.length} 条</span></div>
           {literature.loading && <div className="data-loading" role="status">正在读取授权的文献笔记…</div>}
           {literature.error && <p className="data-error" role="status">{literature.error}</p>}
-          {!literature.loading && !literature.error && (notes.length ? <div className="vault-record-list">{notes.map(note => <article className="vault-record-card" key={note.path}><div className="vault-record-meta"><span>{dateLabel(note.date)}</span><code>{note.path}</code></div><h3>{note.title}</h3>{note.excerpt && <p>{note.excerpt}</p>}</article>)}</div> : <div className="data-empty-inline">授权范围内还没有文献 Markdown 笔记。</div>)}
+          {!literature.loading && !literature.error && (notes.length ? <div className="vault-record-list">{notes.map(note => <article className="vault-record-card" key={note.path}><div className="vault-record-meta"><span>{dateLabel(note.date)}</span><code>{note.path}</code></div><h3>{note.title}</h3>{note.excerpt && <p>{note.excerpt}</p>}<button type="button" className="text-button" onClick={() => library.collect({ title: note.title, summary: note.excerpt, notePath: note.path, vaultPath, originKey: 'note:' + vaultPath + ':' + note.path, originLabel: 'Obsidian · ' + vaultName }, library.targetTaskId)}>继续阅读这篇笔记 <ArrowRight size={14} aria-hidden="true" /></button></article>)}</div> : <div className="data-empty-inline">授权范围内还没有文献 Markdown 笔记。</div>)}
         </section>}
+      </>}
       </>}
     </section>
   );

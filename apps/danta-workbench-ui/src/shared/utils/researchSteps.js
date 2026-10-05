@@ -1,3 +1,5 @@
+import { bioInputPrompt, validBioInput } from './bioInputs.js';
+
 export const STEP_LIMIT = 100;
 export const STEP_STATUSES = { planned: '待开始', in_progress: '进行中', waiting_input: '等待材料', complete: '本步完成' };
 
@@ -31,6 +33,7 @@ export function researchStepPrompt(task) {
     ...(step.projectId ? [`所属课题：${step.projectId}`] : []),
     ...(step.directory ? [`知识库内步骤路径：${step.directory}（相对已核对的知识库，不能套到其他库）`] : []),
     ...(step.nextAction ? [`步骤下一步：${step.nextAction}`] : []),
+    ...bioInputPrompt(step.bioInput),
     '先核对唯一私有知识库、活动课题及既有有效授权。已有步骤属于另一课题时，先定位原课题，不在新活动课题复制同一步。',
     `读取主技能 references/research-step-workspace.md。实质工作开始时，用 create_research_step.py 的 --task-id ${task.id} --step-key ${step.key} ${step.projectId ? ` --project-id ${step.projectId}` : ''} 建立或恢复本步骤；标题/目标取上面的真实内容，--workspace 用核对后的本机知识库路径。不要因重试或改标题产生重复步骤。`,
     '工作台里的步骤草稿不代表文件已创建或分析已运行。过程记录按实际动作填写；更新 00_步骤卡.md 的 status、next_action 和 updated 字段；完成时只将本步标为 complete，不自动将整个研究任务标为完成。',
@@ -46,7 +49,7 @@ export function validResearchSteps(task) {
   for (const step of task.steps) {
     if (!step || typeof step !== 'object' || typeof step.key !== 'string' || !/^[a-zA-Z0-9-]{8,100}$/.test(step.key) || keys.has(step.key)
       || typeof step.title !== 'string' || step.title.length > 240 || typeof step.goal !== 'string' || step.goal.length > 1000
-      || !Object.hasOwn(STEP_STATUSES, step.status) || ['directory', 'projectId', 'stepId', 'nextAction'].some(field => step[field] !== undefined && typeof step[field] !== 'string')) return false;
+      || !Object.hasOwn(STEP_STATUSES, step.status) || !validBioInput(step.bioInput) || ['directory', 'projectId', 'stepId', 'nextAction'].some(field => step[field] !== undefined && typeof step[field] !== 'string')) return false;
     keys.add(step.key);
   }
   return !task.activeStepKey || (typeof task.activeStepKey === 'string' && keys.has(task.activeStepKey));

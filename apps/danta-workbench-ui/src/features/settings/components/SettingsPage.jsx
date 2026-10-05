@@ -165,8 +165,8 @@ export function SettingsPage({ section, onSectionChange, defaultProjectId, onDef
           </div>}
         </>}
       </div>
-      <p>当前本机有 {taskCount} 张任务卡。导出文件包含任务卡、未完成启动语和首页草稿，请保存在自己掌控的位置。文件不会自动上传。</p>
-      <p>导入时只合并新任务；同编号任务保留当前本机版本。已有启动语和首页草稿不会被覆盖。</p>
+      <p>当前本机有 {taskCount} 张任务卡。导出包含任务卡、阅读卡与关联、未完成启动语和首页草稿，也包含本人选择的摘录与笔记位置；请私下保管。原文附件、知识库授权和密钥不包含在内，文件不会自动上传。</p>
+      <p>导入时只合并新任务；同编号任务与已有阅读进度保留本机版本。阅读卡按稳定标识复用，冲突时停止导入。已有启动语和首页草稿不会被覆盖。</p>
       <div className="settings-actions">
         <button className="secondary-button" type="button" onClick={onExportBackup}><DownloadSimple size={16} aria-hidden="true" />导出备份</button>
         <button className="secondary-button" type="button" onClick={() => backupInputRef.current?.click()}><UploadSimple size={16} aria-hidden="true" />导入备份</button>

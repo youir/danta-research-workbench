@@ -36,7 +36,7 @@ export function SourcesArea({ onBack, onNavigate, onOpenWorkflow }) {
     <AreaHeader id="sources-area-title" eyebrow="来源与证据" title="文献资料" description="按来源查看已授权的资料。笔记在 Obsidian 中维护，工作台只读取你允许的范围。" onBack={onBack} />
     <div className="area-action-grid" aria-label="文献资料工作">
       <AreaAction number="01" title="研究记录" description="查看课题项目和日志中的记录" onClick={() => onNavigate('records')} />
-      <AreaAction number="02" title="文献与信息源" description="查看文献笔记、RSS 线索和文献脉络" onClick={() => onNavigate('literature')} />
+      <AreaAction number="02" title="文献与信息源" description="整理线索、接续阅读和关联研究任务" onClick={() => onNavigate('literature')} />
       <AreaAction number="03" title="科研日报" description="查看今日日报、归档和自动化引导" onClick={() => onNavigate('daily-briefs')} />
       <AreaAction number="04" title="历史归档" description="查找旧记录，或在授权后新建阶段记录" onClick={() => onNavigate('archive')} />
     </div>

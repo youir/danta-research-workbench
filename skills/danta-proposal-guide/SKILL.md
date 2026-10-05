@@ -44,6 +44,7 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 - 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
 - 龚博士要起草/修改生物医学或生信论文、润色/翻译、回复审稿意见或准备投稿材料时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-paper-writing`；简单编辑直接处理，长篇任务才先核对提纲和证据缺口。
 - 统计方法、p 值或分析执行：先读 [statistical-adaptation.md](references/statistical-adaptation.md)，纠正上游误述，再调用统计技能。
+- 生信材料检查、路线规划或分析交付：读 [bioinformatics-delivery.md](references/bioinformatics-delivery.md)，沿用本步材料线索，只核对影响行动的缺项；实际运行才登记来源记录，不把材料填写或计算成功当作科学验证。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。
 - 用户要从选题推进原创研究论文，或任务涉及生信分析路线选择：读 [skill-routing.md](references/skill-routing.md) 的“原创研究与生信路线”。先识别真实研究问题、证据产生方式和当前瓶颈，再选当前需要的专项技能；实验与生信混合时按证据链组织，不强制用户走单一路线或先完成一套问卷。
 - 主引导引导到一个实质研究步骤并将开始处理材料、分析或制作交付物时，读 [research-step-workspace.md](references/research-step-workspace.md)，在当前活动课题下只为这一步建立文件夹记录输入索引、真实过程、产出索引、核查与交接；已配置工作台成果目录时沿用原成果位置。阶段、步骤和文件夹不是同义词；简单问答无需创建。

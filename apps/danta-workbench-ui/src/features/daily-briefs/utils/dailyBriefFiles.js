@@ -30,6 +30,8 @@ function reportFromJson(data, fileName) {
       question: String(item.question || ''),
       source: String(item.source || ''),
       url: safeHttpUrl(item.url),
+      doi: typeof item.doi === 'string' ? item.doi : '',
+      pmid: ['string', 'number'].includes(typeof item.pmid) ? String(item.pmid) : '',
       published: String(item.published || ''),
       evidence: EVIDENCE_LABELS[item.evidence] || '来源状态待核实',
       readDepth: DEPTH_LABELS[item.read_depth] || '阅读范围待核实',

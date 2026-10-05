@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { parseArtifactProvenance } from './artifactProvenance.js';
 
 const exec = promisify(execFile);
 const TYPES = { '.pdf': 'application/pdf', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.md': 'text/plain; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.html': 'text/html; charset=utf-8', '.htm': 'text/html; charset=utf-8', '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation', '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
@@ -140,7 +141,7 @@ export function createArtifactService({ memoryPath = '', folderPicker, filePicke
       generated = manifest.artifacts.map(item => {
         if (!item || typeof item.id !== 'string' || !/^[\w-]{1,100}$/.test(item.id) || typeof item.version !== 'string' || !/^[\w.-]{1,40}$/.test(item.version) || seen.has(`${item.id}|${item.version}`)) throw new Error('成果清单含无效或重复的成果版本。');
         seen.add(`${item.id}|${item.version}`);
-        return { id: item.id, title: clean(item.title || item.id), version: item.version, original: `${taskId}/${item.original}`, preview: item.preview ? `${taskId}/${item.preview}` : '', source: 'generated' };
+        return { id: item.id, title: clean(item.title || item.id), version: item.version, original: `${taskId}/${item.original}`, preview: item.preview ? `${taskId}/${item.preview}` : '', provenance: typeof item.provenance === 'string' && item.provenance ? `${taskId}/${item.provenance}` : '', source: 'generated' };
       });
     } catch (error) { if (error.code !== 'ENOENT') warning = error.message || '成果清单尚未写完，请稍后刷新。'; }
     const existing = Array.isArray(imports[taskId]) ? imports[taskId].slice(0, 100) : [];
@@ -148,7 +149,7 @@ export function createArtifactService({ memoryPath = '', folderPicker, filePicke
   }
   async function describe(taskId, entry) {
     const key = makeKey(taskId, entry);
-    const base = { key, title: clean(entry.title), version: clean(entry.version, 40), source: entry.source, original: entry.original, preview: entry.preview };
+    const base = { key, title: clean(entry.title), version: clean(entry.version, 40), source: entry.source, original: entry.original, preview: entry.preview, hasProvenance: Boolean(entry.provenance) };
     try {
       const original = await checkedPath(entry.original);
       const originalExt = path.extname(original.target).toLowerCase();
@@ -188,8 +189,34 @@ export function createArtifactService({ memoryPath = '', folderPicker, filePicke
     return { bytes, type: TYPES[ext], filename: path.basename(file.target) };
   }
 
+  async function readProvenance(taskId, entry) {
+    if (!entry.provenance) return { record: null, message: '这份成果尚未登记来源记录；原件和预览仍可使用。' };
+    const file = await checkedPath(entry.provenance);
+    if (path.extname(file.target).toLowerCase() !== '.json') throw new Error('来源记录必须是本任务内的 JSON 文件。');
+    const bytes = await boundedRead(file, 128 * 1024);
+    let value;
+    try { value = JSON.parse(bytes.toString('utf8')); } catch { throw new Error('来源 JSON 格式无法读取，请核对记录文件。'); }
+    const record = parseArtifactProvenance(value, taskId, entry);
+    return { record, message: '以下来自交付时保存的记录；工作台未重新执行分析，也未打开列出的输入和脚本。' };
+  }
+
+  async function provenance(taskId, key) {
+    return readProvenance(taskId, await locate(taskId, key));
+  }
+
+  async function verifyOutput({ taskId, key }) {
+    const entry = await locate(taskId, key);
+    const result = await readProvenance(taskId, entry);
+    if (!result.record?.outputSha256) throw new Error('尚未记录原件校验和，请由 Codex 补充真实来源记录。');
+    const file = await checkedPath(entry.original);
+    const bytes = await boundedRead(file, 100 * 1024 * 1024);
+    const actual = createHash('sha256').update(bytes).digest('hex');
+    return { matches: actual === result.record.outputSha256, checkedAt: new Date().toISOString(), expected: result.record.outputSha256, actual,
+      message: actual === result.record.outputSha256 ? '原件与记录的校验和一致；这只核对文件内容，不验证科学结论。' : '原件与来源记录不一致，请核对版本；不要把这份记录用于当前文件。' };
+  }
+
   return {
-    status, list, content,
+    status, list, content, provenance, verifyOutput,
     select: body => mutate(async () => {
       await initialize();
       if (body.confirm !== true) throw new Error('请先确认读取所选成果目录。');

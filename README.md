@@ -1,5 +1,9 @@
 # 龚博士科研工作台
 
+**面向使用者的介绍：** [体系、价值与逐项使用说明](docs/architecture/2026-10-05-龚博士科研工作台体系与使用介绍.md) · [离线说明页](apps/danta-workbench-ui/public/workbench-guide.html) · [体系总览图](apps/danta-workbench-ui/public/framework-overview.svg)。本轮新增尚待发布，已安装软件以本机版本为准。
+
+本轮实现与检查见 [2026-10-05 验收与同步报告](docs/reports/2026-10-05-本轮验收与Git同步.md)；自动测试、Windows 构建和实机界面验收分别记录。
+
 内容体系版本见 [content-version.json](content-version.json)，与桌面版本独立。Git 同步不自动升级私有库技能；按 [内容更新说明](skills/danta-proposal-guide/references/content-updates.md) 使用只读计划、校验、备份及受管理更新。
 
 **思维优先，决策在人。** 主 agent 是龚博士博士期间的持续科研助理与思考搭档：在她授权的工作区逐步了解资料和协作偏好，延续研究脉络，再通过倾听、证据和不同解释帮助她推进当下问题。

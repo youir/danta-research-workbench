@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowClockwise, ArrowLeft, ArrowsOut, DownloadSimple, File, FolderOpen, X } from '@phosphor-icons/react';
 import { artifactUrl, attachArtifactPreview, importArtifact, listArtifacts, openArtifact } from './artifactApi.js';
 import { normalizePreviewState as normalizeState } from './artifactState.js';
+import { ArtifactProvenance } from './ArtifactProvenance.jsx';
 
 const ArtifactViewer = lazy(() => import('./ArtifactViewer.jsx').then(module => ({ default: module.ArtifactViewer })));
 
@@ -9,6 +10,7 @@ const ArtifactViewer = lazy(() => import('./ArtifactViewer.jsx').then(module => 
 export function ArtifactWorkspace({ task, connection, onStateChange, onOpenSettings, onRevise, children }) {
   const state = normalizeState(task?.previewState);
   const [artifacts, setArtifacts] = useState([]);
+  const [sourceRevision, setSourceRevision] = useState(0);
   const [warning, setWarning] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -33,7 +35,7 @@ export function ArtifactWorkspace({ task, connection, onStateChange, onOpenSetti
       if (revision.current === request) {
         const added = seen.current ? result.artifacts.filter(item => !seen.current.has(item.key)) : [];
         seen.current = new Set(result.artifacts.map(item => item.key));
-        setArtifacts(result.artifacts); setWarning(result.warning || (added.length ? `发现 ${added.length} 份新成果，请点击成果卡查看。当前标签与意见保留。` : ''));
+        setArtifacts(result.artifacts); setSourceRevision(value => value + 1); setWarning(result.warning || (added.length ? `发现 ${added.length} 份新成果，请点击成果卡查看。当前标签与意见保留。` : ''));
       }
     } catch (error) { if (revision.current === request) setError(error.message); }
     finally { if (revision.current === request) setBusy(false); }
@@ -123,7 +125,7 @@ export function ArtifactWorkspace({ task, connection, onStateChange, onOpenSetti
       <aside ref={panelRef} tabIndex={-1} className={`artifact-panel${state.expanded ? ' is-expanded' : ''}`} aria-label="成果文件预览" onKeyDown={event => {
         if (event.key === 'Escape') { if (state.expanded) patch({ expanded: false }); else collapse(); }
         if ((state.expanded || narrow) && event.key === 'Tab') {
-          const items = [...panelRef.current.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href]')];
+          const items = [...panelRef.current.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href], summary')].filter(item => item.getClientRects().length);
           const first = items[0], last = items.at(-1);
           if (event.shiftKey && (document.activeElement === first || document.activeElement === panelRef.current)) { event.preventDefault(); last?.focus(); }
           else if (!event.shiftKey && (document.activeElement === last || document.activeElement === panelRef.current)) { event.preventDefault(); first?.focus(); }
@@ -139,6 +141,7 @@ export function ArtifactWorkspace({ task, connection, onStateChange, onOpenSetti
           <button type="button" onClick={() => close(tab.key)} aria-label={`关闭 ${tab.title} ${tab.version} 预览标签`}><X size={13} /></button>
         </div>)}</div>
         <div className="artifact-file-meta"><strong>{current?.title || currentTab?.title || '文件不可用'}</strong><span>{current?.version || currentTab?.version} · {current?.updatedAt ? new Date(current.updatedAt).toLocaleString('zh-CN') : '本机关联'}</span></div>
+        {current && connection.status.connected && <ArtifactProvenance key={`${task.id}:${current.key}:${sourceRevision}`} taskId={task.id} artifact={current} />}
         <div className="artifact-active-view" id="artifact-active-view" role="tabpanel">
           {current?.canPreview && connection.status.connected ? <Suspense fallback={<p className="artifact-loading">正在打开预览工具…</p>}><ArtifactViewer key={current.key} taskId={task.id} artifact={current} view={view} onViewChange={changeView} /></Suspense> : <div className="artifact-preview-empty"><File size={36} /><p>{connection.status.connected ? current?.previewError || '尚未找到这份文件。请刷新，或导入已有成果重新关联。' : '成果目录未连接。恢复连接后继续查看，意见草稿仍保留。'}</p>
             {!connection.status.connected && <button className="secondary-button" type="button" onClick={onOpenSettings}>查看成果设置</button>}

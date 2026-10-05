@@ -141,7 +141,7 @@ async function serveRendererFile(req, res) {
   }
 
   const contentType = mimeTypes[path.extname(filePath).toLowerCase()] || 'application/octet-stream';
-  const isDocument = path.basename(filePath).toLowerCase() === 'index.html';
+  const isDocument = ['.html', '.htm'].includes(path.extname(filePath).toLowerCase());
   res.writeHead(200, {
     'Content-Type': contentType,
     'Cache-Control': isDocument ? 'no-store' : 'public, max-age=31536000, immutable',

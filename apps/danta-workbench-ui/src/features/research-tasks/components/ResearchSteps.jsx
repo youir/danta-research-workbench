@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getResearchSteps } from '../../../shared/utils/localApi.js';
 import { createResearchStep, currentResearchStep, mergeResearchSteps, STEP_LIMIT, STEP_STATUSES } from '../../../shared/utils/researchSteps.js';
+import { BioInputGuide } from './BioInputGuide.jsx';
 
 export function ResearchSteps({ task, actions }) {
   const current = currentResearchStep(task);
@@ -59,6 +60,7 @@ export function ResearchSteps({ task, actions }) {
       <p>{current.goal}</p>
       {current.nextAction && <p><strong>下一步：</strong>{current.nextAction}</p>}
       {current.directory && <small className="research-step-path">{current.projectId} · {current.stepId} · {current.directory}</small>}
+      <BioInputGuide step={current} onChange={bioInput => actions?.patch(currentTask => ({ steps: currentTask.steps.map(step => step.key === current.key ? { ...step, bioInput } : step) }))} />
       <div className="research-step-actions">
         <button className="primary-button compact" type="button" onClick={() => actions?.begin()}>继续这一步</button>
         <button className="secondary-button compact" type="button" disabled={!current.available || !permitted || busy} onClick={() => refresh(current.key)}>查看过程</button>

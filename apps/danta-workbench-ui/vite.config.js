@@ -2,11 +2,13 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { createLocalBridgePlugin } from './server/localBridge.js';
 import { pdfResourcesPlugin } from './server/pdfResources.js';
 
 const appDirectory = path.dirname(fileURLToPath(import.meta.url));
+const appVersion = JSON.parse(readFileSync(path.join(appDirectory, 'package.json'), 'utf8')).version;
 let appCommit = '';
 let appHasLocalChanges = false;
 
@@ -35,7 +37,7 @@ export default defineConfig({
   define: {
     __APP_COMMIT__: JSON.stringify(appCommit),
     __APP_HAS_LOCAL_CHANGES__: JSON.stringify(appHasLocalChanges),
-    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '0.2.0'),
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || appVersion),
     __IS_DESKTOP_BUILD__: JSON.stringify(process.env.DANTA_DESKTOP === '1'),
   },
   server: {

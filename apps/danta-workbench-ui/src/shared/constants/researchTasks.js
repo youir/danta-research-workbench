@@ -48,6 +48,7 @@ export function createResearchTask(workflow, overrides = {}) {
     nextStep: overrides.nextStep || '',
     files: Array.isArray(overrides.files) ? overrides.files : [],
     records: Array.isArray(overrides.records) ? overrides.records : [],
+    literatureIds: Array.isArray(overrides.literatureIds) ? [...overrides.literatureIds] : [],
     steps: Array.isArray(overrides.steps) ? overrides.steps : [],
     activeStepKey: overrides.activeStepKey || '',
     archiveLinks: Array.isArray(overrides.archiveLinks) ? overrides.archiveLinks : [],

@@ -29,7 +29,7 @@ function saveBlob(blob, name) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
-export function DailyBriefsPage({ onBack, onBegin }) {
+export function DailyBriefsPage({ onBack, onBegin, onCollect, onOpenReading, activeTaskTitle = '' }) {
   const [directoryHandle, setDirectoryHandle] = useState(null);
   const [reports, setReports] = useState([]);
   const [selectedId, setSelectedId] = usePersistentState('selectedDailyBriefId', '');
@@ -211,6 +211,7 @@ export function DailyBriefsPage({ onBack, onBegin }) {
         <div><h1 id="daily-briefs-title">生物科研日报</h1><p>制作当日研究动态、管理 Codex 自动化，并查看已归档日报和来源。</p></div>
         <span className="daily-local-pill"><span className="status-dot selected" aria-hidden="true" />本机读取</span>
       </div>
+      {onOpenReading && <div className="daily-reading-entry"><span>{activeTaskTitle ? '选中的线索将关联「' + activeTaskTitle + '」' : '先保存阅读草稿，之后可关联研究任务'}</span><button type="button" className="text-button" onClick={onOpenReading}>查看我的阅读 <ArrowSquareOut size={14} aria-hidden="true" /></button></div>}
 
       <div className="daily-actions-grid">
         <section className="daily-action-card daily-run-card" aria-labelledby="daily-run-title">
@@ -259,7 +260,7 @@ export function DailyBriefsPage({ onBack, onBegin }) {
           {selectedReport && <article className="daily-report-detail">
             <header className="daily-report-header"><div><span className="panel-kicker">{reportLabel(selectedReport)}</span><h2>{selectedReport.title}</h2><p>{selectedReport.intro || selectedReport.scope || '本期日报内容'}</p></div><button className="primary-button compact" type="button" onClick={exportPoster} disabled={imageBusy}><FileImage size={18} aria-hidden="true" />{imageBusy ? '正在生成…' : '制作分享长图'}</button></header>
             {selectedReport.coverage && <div className="daily-report-coverage"><strong>覆盖范围</strong><span>{selectedReport.coverage}</span></div>}
-            {selectedReport.sections.length ? selectedReport.sections.map((section, sectionIndex) => <section className="daily-report-section" key={`${section.title}-${sectionIndex}`}><h3>{section.title}</h3>{section.items.map((item, index) => <article className="daily-report-item" key={`${item.title}-${index}`}><div className="daily-item-meta">{[item.evidence, item.published, item.readDepth].filter(Boolean).map(label => <span key={label}>{label}</span>)}</div><h4>{item.title}</h4>{item.summary && <p>{item.summary}</p>}{item.relevance && <p className="daily-item-relevance"><strong>为什么可能相关：</strong>{item.relevance}</p>}{item.question && <p className="daily-item-question"><strong>可继续追问：</strong>{item.question}</p>}<div className="daily-item-source">{item.source && <span>{item.source}</span>}{item.url && <a href={item.url} target="_blank" rel="noreferrer">查看来源 <ArrowSquareOut size={13} aria-hidden="true" /></a>}</div></article>)}</section>) : <div className="daily-empty-content"><ImageSquare size={28} aria-hidden="true" /><p>{selectedReport.intro || '这是一份空状态日报，未列出新的研究线索。'}</p></div>}
+            {selectedReport.sections.length ? selectedReport.sections.map((section, sectionIndex) => <section className="daily-report-section" key={`${section.title}-${sectionIndex}`}><h3>{section.title}</h3>{section.items.map((item, index) => <article className="daily-report-item" key={`${item.title}-${index}`}><div className="daily-item-meta">{[item.evidence, item.published, item.readDepth].filter(Boolean).map(label => <span key={label}>{label}</span>)}</div><h4>{item.title}</h4>{item.summary && <p>{item.summary}</p>}{item.relevance && <p className="daily-item-relevance"><strong>为什么可能相关：</strong>{item.relevance}</p>}{item.question && <p className="daily-item-question"><strong>可继续追问：</strong>{item.question}</p>}<div className="daily-item-source">{item.source && <span>{item.source}</span>}{item.url && <a href={item.url} target="_blank" rel="noreferrer">查看来源 <ArrowSquareOut size={13} aria-hidden="true" /></a>}{onCollect && <button type="button" className="text-button" onClick={() => onCollect({ title: item.title || '日报线索 · 题名待核实', doi: item.doi, pmid: item.pmid, url: item.url, summary: item.summary, originKey: 'brief:' + selectedReport.id + ':' + (item.url || item.doi || item.pmid || item.title || index), originLabel: '日报 · ' + selectedReport.date + ' · ' + section.title + ' · ' + selectedReport.fileName })}>加入我的阅读{activeTaskTitle ? '并关联任务' : ''}</button>}</div></article>)}</section>) : <div className="daily-empty-content"><ImageSquare size={28} aria-hidden="true" /><p>{selectedReport.intro || '这是一份空状态日报，未列出新的研究线索。'}</p></div>}
             {selectedReport.unavailable.length > 0 && <div className="daily-report-unavailable"><strong>未能访问：</strong>{selectedReport.unavailable.join('、')}</div>}
             <footer className="daily-report-footer">日报是研究动态导航；证据等级和阅读范围以原始来源为准。文件：{selectedReport.fileName}</footer>
           </article>}

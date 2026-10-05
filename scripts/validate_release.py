@@ -20,7 +20,7 @@ def main():
     primary = ROOT / 'scripts/install_skills.py'
     secondary = ROOT / 'variants/mentor-agent/install_agent.py'
     with tempfile.TemporaryDirectory(prefix='danta-release-') as tmp:
-        tmp = Path(tmp)
+        tmp = Path(tmp).resolve()  # macOS /var is a symlink; keep installer checks strict.
         for script, name, count in [(primary, 'danta-proposal-guide', len(json.loads((ROOT / 'MANIFEST.json').read_text())['skills'])), (secondary, 'danta-research-mentor', 1)]:
             dest = tmp / name
             call(script, ['--dest', dest, '--dry-run'])
@@ -122,7 +122,11 @@ def main():
         call(ROOT / 'scripts/start_project.py', ['--dest', other], ok=False)
         # Unexpected files and symlinks cannot escape the explicit copy boundary.
         source = tmp / 'distribution'
-        shutil.copytree(ROOT, source, ignore=shutil.ignore_patterns('.git','.local','__pycache__'))
+        # Model the explicit distribution; omit private files and build dependencies.
+        for relative in json.loads((ROOT / 'project-files.json').read_text(encoding='utf-8'))['files']:
+            target = source / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / relative, target)
         (source / '.env').write_text('FAKE_TEST_VALUE=not-a-secret')
         (source / 'unexpected-notes.txt').write_text('FICTIONAL private note')
         clean = tmp / 'clean'

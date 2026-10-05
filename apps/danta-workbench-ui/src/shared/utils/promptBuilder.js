@@ -2,8 +2,9 @@ import { researchStepPrompt } from './researchSteps.js';
 import { TASK_GUIDES } from '../constants/workflows.js';
 import { getResearchStage, getResearchTaskStatus } from '../constants/researchTasks.js';
 import { getUsefulTaskRecords, formatTaskRecord } from './taskRecords.js';
+import { literaturePrompt } from './literatureCards.js';
 
-export function makeKickoffPrompt(thought, focus, template = null, logo = null, task = null) {
+export function makeKickoffPrompt(thought, focus, template = null, logo = null, task = null, literatureCards = []) {
   const taskGuide = TASK_GUIDES[focus];
   const stage = task ? getResearchStage(task.stageId) : null;
   const status = task ? getResearchTaskStatus(task.statusId) : null;
@@ -56,6 +57,7 @@ export function makeKickoffPrompt(thought, focus, template = null, logo = null, 
     taskGuide || '先陪我把问题想清楚：复述重点，区分已有事实、可能解释和待核实之处。',
     '先理解我的目标和已有材料，再决定是提问、梳理还是直接动手；研究判断由我和导师作出。',
     ...taskContext,
+    ...literaturePrompt(task, literatureCards),
     ...researchStepPrompt(task),
     ...logoInstructions,
     ...(template ? [
