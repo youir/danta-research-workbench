@@ -18,6 +18,8 @@ jobs:
   windows-validation:
     runs-on: windows-latest
     timeout-minutes: 25
+    env:
+      PYTHONUTF8: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -28,11 +30,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Check content and distribution boundaries
-        run: |
-          python tests/test_research_records.py
-          python tests/test_jev_search_contract.py
-          python scripts/validate_release.py
+      - name: Verify research record contract
+        run: python tests/test_research_records.py
+      - name: Verify Jev search contract
+        run: python tests/test_jev_search_contract.py
+      - name: Check distribution boundaries
+        run: python scripts/validate_release.py
       - name: Install locked frontend dependencies
         working-directory: apps/danta-workbench-ui
         run: npm ci

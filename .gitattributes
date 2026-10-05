@@ -1,2 +1,5 @@
+# Keep first-party source and hash-verified templates identical on Windows.
+* text=auto eol=lf
+
 # Preserve pinned third-party bytes across platforms for SHA256 verification.
 vendor/** -text whitespace=cr-at-eol
