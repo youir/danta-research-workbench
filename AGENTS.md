@@ -37,4 +37,6 @@
 
 ## 内容接续规则
 
+论文起草、修改、润色、压缩及修回表达由 `danta-bio-paper-writing` 协作 `anti-defensive-writing`；先读写作技能的 `references/anti-defensive-adaptation.md`，再加载上游。用户直接点名上游技能时同样适用。主张、阴性结果、预设终点、必要局限与审稿问题照实保留，不能用修辞选择改变科学事实。文献精读、日报、实验执行、直译或事实核对不强行套此叙事。
+
 已有且未撤销的授权不因重开重复确认，读主引导 references/workspace-continuity.md。多课题写入前解析活动课题，不套用其他课题记录。统计任务先读 references/statistical-adaptation.md。简单问答直接交付，无实质变化不填卡或写全套记录。体系更新按 references/content-updates.md，仅更新受管理技能，保留私有资料与本人配置。

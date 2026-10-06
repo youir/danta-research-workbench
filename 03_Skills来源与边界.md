@@ -1,5 +1,13 @@
 # Skills 来源、固定版本与能力边界
 
+## 论文贡献表达扩展（v1.25）
+
+- 来源：[Adkid-Zephyr/anti-defensive-writing-Skill](https://github.com/Adkid-Zephyr/anti-defensive-writing-Skill)，固定提交 `102c8b21acf5eda3a0aef3d9779a65db646c8980`，MIT，Copyright (c) 2026 Adkid-Zephyr。
+- 仅打包 `vendor/skills/anti-defensive-writing/SKILL.md` 和上游 LICENSE，原文保留；中文规则用于中英文论文，无需重复安装英文版本，也无需 API Key 或新运行依赖。
+- `danta-bio-paper-writing` 将其作为安装依赖，主引导在论文起草、修改、润色、压缩和修回表达时自动协作；直译、事实核对、研究批评或其他非论文工作不强行套用。
+- 生物医学适配见 [anti-defensive-adaptation.md](skills/danta-bio-paper-writing/references/anti-defensive-adaptation.md)。突出贡献不能变成删去必要局限、隐去阴性结果或事后更换终点；上游不取代证据、统计与研究审查。
+- Git 源码更新不等于私有工作区已加载；沿用受管理技能更新器部署，保留个人规则和真实研究记录。
+
 ## 来源
 
 仓库：[K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills)

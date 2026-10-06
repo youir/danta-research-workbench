@@ -36,3 +36,7 @@
 ## 生物科研日报（v1.15）
 
 `skills/danta-bio-daily-briefing/`、日报数据结构、HTML 渲染器及测试由本工作台编写。流程设计参考 [kawaiier/daily-brief](https://github.com/kawaiier/daily-brief)，固定审阅其公开提交 `d66d7a22810ca68a6f3073fe9ed9d1344064384b`；本次只借鉴“内容规格 → 结构化数据 → 单文件 HTML”和逐日报存档的架构思想，未复制上游源码、字体或图片。该仓库 README 声明 MIT，但所审阅提交没有可核对的 LICENSE 文件或 GitHub SPDX 标记，因此不把上游代码纳入发行包。
+
+## 论文贡献表达（v1.25）
+
+`vendor/skills/anti-defensive-writing/` 来自 [Adkid-Zephyr/anti-defensive-writing-Skill](https://github.com/Adkid-Zephyr/anti-defensive-writing-Skill)，固定提交 `102c8b21acf5eda3a0aef3d9779a65db646c8980`，Copyright (c) 2026 Adkid-Zephyr。原样保留中文版 SKILL.md，附上游完整 MIT LICENSE；不打包重复英文技能、宣传资料或额外提示词包。上游原文未修改，生物医学适配单独保存在 `skills/danta-bio-paper-writing/references/anti-defensive-adaptation.md`，避免修辞建议覆盖真实研究报告要求。

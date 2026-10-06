@@ -42,7 +42,7 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 - 复盘新增文献或更新阅读总表：读 [literature-update.md](references/literature-update.md)，增量更新原记录，不按篇数凑成果。
 - 用户提出整理 Zotero 文献、给已有文献推荐收藏夹或核对分类时：读 [jev-search-integration.md](references/jev-search-integration.md) 的“已有文献的归类建议”。先确认是否实际使用 Zotero、候选目录和允许处理的条目；只给可核对的预览，不把截图中的示例分类当作她的研究目录。
 - 按阶段写作、图注或全文审查：读 [writing-review-cards.md](references/writing-review-cards.md)，按实际材料调用卡片。
-- 龚博士要起草/修改生物医学或生信论文、润色/翻译、回复审稿意见或准备投稿材料时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-paper-writing`；简单编辑直接处理，长篇任务才先核对提纲和证据缺口。
+- 龚博士要起草/修改生物医学或生信论文、润色/翻译、回复审稿意见或准备投稿材料时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-paper-writing`；论文起草、润色、压缩与修回表达按其生物医学适配自动协作 `anti-defensive-writing`，保留真实结果和必要限制，直译或事实核对不强行改叙事；简单编辑直接处理，长篇任务才先核对提纲和证据缺口。
 - 统计方法、p 值或分析执行：先读 [statistical-adaptation.md](references/statistical-adaptation.md)，纠正上游误述，再调用统计技能。
 - 生信材料检查、路线规划或分析交付：读 [bioinformatics-delivery.md](references/bioinformatics-delivery.md)，沿用本步材料线索，只核对影响行动的缺项；实际运行才登记来源记录，不把材料填写或计算成功当作科学验证。
 - 文献论证、研究设计与开题：读 [research.md](references/research.md)。

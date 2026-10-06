@@ -6,7 +6,7 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "2a6951cbbb2b1a2ef7c475feea0ad03549595cc7f93197e58c1aaf2c2f04f1d8",
+        "SKILL.md": "ede255a080aaf327c95fd92bb7a3db3e0a33c124bb2aa329934ef97c52ddc3c8",
         "agents/openai.yaml": "945dc0eb8e27f0478b0da327f54b2c7967a382455b1247c2274c913ea8396d60",
         "references/bioinformatics-delivery.md": "2d8ef321b21c2d384833d267e13f9fcf748586873b43354648d9e4446ecf3b3c",
         "references/content-updates.md": "6a297c8ebaac76937591e4e4c74dcc2e2784d0deaffdc1f6908ceacb56ec8792",
@@ -23,11 +23,11 @@
         "references/research-assistant.md": "897738b8eaf711574c54830e91157b3908350056c2db7eca3e5edb0f00c34550",
         "references/research-step-workspace.md": "cc278a811846fa2c968bae752b74f9da07fdc28472aa8754cf37347598e9dcfe",
         "references/research.md": "29df73ab27070e07751787face89b47ba9186a1c293524cf5c0ba7bc84347a47",
-        "references/skill-routing.md": "ae9721022bea91bd85cb9e19a20d5ff2782aad7faffc26b8a6bc113cb1e09fd9",
+        "references/skill-routing.md": "a869446131fe472c380818bf1edec6aec44b423c5137b6c64cb375ce2fb36272",
         "references/statistical-adaptation.md": "6ad21ec197acfafcdefea741b7bc0c1589853742a3ac91b02db8e6637b85a63e",
         "references/thinking-dialogue.md": "cdfe7685c059f239eddca7171de4c991c11c3382ae07357eba4f62e43a2f5704",
         "references/workspace-continuity.md": "e0ecc04b9089e0b3d4e1bbaae6b6622b34e5afce938f53f0e502d67a55639618",
-        "references/writing-review-cards.md": "fea10beb22f201c439ffc0ce010e692d1da2aa91b50b07142d3224a880559f33",
+        "references/writing-review-cards.md": "dab7acc9b5484784bc8d1e110f53b1eca443cdcf6252c267a355b15731a65fde",
         "scripts/create_research_step.py": "cd0f0c371e8c66dbdbd975576756cc738f81fc36fef58e72a1e3f0baf23e163f",
         "scripts/search_literature.py": "c0182e19b2bc2c2d539ae06621fc904b9e4e3fec84f3358e74cae3969d083303",
         "scripts/validate_research_records.py": "9a056309a6a73652ab76fd522af0397937f405d6b53cdf37bb9b00d541478a68",
@@ -64,12 +64,14 @@
     "danta-bio-paper-writing": {
       "source": "skills/danta-bio-paper-writing",
       "files": {
-        "SKILL.md": "18634b5024c2e847ff653885a46056d668da88aa1796996282343caea9476dd0",
+        "SKILL.md": "d26b66e6f44b3626daa6f0baa643fe4d49a4415b24ac01f5fb02bcae9663b8a8",
         "references/analysis-records.md": "e9d349b5fb747560742b530245c9e56bd1f0cd50161d73adcffb77dce402f565",
+        "references/anti-defensive-adaptation.md": "5ce34f8de8305b809ceb20cb511e5eb367722c38f7152a2b6363413098842b45",
         "references/workflow.md": "bfee59de451c023b59c2faa8cd4be0adb8d639b60126494a9ece2584de78ea72"
       },
       "dependencies": [
-        "danta-research-ppt"
+        "danta-research-ppt",
+        "anti-defensive-writing"
       ]
     },
     "scientific-brainstorming": {
@@ -337,8 +339,17 @@
         "references/workflow.md": "a3702452aa134fd247df1548dc77a9d801e9d4e67a41bbca1b37390a3bcbad0b",
         "scripts/install_ppt_master.py": "237b11dbec62cd26c08477bd2ada223371ad84cade2e13dab9b1286dd39c2ee2"
       }
+    },
+    "anti-defensive-writing": {
+      "source": "vendor/skills/anti-defensive-writing",
+      "upstream_repo": "https://github.com/Adkid-Zephyr/anti-defensive-writing-Skill",
+      "upstream_commit": "102c8b21acf5eda3a0aef3d9779a65db646c8980",
+      "files": {
+        "LICENSE": "fdf440e5214588d9edcdc1ec315cddbd8525fe509242c24989a8472d283325f4",
+        "SKILL.md": "6f072e66f6adf813bc1b4291754f2bc07ed4e65a398359844e97bfa215a1c28e"
+      }
     }
   },
   "package_version": "1.3-reviewed-20260924",
-  "content_version": "1.24.0"
+  "content_version": "1.25.0"
 }

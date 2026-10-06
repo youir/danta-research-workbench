@@ -72,6 +72,7 @@
 
 - [主引导技能](skills/danta-proposal-guide/SKILL.md) 与 [协作协议](skills/danta-proposal-guide/references/multi-agent.md)
 - [生物数据库查询技能](skills/danta-bioservices/SKILL.md) 与 [生物医学论文写作/修回技能](skills/danta-bio-paper-writing/SKILL.md)
+- 论文起草/润色自动协作 [anti-defensive-writing](vendor/skills/anti-defensive-writing/SKILL.md)，按 [生物医学适配](skills/danta-bio-paper-writing/references/anti-defensive-adaptation.md) 突出真实贡献、减少冗余与自我否定，保留阴性结果及必要限制；直接说“润色论文”“改摘要”即可。内容体系 v1.25.0 尚未发布，Git 更新后仍需按 [内容更新流程](skills/danta-proposal-guide/references/content-updates.md) 更新私有工作区受管理技能，不能仅凭 Git 同步宣称已加载。
 - [生物科研日报技能](skills/danta-bio-daily-briefing/SKILL.md)：把已授权/可用来源压缩为带证据状态、覆盖范围和链接的离线 HTML 简报。
 - [KimiWork 任务接力 SOP](16_KimiWork任务接力SOP.md)：合规任务在 Codex/WorkBuddy 与 KimiWork 之间接力——「切换kimi」生成交接记忆文档，「切换kimi完成」读取回传文件核查后继续。
 - `.codex/agents/`：项目级职责 agent 配置；单轮最多三个并行
