@@ -6,11 +6,12 @@
     "danta-proposal-guide": {
       "source": "skills/danta-proposal-guide",
       "files": {
-        "SKILL.md": "ede255a080aaf327c95fd92bb7a3db3e0a33c124bb2aa329934ef97c52ddc3c8",
+        "SKILL.md": "c340a5a1281d8ec2128bbba26b0e32a813b92f52fa61d858d28fe06dc4864f34",
         "agents/openai.yaml": "945dc0eb8e27f0478b0da327f54b2c7967a382455b1247c2274c913ea8396d60",
         "references/bioinformatics-delivery.md": "2d8ef321b21c2d384833d267e13f9fcf748586873b43354648d9e4446ecf3b3c",
         "references/content-updates.md": "6a297c8ebaac76937591e4e4c74dcc2e2784d0deaffdc1f6908ceacb56ec8792",
         "references/decision-and-evidence.md": "34370e41f4b040a32806b3c45350e6498073bba4bfc969c6b11236fd7d18a4bf",
+        "references/dot-collaboration.md": "365050e691ef667ac35698aa2a0a2c4b6a943bf1c07e7cdd5cad56ab26d1a1e5",
         "references/expert-distillation.md": "5b5b80aebc307bb985fa5d35d8fb32a631e054eaa7aefea955b561c9f5a44b8f",
         "references/intake.md": "53269ee358eb6fb3dae3acb969b088eeda2c8a9e45b73a5c8eab47beaa428533",
         "references/jev-search-integration.md": "f7bfb5bae8d4436827f00640e6fc2694acf958872faaf6237e04f4d47e100b6e",
@@ -44,7 +45,7 @@
     "danta-bio-daily-briefing": {
       "source": "skills/danta-bio-daily-briefing",
       "files": {
-        "SKILL.md": "f517e9eabdc1001de8b897840952f7240a6f024e3398bc05e4e292570ca86839",
+        "SKILL.md": "1749f10eb1ef173d404341a62d7299730081acabcf8ee69a2fb3948e9131f114",
         "assets/content.schema.json": "709a693117b17402a1bbb7f42e963611109ba4da6d6ce349cf586a895fdecc6e",
         "examples/no-sources.json": "c236351d8fa3a1ee484ac9f6dfa938c76fc79c8b03902c46a23c126af63b8d68",
         "references/briefing-workflow.md": "3dfb1abfb2092b9c44e30a59174d5c39487da5c0c31c4ae42bc6acf45409988d",
@@ -351,5 +352,5 @@
     }
   },
   "package_version": "1.3-reviewed-20260924",
-  "content_version": "1.25.0"
+  "content_version": "1.26.0"
 }

@@ -19,6 +19,8 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 
 ## 启动与恢复
 
+用户选择 Dot 负责科研任务、云端部署、晨报调度或跨设备接续时，先读 [dot-collaboration.md](references/dot-collaboration.md)。优先复用当前专项流程，核对云端与本机的实际能力；本机未连接时可在获准云端私有目录处理公开材料并保存交接，注明尚未归档，不伪造本机路径或建立第二套正式研究状态。普通 Codex 对话继续沿用以下恢复规则。
+
 按 [workspace-continuity.md](references/workspace-continuity.md) 恢复既有授权、隔离活动课题并判断任务深度。简单任务直接交付，不重新填写画像。体系更新读 [content-updates.md](references/content-updates.md)，区分源码、已安装技能和私有记录版本。
 
 开始或接续较长研究任务时，按 [research-assistant.md](references/research-assistant.md) 恢复已授权画像和协作偏好，再进入当前课题状态与思路；若她当下明确提出其他优先事项，先回应当下需要。
@@ -53,7 +55,7 @@ description: 龚博士博士期间的持续科研助理与唯一研究入口。�
 - 需要专业工具：读 [skill-routing.md](references/skill-routing.md)，再读实际可用技能。缺失能力如实报告，能做的部分继续。
 - 需要为研究问题选择分析软件或平台时，查看工作台 `我的开题/02_盘点/科研工具地图.md`；若处于 Obsidian vault，按 [knowledge-vault.md](references/knowledge-vault.md) 的 Path-Map 找到 vault 内对应地图。只将适配当前问题和数据形态的候选项带入讨论，并到资源与约束中记录来源核验及实际能力检查。地图不是个人技能画像，不默认要求安装。
 - 龚博士要查生物数据库、跨库映射或整理论文中的生信证据时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bioservices` 或 `danta-bio-paper-writing`；若包含科研图，继续接入 `danta-research-ppt`。数据库注释不能单独支撑机制结论。
-- 龚博士提出制作生物日报或科研晨报时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-daily-briefing`。只整理本轮可用或她明确授权的来源；没有来源就直说，不能假装已连接日历、邮件或聊天，也不创建循环任务。
+- 龚博士提出制作生物日报或科研晨报时，按 [skill-routing.md](references/skill-routing.md) 调用 `danta-bio-daily-briefing`。只整理本轮可用或她明确授权的来源；没有来源就直说，不能假装已连接日历、邮件或聊天。日报调用本身不创建循环任务；本人明确要求 Dot 定时时，按 [dot-collaboration.md](references/dot-collaboration.md) 由 Dot 核对和保存计划，每轮只生成当次报告及获准图片。
 
 ## 证据纪律
 

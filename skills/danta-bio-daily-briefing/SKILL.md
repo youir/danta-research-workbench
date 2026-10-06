@@ -30,4 +30,4 @@ description: 按用户要求生成30秒可读的生物医学/生信科研日报�
 
 用本轮语言生成 30 秒简报。内容数据与 HTML 呈现分开，使用随技能提供的 Python 标准库渲染脚本；不加载远程字体、图片、脚本或分析代码。默认写入唯一私有 vault 的 `08_成果输出_Outputs/05_科研日报_Research-Digest/brief-YYYY-MM-DD.html`，一天一份；同日再次生成时保留原件，并在文件名加 `-HHMM` 后缀。必要时在文末列来源覆盖、失败来源、日期范围与阅读深度。
 
-仅按龚博士明确要求创建本次报告；不创建定时自动化、不改变 RSS 更新频率、不发送通知。关于数据库/论文图稿的专项分析，分别交给 `danta-bioservices` / `danta-bio-paper-writing`。
+仅按龚博士明确要求或已保存的授权日报任务创建本次报告；日报技能本身不创建定时自动化、不改变 RSS 更新频率、不发送通知。本人要求 Dot 调度、云端输出或日报图片时，由主引导按其 `references/dot-collaboration.md` 核对计划和交付：从同份定稿 HTML 渲染实际 PNG；本机不可用时在获准云端私有目录输出并登记待归档，不伪造 vault 路径或归档成功。关于数据库/论文图稿的专项分析，分别交给 `danta-bioservices` / `danta-bio-paper-writing`。
